@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "198656969457",
+    "firebase_url": "https://nimble-survey.firebaseio.com",
+    "project_id": "nimble-survey",
+    "storage_bucket": "nimble-survey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198656969457:android:175c29beb68b55b5d7f750",
+        "android_client_info": {
+          "package_name": "com.nimbl3.surveys.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198656969457-pmdsd9kls3ujbslo6p2jm8dnlnp0u7l7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXE3gF6lwCoGUtp2I9NYRdm1vLGuiWyGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198656969457-pmdsd9kls3ujbslo6p2jm8dnlnp0u7l7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

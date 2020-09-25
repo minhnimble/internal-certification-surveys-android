@@ -8,6 +8,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'com.google.gms.google-services'
 
 def keystorePropertiesFile = rootProject.file("signing.properties")
 def keystoreProperties = new Properties()
@@ -152,6 +153,7 @@ dependencies {
         "androidx.appcompat:appcompat:$android_support_version",
         "androidx.recyclerview:recyclerview:$android_support_version",
         "com.google.android.material:material:$android_material",
+        "com.google.firebase:firebase-analytics:$firebase_analytics_version",
         "androidx.constraintlayout:constraintlayout:$constraint_layout_version",
 
         "io.reactivex.rxjava2:rxjava:$rxjava_version",
