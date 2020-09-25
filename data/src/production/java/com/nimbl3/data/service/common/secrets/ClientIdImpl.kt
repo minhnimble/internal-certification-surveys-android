@@ -2,6 +2,6 @@ package com.nimbl3.data.service.common.secrets
 
 class ClientIdImpl : ClientId {
     override val value: String
-        get() = TODO("Not implement yet, please modify this for your Production usage")
+        get() = "OAGS3tuneJ754D0lrY5JiM8BQbYlbgGXcrcxXtEE4hk"
 
 }

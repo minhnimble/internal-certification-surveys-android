@@ -2,8 +2,7 @@ package com.nimbl3.data.service.common.secrets
 
 interface ClientId {
     companion object {
-        // TODO: modify for your usage
-        const val ID = "client_id"
+        const val ID = ""
     }
     val value: String
 }

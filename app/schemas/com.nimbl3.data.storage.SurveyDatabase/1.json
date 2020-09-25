@@ -1,0 +1,52 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "a2c9c6553e8f3480d8883b85eacf4f0a",
+    "entities": [
+      {
+        "tableName": "survey",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`survey_id` TEXT NOT NULL, `description` TEXT, `cover_image_url` TEXT, `title` TEXT, PRIMARY KEY(`survey_id`))",
+        "fields": [
+          {
+            "fieldPath": "surveyId",
+            "columnName": "survey_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imageURL",
+            "columnName": "cover_image_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "survey_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2c9c6553e8f3480d8883b85eacf4f0a')"
+    ]
+  }
+}

@@ -2,6 +2,5 @@ package com.nimbl3.data.service.common.secrets
 
 class ClientSecretImpl : ClientSecret {
     override val value: String
-        // TODO: modify for your usage
-        get() = "staging secret keys"
+        get() = "8VzajmOjaG_yhFuYXao1_mPnJfwWKULIND_3c8Yv1Cs"
 }

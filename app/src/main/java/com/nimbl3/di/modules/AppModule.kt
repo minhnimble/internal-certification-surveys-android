@@ -1,13 +1,20 @@
 package com.nimbl3.di.modules
 
-import android.content.Context
 import dagger.Module
-import dagger.Provides
-import com.nimbl3.TemplateApplication
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import javax.inject.Qualifier
 
 @Module
-class AppModule {
+@InstallIn(ApplicationComponent::class)
+object AppModule {
 
-    @Provides
-    fun provideContext(application: TemplateApplication): Context = application
+    // TODO: Prepare sample annotations for later usage
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class RemoteSurveysDataSource
+
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class LocalSurveysDataSource
 }

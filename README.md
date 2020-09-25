@@ -1,3 +1,77 @@
-![Build Status](https://www.bitrise.io/app/4cbfc6308f5c80e5/status.svg?token=FXilfAPD1nT8M1QzlfBNqA&branch=kotlin)
-# Android Templates: Kotlin
-- Our optimized Android templates used in our kotlin android projects
+# Android Surveys App
+
+Welcome guys! This is a quick guide to help you get started.
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+**Side Note:** This document is written to help you setup using Terminal commands. You can use a GUI like SourceTree to clone the project, but you'll have to run commands like `bundle exec fastlane android test` and you can't use a GUI for those. 
+
+## Prerequisites
+
+It's dangerous to go alone, make sure you have these! Follow the links to find out how to download and install them.
+
+* [Android Studio](https://developer.android.com/studio) (at least Android Studio 4.0.0)
+    * You'll probably want to install/update some plugins like the Simulator. Just open Android Studio and follow the prompts.
+* [Bundler](https://help.dreamhost.com/hc/en-us/articles/115001070131-Using-Bundler-to-install-Ruby-gems)
+    * Check that you successfully installed bundler by doing `bundle -v` anywhere in Terminal. This command should display the Bundler version. If it doesn't check the Troubleshooting guide below.
+* [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html)
+    * Select the installer that corresponds to your machine OS
+* [Xcode Command Line Tools and Fastlane](https://docs.fastlane.tools/getting-started/android/setup/)
+    * Just follow the **Installing fastlane** section
+    * Check if you've installed Fastlane correctly by executing `fastlane -v`
+    * Check if your Bundler works with Fastlane by executing `bundle exec fastlane -v`
+
+## Installation
+
+In your local machine, navigate to a folder you want to work from. Personally, I use `~/Documents/apps/`. So for example, I would do:
+
+```
+$ mkdir ~/Documents/apps/
+$ cd ~/Documents/apps/
+```
+
+Then do a `git clone`. Remember that this command creates a folder called `android_surveys_list` so you **don't** have to create the folder first.
+
+```
+(apps) $ git clone git@github.com:minhnimble/android-surveys-list.git android_surveys_list
+```
+
+While you wait for the project to download, go make yourself a cup of coffee. ^^
+
+## Gradle Sync
+
+Open the android project and click on the Sync Project with Gradle Files button on the top right corner. If you can't find it, there's a useful shortcut `CMD + SHIFT + A` (use CTRL for non-Mac) to pull up the Actions search. Type in "sync" and that should be the top hit.
+
+## Running Tests
+
+To run tests in Android Studio, hit `CTRL + SHIFT + R`.
+
+To run tests using Fastlane, enter this command in Terminal:
+
+```
+$ (master) bundle exec fastlane android test
+```
+
+Protip: If `bundle exec` doesn't work, you can still just run
+```
+$ (master) fastlane android test
+```
+
+Fastlane just recommends that you use `bundle exec` to execute fastlane commands.
+
+If everything works out, you should see an output like this:
+```
++------+------------------+-------------+
+|           fastlane summary            |
++------+------------------+-------------+
+| Step | Action           | Time (in s) |
++------+------------------+-------------+
+| 1    | default_platform | 0           |
+| 2    | clean test       | 63          |
++------+------------------+-------------+
+
+fastlane.tools finished successfully 🎉
+```
+
+## Final Note
+If you still have issues setting up your environment, contact me for help over Slack. My name is Mikey on Slack ^^

@@ -1,10 +1,13 @@
 apply plugin: 'com.android.application'
 apply from: 'codequality.gradle'
-apply from: '../config/jacoco.gradle'
+//apply from: '../config/jacoco.gradle'
 
+
+apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 def keystorePropertiesFile = rootProject.file("signing.properties")
 def keystoreProperties = new Properties()
@@ -37,13 +40,22 @@ android {
 
     compileSdkVersion globalConfig["android_compile_sdk_version"]
     defaultConfig {
-        applicationId "com.nimbl3.android"
+        applicationId "com.nimbl3.surveys"
         minSdkVersion globalConfig["android_min_sdk_version"]
         targetSdkVersion globalConfig["android_target_sdk_version"]
         versionCode globalConfig["android_version_code"]
         versionName globalConfig["android_version_name"]
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+
+        kapt {
+            arguments {
+                /** Specifies the directory where generated schema JSON files should be placed.
+                 These files should be tracked in source control to track schema changes and
+                 assist in schema migrations. **/
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {
@@ -65,6 +77,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -84,15 +100,15 @@ android {
     flavorDimensions "stage"
     productFlavors {
         production {
-            applicationId "com.nimbl3"
+            applicationId "com.nimbl3.surveys"
         }
 
         staging {
-            applicationId "com.nimbl3.staging"
+            applicationId "com.nimbl3.surveys.staging"
         }
 
         staging_internal {
-            applicationId "com.nimbl3.staging"
+            applicationId "com.nimbl3.surveys.staging"
             versionNameSuffix ".${project.versionNameSuffix}"
         }
     }
@@ -119,10 +135,11 @@ dependencies {
     implementation project(':data')
 
     kapt(
+        "androidx.hilt:hilt-compiler:$hilt_androidx_version",
         "androidx.lifecycle:lifecycle-compiler:$arch_component_version",
+        "androidx.room:room-compiler:$room_version",
         "com.github.bumptech.glide:compiler:$glide_version",
-        "com.google.dagger:dagger-compiler:$dagger_version",
-        "com.google.dagger:dagger-android-processor:$dagger_version",
+        "com.google.dagger:hilt-android-compiler:$hilt_version",
         "org.permissionsdispatcher:permissionsdispatcher-processor:$permission_dispatcher_version"
     )
 
@@ -139,24 +156,39 @@ dependencies {
 
         "io.reactivex.rxjava2:rxjava:$rxjava_version",
         "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
-        "com.jakewharton.rxbinding2:rxbinding:$rxbinding_version",
+        "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version",
 
         "androidx.lifecycle:lifecycle-extensions:$arch_component_version",
         "androidx.lifecycle:lifecycle-common-java8:$arch_component_version",
         "androidx.lifecycle:lifecycle-runtime:$arch_component_version",
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:$arch_component_version",
 
+        "androidx.room:room-runtime:$room_version",
+        "androidx.room:room-ktx:$room_version",
+        "androidx.room:room-rxjava2:$room_version",
+
+        "androidx.navigation:navigation-runtime-ktx:$nav_version",
+        "androidx.navigation:navigation-fragment-ktx:$nav_version",
+        "androidx.navigation:navigation-ui-ktx:$nav_version",
+        "androidx.navigation:navigation-dynamic-features-fragment:$nav_version",
+
+        "androidx.core:core:$android_support_version",
         "androidx.core:core-ktx:$android_ktx_version",
+        "androidx.fragment:fragment-ktx:$fragment_ktx_version",
 
-        "com.google.dagger:dagger:$dagger_version",
-        "com.google.dagger:dagger-android-support:$dagger_version",
+        "com.google.dagger:hilt-android:$hilt_version",
+        "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_androidx_version",
         "androidx.multidex:multidex:$multidex_version",
 
         "com.jakewharton.timber:timber:$timber_log_version",
         "com.github.bumptech.glide:glide:$glide_version",
-        "org.permissionsdispatcher:permissionsdispatcher:$permission_dispatcher_version"
+        "org.permissionsdispatcher:permissionsdispatcher:$permission_dispatcher_version",
+        "jp.wasabeef:blurry:$blurry_version",
+        "com.facebook.shimmer:shimmer:$shimmer_version"
     )
 
     testImplementation(
+        "androidx.room:room-testing:$room_version",
         "junit:junit:$test_junit_version",
         "com.nhaarman:mockito-kotlin:$test_mockito_version",
     )
