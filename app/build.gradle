@@ -10,7 +10,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.gms.google-services'
 
+def keystorePropertiesFile = file('../secret/signing.properties')
+def keystoreProperties = new Properties()
 def globalConfig = rootProject.extensions.getByName("ext")
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
 
@@ -28,17 +31,10 @@ android {
 
     signingConfigs {
         config {
-            def keystorePropertiesFile = file('../secret/signing.properties')
-            if (keystorePropertiesFile.exists()) {
-                def keystoreProperties = new Properties()
-                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-                print keystoreProperties
-
-                keyAlias keystoreProperties['KEY_ALIAS']
-                keyPassword keystoreProperties['KEY_PASSWORD']
-                storePassword keystoreProperties['KEYSTORE_PASSWORD']
-                storeFile file('../secret/keystore_production')
-            }
+            storeFile file('../secret/keystore.jks')
+            storePassword keystoreProperties['KEYSTORE_PASSWORD']
+            keyPassword keystoreProperties['KEY_PASSWORD']
+            keyAlias keystoreProperties['KEY_ALIAS']
         }
     }
 
