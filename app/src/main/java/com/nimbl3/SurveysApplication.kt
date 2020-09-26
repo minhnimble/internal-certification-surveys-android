@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.multidex.MultiDex
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
-import javax.inject.Inject
 
 @HiltAndroidApp
 class SurveysApplication: Application() {

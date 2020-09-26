@@ -37,14 +37,14 @@ android {
                 keyAlias keystoreProperties['KEY_ALIAS']
                 keyPassword keystoreProperties['KEY_PASSWORD']
                 storePassword keystoreProperties['KEYSTORE_PASSWORD']
-                storeFile file('../secret/keystore.jks')
+                storeFile keystoreProperties['STORE_FILE_PATH']
             }
         }
     }
 
     compileSdkVersion globalConfig["android_compile_sdk_version"]
     defaultConfig {
-        applicationId "com.nimbl3.surveys"
+        applicationId "co.nimblehq.surveys"
         minSdkVersion globalConfig["android_min_sdk_version"]
         targetSdkVersion globalConfig["android_target_sdk_version"]
         versionCode globalConfig["android_version_code"]
@@ -104,24 +104,16 @@ android {
     flavorDimensions "stage"
     productFlavors {
         production {
-            applicationId "com.nimbl3.surveys"
+            applicationId "co.nimblehq.surveys"
         }
 
         staging {
-            applicationId "com.nimbl3.surveys.staging"
-        }
-
-        staging_internal {
-            applicationId "com.nimbl3.surveys.staging"
-            versionNameSuffix ".${project.versionNameSuffix}"
+            applicationId "co.nimblehq.surveys.staging"
         }
     }
 
     sourceSets {
         staging {
-            res.srcDirs = ['src/staging/res']
-        }
-        staging_internal {
             res.srcDirs = ['src/staging/res']
         }
         test {
