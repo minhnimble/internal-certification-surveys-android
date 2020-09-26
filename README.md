@@ -4,7 +4,8 @@ Welcome guys! This is a quick guide to help you get started.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-**Side Note:** This document is written to help you setup using Terminal commands. You can use a GUI like SourceTree to clone the project, but you'll have to run commands like `bundle exec fastlane android test` and you can't use a GUI for those. 
+## Project Board
+Link to the project board: [Project Board](https://github.com/minhnimble/android-surveys-list/projects/1)
 
 ## Prerequisites
 

@@ -1,4 +1,4 @@
-https://github.com/nimblehq/git-template/issues/??
+https://github.com/minhnimble/android-surveys-list/projects/???
 
 ## What happened
 
