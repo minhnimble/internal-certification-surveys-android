@@ -23,6 +23,8 @@ class AppProgressDialog @Inject constructor(@ActivityContext context: Context) :
         val view = LayoutInflater.from(context).inflate(R.layout.dialog_loading_progress, null, false)
         setContentView(view)
 
+        this.setCancelable(true)
+        this.setCanceledOnTouchOutside(true)
         this.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 }

@@ -67,21 +67,10 @@ abstract class BaseFragment: Fragment() {
 
     /**
      * @method to toggle to show/hide the app loading
-     * @param cancelable should progress dialog cancel with outer touch default=true
+     * @param showLoading should indicator whether the loader is showing or not
      */
-    fun toggleLoading(showLoading: Boolean,cancelable: Boolean = true) {
-        if (showLoading) {
-            hideLoading()
-            loader.show()
-            loader.setCanceledOnTouchOutside(cancelable)
-            loader.setCancelable(cancelable)
-        } else {
-            hideLoading()
-        }
-    }
-
-    private fun hideLoading() {
-        if (loader.isShowing)
-            loader.dismiss()
+    fun toggleLoading(showLoading: Boolean) {
+        if (loader.isShowing) loader.dismiss()
+        if (showLoading) loader.show()
     }
 }

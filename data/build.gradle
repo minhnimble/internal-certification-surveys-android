@@ -23,10 +23,6 @@ android {
         staging {
             dimension "stage"
         }
-
-        staging_internal {
-            dimension "stage"
-        }
     }
 
     kotlinOptions {
@@ -47,7 +43,7 @@ android {
         test {
             java.srcDirs += 'src/test/kotlin'
         }
-        staging_internal {
+        staging {
             java.srcDirs += 'src/staging'
         }
     }

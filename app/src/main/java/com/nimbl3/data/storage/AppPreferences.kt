@@ -2,24 +2,15 @@ package com.nimbl3.data.storage
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import io.reactivex.Completable
 import javax.inject.Inject
 
 interface AppPreferences {
-    var isLoggedIn: Boolean?
-
-    fun clearAll() = Completable.fromAction {
-        isLoggedIn = null
-    }
+    // TODO: Add new keys here
 }
 
 class AppPreferencesImpl @Inject constructor(
     private val preferences: SharedPreferences
 ) : AppPreferences {
-
-    override var isLoggedIn: Boolean?
-        get() = getBoolean(KEY_IS_LOGGED_IN)
-        set(value) = setOrRemove(KEY_IS_LOGGED_IN, value)
 
     private fun getString(key: String): String? {
         return preferences.getString(key, null)
@@ -59,5 +50,3 @@ class AppPreferencesImpl @Inject constructor(
         }
     }
 }
-
-private const val KEY_IS_LOGGED_IN = "is_logged_in"
