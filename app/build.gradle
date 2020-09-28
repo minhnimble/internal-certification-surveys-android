@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply from: 'codequality.gradle'
-//apply from: '../config/jacoco.gradle'
 
 
 apply plugin: 'dagger.hilt.android.plugin'
@@ -32,7 +31,6 @@ android {
             if (keystorePropertiesFile.exists()) {
                 def keystoreProperties = new Properties()
                 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-                print keystoreProperties
 
                 keyAlias keystoreProperties['KEY_ALIAS']
                 keyPassword keystoreProperties['KEY_PASSWORD']

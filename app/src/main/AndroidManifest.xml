@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.nimbl3"
+<manifest package="co.nimblehq"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
-        android:name=".SurveysApplication"
+        android:name="co.nimblehq.SurveysApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.screens.onboarding.OnboardingActivity"
+        <activity android:name="co.nimblehq.ui.screens.onboarding.OnboardingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.screens.main.MainActivity"
+        <activity android:name="co.nimblehq.ui.screens.main.MainActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing">

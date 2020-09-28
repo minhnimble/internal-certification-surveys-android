@@ -6,6 +6,6 @@
     app:startDestination="@id/signinFragment">
     <fragment
         android:id="@+id/signinFragment"
-        android:name="com.nimbl3.ui.screens.onboarding.signin.SigninFragment"
+        android:name="co.nimblehq.ui.screens.onboarding.signin.SigninFragment"
         android:label="SigninFragment"/>
 </navigation>
