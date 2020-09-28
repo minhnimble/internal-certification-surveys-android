@@ -33,5 +33,6 @@ class MainNavigatorImpl @Inject constructor(
                 )
             ), null, null, null
         )
+        activity.finish()
     }
 }
