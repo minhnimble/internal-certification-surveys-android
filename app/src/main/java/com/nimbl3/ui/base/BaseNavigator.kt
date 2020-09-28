@@ -3,7 +3,6 @@ package com.nimbl3.ui.base
 import android.app.Activity
 import androidx.annotation.IdRes
 import androidx.navigation.NavController
-import com.nimbl3.data.errors.NavigationError
 import com.nimbl3.extension.getResourceName
 import timber.log.Timber
 import java.lang.Exception
@@ -29,14 +28,6 @@ abstract class BaseNavigatorImpl(private val activity: Activity) : BaseNavigator
 
     override fun navigateBack() {
         findNavController().navigateUp()
-    }
-
-
-    protected fun unsupportedNavigation() {
-        val navController = findNavController()
-        val currentGraph = activity.getResourceName(navController.graph.id)
-        val currentDestination = activity.getResourceName(navController.currentDestination?.id)
-        handleError(NavigationError.UnsupportedNavigationError(currentGraph, currentDestination))
     }
 
     private fun handleError(error: Throwable) {
