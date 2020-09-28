@@ -33,5 +33,6 @@ class OnboardingNavigatorImpl @Inject constructor(
                 )
             ), null, null, null
         )
+        activity.finish()
     }
 }
