@@ -9,6 +9,4 @@ abstract class SurveysViewModel : BaseViewModel() {
 }
 
 class SurveysViewModelImpl @ViewModelInject constructor(
-) : SurveysViewModel(), SurveysViewModel.Input {
-
-}
+) : SurveysViewModel(), SurveysViewModel.Input { }

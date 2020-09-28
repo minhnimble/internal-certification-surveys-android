@@ -7,8 +7,7 @@ abstract class OnboardingViewModel : BaseViewModel() {
 
     abstract val inputs: Inputs
 
-    interface Inputs {
-    }
+    interface Inputs { }
 }
 
 class OnboardingViewModelImpl @ViewModelInject constructor(
@@ -16,7 +15,5 @@ class OnboardingViewModelImpl @ViewModelInject constructor(
 
     override val inputs: Inputs = this
 
-    init {
-
-    }
+    init { }
 }
