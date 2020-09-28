@@ -12,7 +12,7 @@ def fileGenerated = ['**/R.class',
                      '**/*Test*.*',
                      'android/**/*.*']
 
-def packagesExcluded = ['com/nimbl3/di/**',
+def packagesExcluded = ['com/nimblehq/di/**',
                         'com/bumptech/glide']
 
 def fileFilter = fileGenerated + packagesExcluded
@@ -22,7 +22,7 @@ task jacocoTestReport(type: JacocoReport) {
     description = "Generate Jacoco coverage reports for Debug build"
 
     dependsOn ":app:testStagingDebugUnitTest"
-        dependsOn ":data:testStagingDebugUnitTest"
+    dependsOn ":data:testStagingDebugUnitTest"
 
     classDirectories.from = fileTree(
         dir: "$project.rootDir/app/build/intermediates/javac/stagingDebug/classes",

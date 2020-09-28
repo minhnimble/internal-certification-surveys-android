@@ -6,6 +6,6 @@
     app:startDestination="@id/surveysFragment">
     <fragment
         android:id="@+id/surveysFragment"
-        android:name="com.nimbl3.ui.screens.main.surveys.SurveysFragment"
+        android:name="co.nimblehq.ui.screens.main.surveys.SurveysFragment"
         android:label="SurveysFragment" />
 </navigation>
