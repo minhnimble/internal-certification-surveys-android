@@ -9,6 +9,4 @@ abstract class SigninViewModel : BaseViewModel() {
 }
 
 class SigninViewModelImpl @ViewModelInject constructor(
-) : SigninViewModel(), SigninViewModel.Input {
-
-}
+) : SigninViewModel(), SigninViewModel.Input { }
