@@ -1,6 +1,101 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clSignin"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivNimbleLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:contentDescription="@string/nimble_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_nimble_logo_white" />
+
+    <LinearLayout
+        android:id="@+id/llInputContents"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8">
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:autofillHints=""
+            android:background="@drawable/bg_user_login_input"
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textWebEmailAddress|text"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white"
+            android:textColorLink="@color/dark_blue"
+            android:textCursorDrawable="@color/white"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:autofillHints=""
+            android:background="@drawable/bg_user_login_input"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="text|textPassword"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="66dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white"
+            android:textColorLink="@color/dark_blue"
+            android:textCursorDrawable="@color/white"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/btLogIn"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_user_login_button"
+            android:enabled="false"
+            android:text="@string/log_in"
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btForgotPassword"
+        android:layout_width="65dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="1dp"
+        android:alpha="0"
+        android:background="@color/clear"
+        android:text="@string/is_forgot"
+        android:textAllCaps="false"
+        android:textColor="#80FFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/llInputContents"
+        app:layout_constraintEnd_toEndOf="@+id/llInputContents"
+        app:layout_constraintTop_toTopOf="@+id/llInputContents" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
