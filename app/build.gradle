@@ -41,14 +41,17 @@ android {
     }
 
     compileSdkVersion globalConfig["android_compile_sdk_version"]
+    buildToolsVersion globalConfig["build_tool_version"]
     defaultConfig {
         applicationId "co.nimblehq.surveys"
         minSdkVersion globalConfig["android_min_sdk_version"]
         targetSdkVersion globalConfig["android_target_sdk_version"]
         versionCode globalConfig["android_version_code"]
         versionName globalConfig["android_version_name"]
+
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         kapt {
             arguments {
@@ -123,6 +126,16 @@ android {
     androidExtensions {
         experimental = true
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -191,8 +204,6 @@ dependencies {
         "androidx.test.ext:junit:$test_ext_junit_version",
         "androidx.test.ext:junit-ktx:$test_ext_junit_version",
         "androidx.test.ext:truth:$test_ext_truth_version",
-        "androidx.test:rules:$test_runner_version",
-        "androidx.test:runner:$test_runner_version",
         "com.nhaarman:mockito-kotlin:$test_mockito_version",
         "junit:junit:$test_junit_version",
         "org.robolectric:robolectric:$test_robolectric_version"
