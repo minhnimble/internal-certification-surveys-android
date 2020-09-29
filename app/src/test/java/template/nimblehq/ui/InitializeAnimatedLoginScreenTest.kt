@@ -43,13 +43,9 @@ class InitializeAnimatedLoginScreenTest {
         // Check that the initial text is empty.
         onView(withId(R.id.etEmail)).check(matches(withText(EMPTY_STRING)))
         onView(withId(R.id.etPassword)).check(matches(withText(EMPTY_STRING)))
-
-        // Check that the initial text of Login Button is login.
-        onView(withId(R.id.btLogIn)).check(matches(withText(LOG_IN_STRING)))
     }
 
     companion object {
         val EMPTY_STRING = ""
-        val LOG_IN_STRING = "Login"
     }
 }

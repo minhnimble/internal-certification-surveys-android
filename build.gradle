@@ -3,6 +3,7 @@
 buildscript {
     ext {
         build_gradle_version = '4.0.1'
+        build_tool_version = '30.0.1'
 
         android_version_code = 1
         android_version_name = "0.1.0"
