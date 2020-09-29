@@ -21,8 +21,8 @@ class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
 
     private val viewModel by viewModels<SigninViewModelImpl>()
 
-    private val activity: OnboardingActivity by lazy {
-        requireActivity() as OnboardingActivity
+    private val activity: OnboardingActivity? by lazy {
+        requireActivity() as? OnboardingActivity ?: null
     }
 
     override val layoutRes = R.layout.fragment_signin
@@ -33,7 +33,7 @@ class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
         if (viewModel.firstInitialized) {
             ivNimbleLogo.startFadeInAnimation {
                 // Animate to show blur image on background of the current fragment's activity
-                activity.clBackground.addBlurWithAnimation()
+                activity?.clBackground?.addBlurWithAnimation()
 
                 // Animate to move Nimble title logo up
                 clSignin.moveResourceToCenterTop(R.id.ivNimbleLogo)

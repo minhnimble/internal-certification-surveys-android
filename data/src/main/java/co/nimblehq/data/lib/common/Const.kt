@@ -1,16 +1,11 @@
 package co.nimblehq.data.lib.common
 
-object Const {
+// Animations
+const val DEFAULT_DURATION = 1000L // in milliseconds
+const val BLUR_RADIUS = 25
+const val BLUR_SAMPLING = 2
 
-    // Animations
-    object Animation {
-        const val DURATION = 1000L // in milliseconds
-    }
-
-    // Api
-    object Api {
-        internal const val CONTENT_TYPE_HEADER = "Content-Type"
-        internal const val HTTP_HEADER_CONTENT_TYPE_APPLICATION_JSON = "application/json"
-        internal const val OAUTH_GRANT_TYPE_PASSWORD = "password"
-    }
-}
+// Api
+const val CONTENT_TYPE_HEADER = "Content-Type"
+const val HTTP_HEADER_CONTENT_TYPE_APPLICATION_JSON = "application/json"
+const val OAUTH_GRANT_TYPE_PASSWORD = "password"
