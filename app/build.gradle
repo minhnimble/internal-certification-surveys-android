@@ -184,12 +184,27 @@ dependencies {
 
     testImplementation(
         "androidx.room:room-testing:$room_version",
-        "junit:junit:$test_junit_version",
+        "androidx.test:core:$test_core_version",
+        "androidx.test:core-ktx:$test_core_version",
+        "androidx.test.espresso:espresso-core:$test_espresso_version",
+        "androidx.test.espresso:espresso-intents:$test_espresso_version",
+        "androidx.test.ext:junit:$test_ext_junit_version",
+        "androidx.test.ext:junit-ktx:$test_ext_junit_version",
+        "androidx.test.ext:truth:$test_ext_truth_version",
+        "androidx.test:rules:$test_runner_version",
+        "androidx.test:runner:$test_runner_version",
         "com.nhaarman:mockito-kotlin:$test_mockito_version",
+        "junit:junit:$test_junit_version",
+        "org.robolectric:robolectric:$test_robolectric_version"
     )
 
     androidTestImplementation(
-        "androidx.test:runner:$test_runner_version",
+        "androidx.test:core:$test_core_version",
+        "androidx.test:core-ktx:$test_core_version",
+        "androidx.test.espresso:espresso-core:$test_espresso_version",
+        "androidx.test.ext:junit:$test_ext_junit_version",
+        "androidx.test.ext:junit-ktx:$test_ext_junit_version",
         "androidx.test:rules:$test_runner_version",
+        "androidx.test:runner:$test_runner_version"
     )
 }
