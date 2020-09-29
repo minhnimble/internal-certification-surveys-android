@@ -5,8 +5,27 @@ import co.nimblehq.ui.base.BaseViewModel
 
 abstract class SigninViewModel : BaseViewModel() {
 
-    interface Input { }
+    abstract val firstInitialized: Boolean
+
+    abstract val input: Input
+
+    interface Input {
+        fun updateInitialized(value: Boolean)
+    }
 }
 
 class SigninViewModelImpl @ViewModelInject constructor(
-) : SigninViewModel(), SigninViewModel.Input { }
+) : SigninViewModel(), SigninViewModel.Input {
+
+    private var _firstInitialized = true
+
+    override val firstInitialized: Boolean
+        get() = _firstInitialized
+
+    override val input: Input
+        get() = this
+
+    override fun updateInitialized(value: Boolean) {
+        _firstInitialized = value
+    }
+}
