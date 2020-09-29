@@ -11,7 +11,6 @@ class AppRequestInterceptor: Interceptor {
         val originalRequest = chain.request()
 
         // Do custom intercepting activities here, for example: appending accessToken header if required
-
         val afterIntercepted = originalRequest.newBuilder().build()
         return chain.proceed(afterIntercepted)
     }
