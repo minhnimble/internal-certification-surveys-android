@@ -12,34 +12,6 @@ apply plugin: 'com.google.gms.google-services'
 def globalConfig = rootProject.extensions.getByName("ext")
 
 android {
-
-    // Our common part of fetching the git hash commit then appending to versionName for internal build.
-    def gitCommitHash = "git rev-parse --short HEAD".execute().text.trim()
-    def gitCommitMessage = "git show -s --format=%B HEAD".execute().text.trim()
-    def ticketValue = ""
-    try {
-        ticketValue = "." + (gitCommitMessage =~ "\\[(.*)\\]")[0][1]
-    } catch (Exception e) {
-        logger.info("This could be a CI build on pre-merged branch so there is no ticket id found!")
-    }
-
-    project.ext.set("versionNameSuffix", "$gitCommitHash${ticketValue}")
-
-    signingConfigs {
-        config {
-            def keystorePropertiesFile = file('../secret/signing.properties')
-            if (keystorePropertiesFile.exists()) {
-                def keystoreProperties = new Properties()
-                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-                keyAlias keystoreProperties['KEY_ALIAS']
-                keyPassword keystoreProperties['KEY_PASSWORD']
-                storePassword keystoreProperties['KEYSTORE_PASSWORD']
-                storeFile keystoreProperties['STORE_FILE_PATH']
-            }
-        }
-    }
-
     compileSdkVersion globalConfig["android_compile_sdk_version"]
     buildToolsVersion globalConfig["build_tool_version"]
     defaultConfig {
@@ -59,6 +31,21 @@ android {
                  These files should be tracked in source control to track schema changes and
                  assist in schema migrations. **/
                 arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
+    }
+
+    signingConfigs {
+        config {
+            def keystorePropertiesFile = file('../secret/signing.properties')
+            if (keystorePropertiesFile.exists()) {
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+                keyAlias keystoreProperties['KEY_ALIAS']
+                keyPassword keystoreProperties['KEY_PASSWORD']
+                storePassword keystoreProperties['KEYSTORE_PASSWORD']
+//                storeFile keystoreProperties['STORE_FILE_PATH']
             }
         }
     }

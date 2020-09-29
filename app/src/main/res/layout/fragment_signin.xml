@@ -92,7 +92,7 @@
         android:background="@color/clear"
         android:text="@string/is_forgot"
         android:textAllCaps="false"
-        android:textColor="#80FFFFFF"
+        android:textColor="@color/white_50a"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/llInputContents"
         app:layout_constraintEnd_toEndOf="@+id/llInputContents"

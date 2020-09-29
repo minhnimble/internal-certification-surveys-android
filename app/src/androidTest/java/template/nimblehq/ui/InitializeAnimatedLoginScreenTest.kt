@@ -15,8 +15,6 @@ import androidx.test.filters.LargeTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
-
 
 /**
  * The kotlin equivalent to the AnimateLoginScreenTest, that
@@ -27,7 +25,6 @@ import org.robolectric.annotation.Config
  * Note that there is no need to tell Espresso that a view is in a different [Activity].
  */
 @RunWith(AndroidJUnit4::class)
-@Config(manifest=Config.NONE)
 @LargeTest
 class InitializeAnimatedLoginScreenTest {
 
