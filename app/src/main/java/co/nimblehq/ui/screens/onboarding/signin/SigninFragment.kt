@@ -6,14 +6,11 @@ import co.nimblehq.extension.moveResourceToCenterTop
 import co.nimblehq.extension.startFadeInAnimation
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
+import co.nimblehq.ui.screens.onboarding.BlurAnimatable
 import co.nimblehq.ui.screens.onboarding.OnboardingNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_signin.*
 import javax.inject.Inject
-
-interface BlurAnimatable {
-    fun animateBlurBackground()
-}
 
 @AndroidEntryPoint
 class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
