@@ -32,8 +32,8 @@
             android:id="@+id/etEmail"
             style="@style/LoginEditTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:autofillHints=""
             android:ems="10"
             android:hint="@string/email"
@@ -43,38 +43,38 @@
             android:id="@+id/etPassword"
             style="@style/LoginEditTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:autofillHints=""
             android:ems="10"
             android:hint="@string/password"
             android:inputType="text|textPassword"
-            android:paddingStart="@dimen/_8sdp"
-            android:paddingEnd="@dimen/_66sdp" />
+            android:paddingStart="@dimen/_6sdp"
+            android:paddingEnd="@dimen/_51sdp" />
 
         <Button
             android:id="@+id/btLogIn"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_56sdp"
+            android:layout_height="@dimen/_44sdp"
             android:background="@drawable/bg_user_login_button"
             android:enabled="false"
             android:text="@string/log_in"
             android:textAllCaps="false"
-            android:textSize="@dimen/_17ssp"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btForgotPassword"
-        android:layout_width="@dimen/_65sdp"
-        android:layout_height="@dimen/_56sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_44sdp"
         android:alpha="0"
-        android:background="@color/clear"
+        android:background="@color/colorClear"
         android:text="@string/is_forgot"
         android:textAllCaps="false"
         android:textColor="@color/white_50a"
-        android:textSize="@dimen/_15ssp"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintBottom_toBottomOf="@+id/llInputContents"
         app:layout_constraintEnd_toEndOf="@+id/llInputContents"
         app:layout_constraintTop_toTopOf="@+id/llInputContents" />
