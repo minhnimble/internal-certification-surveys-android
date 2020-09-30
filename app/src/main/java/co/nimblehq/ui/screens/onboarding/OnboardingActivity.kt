@@ -5,12 +5,9 @@ import androidx.activity.viewModels
 import co.nimblehq.R
 import co.nimblehq.extension.addBlurWithAnimation
 import co.nimblehq.ui.base.BaseActivity
+import co.nimblehq.ui.screens.onboarding.signin.BlurAnimatable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
-
-interface BlurAnimatable {
-    fun animateBlurBackground()
-}
 
 @AndroidEntryPoint
 class OnboardingActivity : BaseActivity(), BlurAnimatable {
