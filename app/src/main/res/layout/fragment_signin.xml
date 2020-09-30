@@ -37,7 +37,9 @@
             android:autofillHints=""
             android:ems="10"
             android:hint="@string/email"
-            android:inputType="textWebEmailAddress|text" />
+            android:inputType="textWebEmailAddress|text"
+            android:paddingStart="@dimen/_6sdp"
+            android:paddingEnd="@dimen/_6sdp" />
 
         <EditText
             android:id="@+id/etPassword"

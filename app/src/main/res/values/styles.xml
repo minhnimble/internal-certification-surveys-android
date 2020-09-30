@@ -12,8 +12,6 @@
 
     <style name="LoginEditTextStyle">
         <item name="android:background">@drawable/bg_user_login_input</item>
-        <item name="android:paddingStart">@dimen/_6sdp</item>
-        <item name="android:paddingEnd">@dimen/_6sdp</item>
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textColorHighlight">@color/colorWhite</item>

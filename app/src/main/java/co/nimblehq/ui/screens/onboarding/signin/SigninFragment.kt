@@ -7,6 +7,7 @@ import co.nimblehq.extension.moveResourceToCenterTop
 import co.nimblehq.extension.startFadeInAnimation
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
+import co.nimblehq.ui.screens.onboarding.BlurAnimatable
 import co.nimblehq.ui.screens.onboarding.OnboardingActivity
 import co.nimblehq.ui.screens.onboarding.OnboardingNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,10 +22,6 @@ class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
 
     private val viewModel by viewModels<SigninViewModelImpl>()
 
-    private val activity: OnboardingActivity? by lazy {
-        requireActivity() as? OnboardingActivity ?: null
-    }
-
     override val layoutRes = R.layout.fragment_signin
 
     override fun initViewModel() { }
@@ -32,8 +29,8 @@ class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
     override fun setupView() {
         if (viewModel.firstInitialized) {
             ivNimbleLogo.startFadeInAnimation {
-                // Animate to show blur image on background of the current fragment's activity
-                activity?.clBackground?.addBlurWithAnimation()
+                // Animate to show blur image on background of the current fragment's activity if it conforms BlurAnimatable
+                (requireActivity() as? BlurAnimatable)?.animateBlurBackground()
 
                 // Animate to move Nimble title logo up
                 clSignin.moveResourceToCenterTop(R.id.ivNimbleLogo)
