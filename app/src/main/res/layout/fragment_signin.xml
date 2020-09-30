@@ -30,70 +30,51 @@
 
         <EditText
             android:id="@+id/etEmail"
+            style="@style/LoginEditTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="@dimen/_56sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:autofillHints=""
-            android:background="@drawable/bg_user_login_input"
             android:ems="10"
             android:hint="@string/email"
-            android:inputType="textWebEmailAddress|text"
-            android:maxLines="1"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textColorHighlight="@color/white"
-            android:textColorHint="@color/white"
-            android:textColorLink="@color/dark_blue"
-            android:textCursorDrawable="@color/white"
-            android:textSize="17sp" />
+            android:inputType="textWebEmailAddress|text" />
 
         <EditText
             android:id="@+id/etPassword"
+            style="@style/LoginEditTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="@dimen/_56sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:autofillHints=""
-            android:background="@drawable/bg_user_login_input"
             android:ems="10"
             android:hint="@string/password"
             android:inputType="text|textPassword"
-            android:maxLines="1"
-            android:paddingStart="8dp"
-            android:paddingEnd="66dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textColorHighlight="@color/white"
-            android:textColorHint="@color/white"
-            android:textColorLink="@color/dark_blue"
-            android:textCursorDrawable="@color/white"
-            android:textSize="17sp" />
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_66sdp" />
 
         <Button
             android:id="@+id/btLogIn"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/_56sdp"
             android:background="@drawable/bg_user_login_button"
             android:enabled="false"
             android:text="@string/log_in"
             android:textAllCaps="false"
-            android:textSize="17sp"
+            android:textSize="@dimen/_17ssp"
             android:textStyle="bold" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btForgotPassword"
-        android:layout_width="65dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="1dp"
+        android:layout_width="@dimen/_65sdp"
+        android:layout_height="@dimen/_56sdp"
         android:alpha="0"
         android:background="@color/clear"
         android:text="@string/is_forgot"
         android:textAllCaps="false"
         android:textColor="@color/white_50a"
-        android:textSize="15sp"
+        android:textSize="@dimen/_15ssp"
         app:layout_constraintBottom_toBottomOf="@+id/llInputContents"
         app:layout_constraintEnd_toEndOf="@+id/llInputContents"
         app:layout_constraintTop_toTopOf="@+id/llInputContents" />
