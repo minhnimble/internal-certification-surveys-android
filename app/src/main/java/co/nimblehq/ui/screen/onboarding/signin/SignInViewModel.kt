@@ -26,7 +26,7 @@ class SignInViewModel @ViewModelInject constructor(
 
     private val _password = BehaviorSubject.createDefault("")
 
-    private val _showLoading = PublishSubject.create<Boolean>()
+    private val _showLoading = BehaviorSubject.create<Boolean>()
 
     val inputs: Inputs = this
 
