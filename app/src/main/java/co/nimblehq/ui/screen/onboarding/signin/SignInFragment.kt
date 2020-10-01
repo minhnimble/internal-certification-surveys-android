@@ -1,13 +1,16 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
+import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.extension.animateResource
 import co.nimblehq.extension.startFadeInAnimation
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.screen.onboarding.OnboardingNavigator
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import javax.inject.Inject
 
@@ -55,7 +58,45 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
         }
     }
 
-    override fun bindViewEvents() { }
+    override fun bindViewEvents() {
+        btSignInLogin.subscribeOnClick {
+            viewModel.login(
+                email = etSignInEmail.text.toString(),
+                password = etSignInPassword.text.toString()
+            ).subscribeBy(
+                onComplete = :: openMainActivity,
+                onError = ::handleError
+            ).bindForDisposable()
+        }.bindForDisposable()
 
-    override fun bindViewModel() { }
+        etSignInEmail.addTextChangedListener {
+            viewModel.input.updateEmail(it.toString())
+        }
+
+        etSignInPassword.addTextChangedListener {
+            viewModel.input.updatePassword(it.toString())
+        }
+    }
+
+    override fun bindViewModel() {
+        viewModel.enableLoginButton
+            .subscribeBy { btSignInLogin.isEnabled = it }
+            .bindForDisposable()
+
+        viewModel.showLoading
+            .subscribe(::bindLoading)
+            .bindForDisposable()
+    }
+
+    private fun bindLoading(isLoading: Boolean) {
+        toggleLoading(isLoading)
+    }
+
+    private fun handleError(error: Throwable) {
+        displayError(error)
+    }
+
+    private fun openMainActivity() {
+        navigator.navigateToMainActivity()
+    }
 }
