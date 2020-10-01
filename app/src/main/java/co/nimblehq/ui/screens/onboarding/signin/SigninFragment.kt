@@ -6,7 +6,6 @@ import co.nimblehq.extension.moveResourceToCenterTop
 import co.nimblehq.extension.startFadeInAnimation
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
-import co.nimblehq.ui.screens.onboarding.BlurAnimatable
 import co.nimblehq.ui.screens.onboarding.OnboardingNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_signin.*
@@ -16,6 +15,8 @@ import javax.inject.Inject
 class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
 
     @Inject lateinit var navigator: OnboardingNavigator
+
+    private var blurAnimator: BlurAnimatable? = null
 
     private val viewModel by viewModels<SigninViewModelImpl>()
 
@@ -27,7 +28,7 @@ class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
         if (viewModel.firstInitialized) {
             ivNimbleLogo.startFadeInAnimation {
                 // Animate to show blur image on background of the current fragment's activity if it conforms BlurAnimatable
-                (requireActivity() as? BlurAnimatable)?.animateBlurBackground()
+                blurAnimator?.animateBlurBackground()
 
                 // Animate to move Nimble title logo up
                 clSignin.moveResourceToCenterTop(R.id.ivNimbleLogo)
@@ -48,4 +49,12 @@ class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
     override fun bindViewEvents() { }
 
     override fun bindViewModel() { }
+
+    fun setBlurAnimator(blurAnimator: BlurAnimatable) {
+        this.blurAnimator = blurAnimator
+    }
+
+    interface BlurAnimatable {
+        fun animateBlurBackground()
+    }
 }
