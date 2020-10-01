@@ -49,7 +49,7 @@ class SignInViewModel @ViewModelInject constructor(
         password: String
     ): Completable {
         return loginByPasswordUseCase
-            .execute(email to password)
+            .execute(LoginByPasswordUseCase.Input(email, password))
             .doOnSubscribe { _showLoading.onNext(true) }
             .doOnError {
                 _showLoading.onNext(false)
