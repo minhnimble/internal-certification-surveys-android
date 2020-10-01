@@ -28,7 +28,7 @@ class LoginByPasswordUseCaseTest {
     }
 
     @Test
-    fun `When logging in info succeeds, it returns No Error and complete `() {
+    fun `When logging in succeeds, it returns Complete`() {
         val authInfoTest = OAuthResponse(OAuthDataResponse("","", OAuthAttributesResponse("","",0L, "",0L)))
 
         whenever(
@@ -48,7 +48,7 @@ class LoginByPasswordUseCaseTest {
     }
 
     @Test
-    fun `When get authentication info fails, it returns GetLoginError`() {
+    fun `When logging in fails, it returns LoginError`() {
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
         ) doReturn Single.error<LoginError>(Throwable("Login failed")).ignoreElement()
