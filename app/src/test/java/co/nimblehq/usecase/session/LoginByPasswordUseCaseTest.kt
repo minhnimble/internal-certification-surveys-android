@@ -10,6 +10,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.*
 
@@ -29,11 +30,23 @@ class LoginByPasswordUseCaseTest {
 
     @Test
     fun `When logging in succeeds, it returns Complete`() {
-        val authInfoTest = OAuthResponse(OAuthDataResponse("","", OAuthAttributesResponse("","",0L, "",0L)))
+        val authInfoTest = OAuthResponse(
+            OAuthDataResponse(
+                "",
+                "",
+                OAuthAttributesResponse(
+                    "",
+                    "",
+                    0L,
+                    "",
+                    0L
+                )
+            )
+        )
 
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
-        ) doReturn Single.just(authInfoTest).ignoreElement()
+        ) doReturn Completable.complete()
 
         val testSubscriber = useCase
             .execute(
@@ -43,7 +56,6 @@ class LoginByPasswordUseCaseTest {
 
         testSubscriber
             .assertNoErrors()
-            .assertValueCount(0)
             .assertComplete()
     }
 
@@ -51,7 +63,7 @@ class LoginByPasswordUseCaseTest {
     fun `When logging in fails, it returns LoginError`() {
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
-        ) doReturn Single.error<LoginError>(Throwable("Login failed")).ignoreElement()
+        ) doReturn  Completable.error { LoginError(Throwable("Login failed")) }
 
         val testNegativeSubscriber = useCase
             .execute(
@@ -61,6 +73,5 @@ class LoginByPasswordUseCaseTest {
 
         testNegativeSubscriber
             .assertError { it is LoginError }
-            .assertValueCount(0)
     }
 }
