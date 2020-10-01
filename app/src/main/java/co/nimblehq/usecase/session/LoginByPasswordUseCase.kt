@@ -10,18 +10,23 @@ import javax.inject.Inject
 class LoginByPasswordUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val authRepository: AuthRepository
-) : CompletableUseCase<Pair<String, String>>(
+) : CompletableUseCase<LoginByPasswordUseCase.Input>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
     ::LoginError
 ) {
 
-    override fun create(input: Pair<String, String>): Completable {
-        val (email, password) = input
+    data class Input(
+        val email: String,
+        val password: String
+    )
 
-        return authRepository.loginByPasswordWithEmail(
+    override fun create(input: Input): Completable {
+        return with(input) {
+            authRepository.loginByPasswordWithEmail(
                 email,
                 password
-        )
+            )
+        }
     }
 }
