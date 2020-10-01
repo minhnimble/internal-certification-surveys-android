@@ -45,7 +45,7 @@ android {
                 keyAlias keystoreProperties['KEY_ALIAS']
                 keyPassword keystoreProperties['KEY_PASSWORD']
                 storePassword keystoreProperties['KEYSTORE_PASSWORD']
-//                storeFile keystoreProperties['STORE_FILE_PATH']
+                storeFile file(keystoreProperties['STORE_FILE_PATH'])
             }
         }
     }
