@@ -98,6 +98,6 @@ dependencies {
 
     testImplementation(
         "junit:junit:$test_junit_version",
-        "org.mockito:mockito-core:$test_mockito_version"
+        "com.nhaarman.mockitokotlin2:mockito-kotlin:$test_mockito_kotlin_version"
     )
 }
