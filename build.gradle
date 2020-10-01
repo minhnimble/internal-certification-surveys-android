@@ -62,7 +62,7 @@ buildscript {
         test_ext_truth_version      = '1.3.0-rc01'
         test_junit_version          = '4.13'
         test_kluent_version         = '1.36'
-        test_mockito_version        = '1.6.0'
+        test_mockito_version        = '1.10.19'
         test_robolectric_version    = '4.4'
         test_runner_version         = '1.3.0'
         timber_log_version          = '4.7.1'
