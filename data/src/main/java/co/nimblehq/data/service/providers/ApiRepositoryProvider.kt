@@ -1,7 +1,15 @@
 package co.nimblehq.data.service.providers
 
+import co.nimblehq.data.service.repository.auth.AuthRepository
+import co.nimblehq.data.service.repository.auth.AuthRepositoryImpl
+import co.nimblehq.data.service.repository.auth.AuthService
+import co.nimblehq.data.storage.SecureStorage
+
 class ApiRepositoryProvider {
     companion object {
-        // TODO: Provide repositories here
+        fun getAuthRepository(authService: AuthService,
+                              secureStorage: SecureStorage): AuthRepository {
+            return AuthRepositoryImpl(authService, secureStorage)
+        }
     }
 }
