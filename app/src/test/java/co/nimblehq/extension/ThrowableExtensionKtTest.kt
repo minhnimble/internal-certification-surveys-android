@@ -47,27 +47,27 @@ class ThrowableExtensionKtTest {
     fun `using userReadableMessage with AppError object should return default message when there is no context and no provided message`() {
 
         // Arrange
-        val errorMessage = context.getString(R.string.error_generic)
+        val errorMessage = context.getString(R.string.generic_error)
         var appError = AppError(null, null, null)
 
         // Act
         val userReadableMessage = appError.userReadableMessage(context)
 
         // Assert
-        assertEquals("userReadableMessage val should be the default value - 'R.string.error_generic'", errorMessage, userReadableMessage)
+        assertEquals("userReadableMessage val should be the default value - 'R.string.generic_error'", errorMessage, userReadableMessage)
     }
 
     @Test
     fun `using userReadableMessage with Throwable object should return default message`() {
 
         // Arrange
-        val errorMessage = context.getString(R.string.error_generic)
+        val errorMessage = context.getString(R.string.generic_error)
         var throwable = Throwable()
 
         // Act
         val userReadableMessage = throwable.userReadableMessage(context)
 
         // Assert
-        assertEquals("userReadableMessage val should be the default value - 'R.string.error_generic'", errorMessage, userReadableMessage)
+        assertEquals("userReadableMessage val should be the default value - 'R.string.generic_error'", errorMessage, userReadableMessage)
     }
 }
