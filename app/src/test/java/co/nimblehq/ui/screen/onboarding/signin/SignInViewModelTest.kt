@@ -1,9 +1,7 @@
-package co.nimblehq.ui.onboarding.signin
+package co.nimblehq.ui.screen.onboarding.signin
 
 import co.nimblehq.data.error.LoginError
-import co.nimblehq.ui.screens.onboarding.signin.SigninViewModel
-import co.nimblehq.ui.screens.onboarding.signin.SigninViewModelImpl
-import co.nimblehq.usecase.session.LoginByPasswordUseCase
+import co.nimblehq.usecase.session.LoginByPasswordCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -13,23 +11,23 @@ import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 
-class SigninViewModelTest {
+class SignInViewModelTest {
 
-    private lateinit var mockLoginByPasswordUseCase: LoginByPasswordUseCase
+    private lateinit var mockLoginByPasswordCompletableUseCase: LoginByPasswordCompletableUseCase
 
-    private lateinit var signingViewModel: SigninViewModel
+    private lateinit var signingViewModel: SignInViewModel
 
     @Before
     fun setUp() {
-        mockLoginByPasswordUseCase = mock()
-        signingViewModel = SigninViewModelImpl(mockLoginByPasswordUseCase)
+        mockLoginByPasswordCompletableUseCase = mock()
+        signingViewModel = SignInViewModelImpl(mockLoginByPasswordCompletableUseCase)
     }
 
     @Test
     fun `When input wrong email and password combination, it returns LoginError`() {
         // Arrange
         whenever(
-            mockLoginByPasswordUseCase.execute(any())
+            mockLoginByPasswordCompletableUseCase.execute(any())
         ) doReturn Single.error<LoginError>(LoginError(null)).ignoreElement()
 
         // Act
@@ -124,7 +122,7 @@ class SigninViewModelTest {
     fun `When logging in completed, loading progress is gone`() {
         // Arrange
         whenever(
-            mockLoginByPasswordUseCase.execute(any())
+            mockLoginByPasswordCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
 
         // Act

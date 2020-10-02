@@ -3,12 +3,11 @@ package co.nimblehq.ui.screen.onboarding.signin
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.extension.isEmail
-import co.nimblehq.usecase.session.LoginByPasswordUseCase
+import co.nimblehq.usecase.session.LoginByPasswordCompletableUseCase
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 
 abstract class SignInViewModel : BaseViewModel() {
 
@@ -30,7 +29,7 @@ abstract class SignInViewModel : BaseViewModel() {
 }
 
 class SignInViewModelImpl @ViewModelInject constructor(
-    private val loginByPasswordUseCase: LoginByPasswordUseCase
+    private val loginByPasswordCompletableUseCase: LoginByPasswordCompletableUseCase
 ) : SignInViewModel(), SignInViewModel.Input {
 
     private val _email = BehaviorSubject.createDefault("")
@@ -62,8 +61,8 @@ class SignInViewModelImpl @ViewModelInject constructor(
         email: String,
         password: String
     ): Completable {
-        return loginByPasswordUseCase
-            .execute(LoginByPasswordUseCase.Input(email, password))
+        return loginByPasswordCompletableUseCase
+            .execute(LoginByPasswordCompletableUseCase.Input(email, password))
             .doOnSubscribe { _showLoading.onNext(true) }
             .doOnError {
                 _showLoading.onNext(false)
