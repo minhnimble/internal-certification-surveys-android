@@ -8,7 +8,7 @@
     tools:context="co.nimblehq.ui.screens.main.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcnMainNavHostContainer"
+        android:id="@+id/fcvMainNavHostContainer"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
