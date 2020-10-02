@@ -11,12 +11,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_signin.*
 import javax.inject.Inject
 
+interface BlurAnimatable {
+    fun animateBlurBackground()
+}
+
 @AndroidEntryPoint
 class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
 
     @Inject lateinit var navigator: OnboardingNavigator
-
-    private var blurAnimator: BlurAnimatable? = null
 
     private val viewModel by viewModels<SigninViewModelImpl>()
 
@@ -26,35 +28,27 @@ class SigninFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun setupView() {
         if (viewModel.firstInitialized) {
-            ivNimbleLogo.startFadeInAnimation {
+            ivSigninNimbleLogo.startFadeInAnimation {
                 // Animate to show blur image on background of the current fragment's activity if it conforms BlurAnimatable
-                blurAnimator?.animateBlurBackground()
+                (activity as? BlurAnimatable)?.animateBlurBackground()
 
                 // Animate to move Nimble title logo up
-                clSignin.moveResourceToCenterTop(R.id.ivNimbleLogo)
+                clSignin.moveResourceToCenterTop(R.id.ivSigninNimbleLogo)
 
                 // Animate to show user signin inputs
                 btForgotPassword.startFadeInAnimation()
-                llInputContents.startFadeInAnimation()
+                llSigninInputContainer.startFadeInAnimation()
             }
             viewModel.input.updateInitialized(false)
         } else {
-            ivNimbleLogo.startFadeInAnimation(shouldAnimate = false)
-            clSignin.moveResourceToCenterTop(resId = R.id.ivNimbleLogo, shouldAnimate = false)
+            ivSigninNimbleLogo.startFadeInAnimation(shouldAnimate = false)
+            clSignin.moveResourceToCenterTop(resId = R.id.ivSigninNimbleLogo, shouldAnimate = false)
             btForgotPassword.startFadeInAnimation(shouldAnimate = false)
-            llInputContents.startFadeInAnimation(shouldAnimate = false)
+            llSigninInputContainer.startFadeInAnimation(shouldAnimate = false)
         }
     }
 
     override fun bindViewEvents() { }
 
     override fun bindViewModel() { }
-
-    fun setBlurAnimator(blurAnimator: BlurAnimatable) {
-        this.blurAnimator = blurAnimator
-    }
-
-    interface BlurAnimatable {
-        fun animateBlurBackground()
-    }
 }

@@ -1,4 +1,4 @@
-package template.nimblehq.ui
+package co.nimblehq.ui
 
 import co.nimblehq.R
 import co.nimblehq.ui.screens.onboarding.OnboardingActivity
@@ -38,11 +38,7 @@ class InitializeAnimatedLoginScreenTest {
     @Test
     fun initializeAnimatedLoginScreen_sameActivity() {
         // Check that the initial text is empty.
-        onView(withId(R.id.etEmail)).check(matches(withText(EMPTY_STRING)))
-        onView(withId(R.id.etPassword)).check(matches(withText(EMPTY_STRING)))
-    }
-
-    companion object {
-        val EMPTY_STRING = ""
+        onView(withId(R.id.etEmail)).check(matches(withText("")))
+        onView(withId(R.id.etPassword)).check(matches(withText("")))
     }
 }

@@ -8,7 +8,7 @@
     tools:context="co.nimblehq.ui.screens.onboarding.OnboardingActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clBackground"
+        android:id="@+id/clOnboardingBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ivBackground"
+            android:id="@+id/ivOnboardingBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@string/splash_background"
@@ -31,7 +31,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clTransparentLayer"
+        android:id="@+id/clOnboardingTransparentLayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_60a"
@@ -42,7 +42,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/navHostContainer"
+        android:id="@+id/fcvOnboardingNavHostContainer"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
