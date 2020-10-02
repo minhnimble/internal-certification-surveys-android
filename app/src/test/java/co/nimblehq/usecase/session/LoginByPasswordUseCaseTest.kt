@@ -30,30 +30,19 @@ class LoginByPasswordUseCaseTest {
 
     @Test
     fun `When logging in succeeds, it returns Complete`() {
-        val authInfoTest = OAuthResponse(
-            OAuthDataResponse(
-                "",
-                "",
-                OAuthAttributesResponse(
-                    "",
-                    "",
-                    0L,
-                    "",
-                    0L
-                )
-            )
-        )
-
+        // Arrange
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
         ) doReturn Completable.complete()
 
+        // Act
         val testSubscriber = useCase
             .execute(
                 LoginByPasswordUseCase.Input("email", "12345")
             )
             .test()
 
+        // Assert
         testSubscriber
             .assertNoErrors()
             .assertComplete()
@@ -61,16 +50,19 @@ class LoginByPasswordUseCaseTest {
 
     @Test
     fun `When logging in fails, it returns LoginError`() {
+        // Arrange
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
         ) doReturn  Completable.error { LoginError(Throwable("Login failed")) }
 
+        // Act
         val testNegativeSubscriber = useCase
             .execute(
                 LoginByPasswordUseCase.Input("email", "12345")
             )
             .test()
 
+        // Assert
         testNegativeSubscriber
             .assertError { it is LoginError }
     }

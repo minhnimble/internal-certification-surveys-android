@@ -7,8 +7,8 @@ import org.junit.Test
 class OnboardingViewModelTest {
 
     @Test
-    fun `Sample test`() {
-        // TODO write first test for mainViewModel
+    fun `Sample description`() {
+        // TODO write first test for onboardingViewModel
         Assert.assertEquals(4, 2 + 2)
     }
 }
