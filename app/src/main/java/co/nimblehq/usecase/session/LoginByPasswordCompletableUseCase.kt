@@ -7,10 +7,10 @@ import co.nimblehq.usecase.base.CompletableUseCase
 import io.reactivex.Completable
 import javax.inject.Inject
 
-class LoginByPasswordUseCase @Inject constructor(
+class LoginByPasswordCompletableUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val authRepository: AuthRepository
-) : CompletableUseCase<LoginByPasswordUseCase.Input>(
+) : CompletableUseCase<LoginByPasswordCompletableUseCase.Input>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
     ::LoginError
