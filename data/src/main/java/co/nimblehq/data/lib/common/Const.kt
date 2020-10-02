@@ -10,3 +10,5 @@ const val BLUR_SAMPLING = 2
 // Api
 
 const val OAUTH_GRANT_TYPE_PASSWORD = "password"
+
+const val OAUTH_GRANT_TYPE_REFRESH_TOKEN = "refresh_token"
