@@ -15,6 +15,12 @@ interface SecureStorage {
     var userTokenType: String?
 }
 
+private const val KEY_USER_ACCESS_TOKEN = "user_access_token"
+private const val KEY_USER_ACCESS_TOKEN_CREATED_AT = "user_access_token_created_at"
+private const val KEY_USER_ACCESS_TOKEN_EXPIRES_IN = "user_access_token_expires_in"
+private const val KEY_USER_REFRESH_TOKEN = "user_refresh_token"
+private const val KEY_USER_TOKEN_TYPE = "user_token_type"
+
 class SecureStorageImpl @Inject constructor(
     private val preferences: SharedPreferences,
     private val crypto: AESCrypto
@@ -62,13 +68,5 @@ class SecureStorageImpl @Inject constructor(
                 putString(key, crypto.encrypt(value, Obfuscator.reveal()))
             }
         }
-    }
-
-    private companion object Constants {
-        const val KEY_USER_ACCESS_TOKEN = "user_access_token"
-        const val KEY_USER_ACCESS_TOKEN_CREATED_AT = "user_access_token_created_at"
-        const val KEY_USER_ACCESS_TOKEN_EXPIRES_IN = "user_access_token_expires_in"
-        const val KEY_USER_REFRESH_TOKEN = "user_refresh_token"
-        const val KEY_USER_TOKEN_TYPE = "user_token_type"
     }
 }
