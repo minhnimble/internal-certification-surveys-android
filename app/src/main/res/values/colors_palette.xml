@@ -5,13 +5,9 @@
     <color name="black_20a">#20000000</color>
     <color name="black_60a">#99000000</color>
 
-    <color name="clear">#00000000</color>
+    <color name="transparent">#00000000</color>
 
     <color name="dark_blue">#303F9F</color>
-
-    <color name="dim_gray">#616161</color>
-
-    <color name="free_speech_blue">#3F51B5</color>
 
     <color name="light_blue">#3F51B5</color>
     <color name="light_blue_90a">#903F51B5</color>
@@ -21,5 +17,6 @@
 
     <color name="white">#FFFFFF</color>
     <color name="white_18a">#2EFFFFFF</color>
+    <color name="white_30a">#4DFFFFFF</color>
     <color name="white_50a">#80FFFFFF</color>
 </resources>

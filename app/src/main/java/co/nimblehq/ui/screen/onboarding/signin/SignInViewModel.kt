@@ -1,9 +1,9 @@
-package co.nimblehq.ui.screens.onboarding.signin
+package co.nimblehq.ui.screen.onboarding.signin
 
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
 
-abstract class SigninViewModel : BaseViewModel() {
+abstract class SignInViewModel : BaseViewModel() {
 
     abstract val firstInitialized: Boolean
 
@@ -14,8 +14,8 @@ abstract class SigninViewModel : BaseViewModel() {
     }
 }
 
-class SigninViewModelImpl @ViewModelInject constructor(
-) : SigninViewModel(), SigninViewModel.Input {
+class SignInViewModelImpl @ViewModelInject constructor(
+) : SignInViewModel(), SignInViewModel.Input {
 
     private var _firstInitialized = true
 

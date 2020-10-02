@@ -1,4 +1,4 @@
-package co.nimblehq.ui.screens.onboarding
+package co.nimblehq.ui.screen.main
 
 import android.app.Activity
 import android.content.Intent
@@ -8,28 +8,28 @@ import androidx.navigation.findNavController
 import co.nimblehq.R
 import co.nimblehq.ui.base.BaseNavigator
 import co.nimblehq.ui.base.BaseNavigatorImpl
-import co.nimblehq.ui.screens.main.MainActivity
+import co.nimblehq.ui.screen.onboarding.OnboardingActivity
 import javax.inject.Inject
 
-interface OnboardingNavigator : BaseNavigator {
-    fun navigateToMainActivity()
+interface MainNavigator : BaseNavigator {
+    fun navigateToOnboardingActivity()
 }
 
-class OnboardingNavigatorImpl @Inject constructor(
-        private val activity: Activity
-) : BaseNavigatorImpl(activity), OnboardingNavigator {
+class MainNavigatorImpl @Inject constructor(
+    private val activity: Activity
+) : BaseNavigatorImpl(activity), MainNavigator {
 
     override fun findNavController(): NavController {
-        return activity.findNavController(R.id.fcvOnboardingNavHostContainer)
+        return activity.findNavController(R.id.fcvMainNavHostContainer)
     }
 
-    override fun navigateToMainActivity() {
+    override fun navigateToOnboardingActivity() {
         val activityNavigator = ActivityNavigator(activity)
         activityNavigator.navigate(
             activityNavigator.createDestination().setIntent(
                 Intent(
                     activity,
-                    MainActivity::class.java
+                    OnboardingActivity::class.java
                 )
             ), null, null, null
         )

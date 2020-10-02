@@ -5,7 +5,7 @@
     android:id="@+id/clOnboarding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="co.nimblehq.ui.screens.onboarding.OnboardingActivity">
+    tools:context="co.nimblehq.ui.screen.onboarding.OnboardingActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clOnboardingBackground"
@@ -20,7 +20,7 @@
             android:id="@+id/ivOnboardingBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:contentDescription="@string/splash_background"
+            android:contentDescription="@string/onboarding_splash_background_desc"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,13 +46,12 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-
-        app:defaultNavHost="true"
         app:navGraph="@navigation/onboarding_nav_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

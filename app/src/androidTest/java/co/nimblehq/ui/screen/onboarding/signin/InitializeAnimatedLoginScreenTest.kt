@@ -1,7 +1,7 @@
-package co.nimblehq.ui
+package co.nimblehq.ui.screen.onboarding.signin
 
 import co.nimblehq.R
-import co.nimblehq.ui.screens.onboarding.OnboardingActivity
+import co.nimblehq.ui.screen.onboarding.OnboardingActivity
 import android.app.Activity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
@@ -38,7 +38,7 @@ class InitializeAnimatedLoginScreenTest {
     @Test
     fun initializeAnimatedLoginScreen_sameActivity() {
         // Check that the initial text is empty.
-        onView(withId(R.id.etEmail)).check(matches(withText("")))
-        onView(withId(R.id.etPassword)).check(matches(withText("")))
+        onView(withId(R.id.etSignInEmail)).check(matches(withText("")))
+        onView(withId(R.id.etSignInPassword)).check(matches(withText("")))
     }
 }

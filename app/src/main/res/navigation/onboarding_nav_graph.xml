@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/onboarding_nav_graph"
-    app:startDestination="@id/signinFragment">
+    app:startDestination="@id/signInFragment">
     <fragment
-        android:id="@+id/signinFragment"
-        android:name="co.nimblehq.ui.screens.onboarding.signin.SigninFragment"
-        android:label="SigninFragment"/>
+        android:id="@+id/signInFragment"
+        android:name="co.nimblehq.ui.screen.onboarding.signin.SignInFragment"
+        android:label="SignInFragment"/>
 </navigation>

@@ -1,23 +1,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/clSignin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clSignIn"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/ivSigninNimbleLogo"
+        android:id="@+id/ivSignInNimbleLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="0"
-        android:contentDescription="@string/nimble_logo"
+        android:contentDescription="@string/sign_in_nimble_logo_desc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_nimble_logo_white" />
+        app:srcCompat="@drawable/ic_nimble_logo_white"
+        tools:alpha="1" />
 
     <LinearLayout
-        android:id="@+id/llSigninInputContainer"
+        android:id="@+id/llSignInInputContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:alpha="0"
@@ -26,59 +28,62 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8">
+        app:layout_constraintWidth_percent="0.8"
+        tools:alpha="1">
 
         <EditText
-            android:id="@+id/etSigninEmail"
+            android:id="@+id/etSignInEmail"
             style="@style/LoginEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:autofillHints=""
             android:ems="10"
-            android:hint="@string/email"
+            android:hint="@string/sign_in_email_hint"
             android:inputType="textWebEmailAddress|text"
             android:paddingStart="@dimen/_6sdp"
             android:paddingEnd="@dimen/_6sdp" />
 
         <EditText
-            android:id="@+id/etSigninPassword"
+            android:id="@+id/etSignInPassword"
             style="@style/LoginEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:autofillHints=""
             android:ems="10"
-            android:hint="@string/password"
+            android:hint="@string/sign_in_password_hint"
             android:inputType="text|textPassword"
             android:paddingStart="@dimen/_6sdp"
             android:paddingEnd="@dimen/_51sdp" />
 
         <Button
-            android:id="@+id/btSigninLogin"
+            android:id="@+id/btSignInLogin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
             android:background="@drawable/bg_user_login_button"
             android:enabled="false"
-            android:text="@string/log_in"
+            android:text="@string/sign_in_log_in_btn_title"
             android:textAllCaps="false"
             android:textSize="@dimen/_13ssp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:alpha="1" />
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/btForgotPassword"
+        android:id="@+id/btSignInForgotPassword"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_44sdp"
         android:alpha="0"
-        android:background="@color/colorClear"
-        android:text="@string/is_forgot"
+        android:background="@color/colorTransparent"
+        android:text="@string/sign_in_forgot_button_title"
         android:textAllCaps="false"
         android:textColor="@color/white_50a"
         android:textSize="@dimen/_12ssp"
-        app:layout_constraintBottom_toBottomOf="@+id/llSigninInputContainer"
-        app:layout_constraintEnd_toEndOf="@+id/llSigninInputContainer"
-        app:layout_constraintTop_toTopOf="@+id/llSigninInputContainer" />
+        app:layout_constraintBottom_toBottomOf="@+id/llSignInInputContainer"
+        app:layout_constraintEnd_toEndOf="@+id/llSignInInputContainer"
+        app:layout_constraintTop_toTopOf="@+id/llSignInInputContainer"
+        tools:alpha="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
