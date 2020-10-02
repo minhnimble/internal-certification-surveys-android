@@ -3,17 +3,25 @@ package co.nimblehq.data.model
 import co.nimblehq.data.api.response.OAuthResponse
 
 data class AuthData(
-	val accessToken: String,
-	val tokenType: String,
-	val expiresIn: Long,
-	val refreshToken: String,
-	val createdAt: Long
-)
+    val accessToken: String,
+    val createdAt: Long,
+    val expiresIn: Long,
+    val refreshToken: String,
+    val tokenType: String
+) {
+    val isValid: Boolean
+        get() = accessToken.isNotEmpty() && tokenType.isNotEmpty() && refreshToken.isNotEmpty()
 
-fun OAuthResponse.toAuthData() = AuthData(
-	this.data.attributes.accessToken,
-	this.data.attributes.tokenType,
-	this.data.attributes.expiresIn,
-	this.data.attributes.refreshToken,
-	this.data.attributes.createdAt
-)
+    val isExpired: Boolean
+        get() = System.currentTimeMillis() / 1000 >= createdAt + expiresIn
+}
+
+fun OAuthResponse.toAuthData() = with(this.data.attributes) {
+	AuthData(
+		accessToken,
+		createdAt,
+		expiresIn,
+		refreshToken,
+		tokenType
+	)
+}
