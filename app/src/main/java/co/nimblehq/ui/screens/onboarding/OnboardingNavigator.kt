@@ -20,7 +20,7 @@ class OnboardingNavigatorImpl @Inject constructor(
 ) : BaseNavigatorImpl(activity), OnboardingNavigator {
 
     override fun findNavController(): NavController {
-        return activity.findNavController(R.id.navHostContainer)
+        return activity.findNavController(R.id.fcvOnboardingNavHostContainer)
     }
 
     override fun navigateToMainActivity() {

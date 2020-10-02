@@ -77,8 +77,8 @@
         android:textAllCaps="false"
         android:textColor="@color/white_50a"
         android:textSize="@dimen/_12ssp"
-        app:layout_constraintBottom_toBottomOf="@+id/llInputContents"
-        app:layout_constraintEnd_toEndOf="@+id/llInputContents"
-        app:layout_constraintTop_toTopOf="@+id/llInputContents" />
+        app:layout_constraintBottom_toBottomOf="@+id/llSigninInputContainer"
+        app:layout_constraintEnd_toEndOf="@+id/llSigninInputContainer"
+        app:layout_constraintTop_toTopOf="@+id/llSigninInputContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
