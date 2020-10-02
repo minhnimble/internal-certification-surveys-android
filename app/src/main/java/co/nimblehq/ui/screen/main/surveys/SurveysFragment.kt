@@ -1,10 +1,10 @@
-package co.nimblehq.ui.screens.main.surveys
+package co.nimblehq.ui.screen.main.surveys
 
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
-import co.nimblehq.ui.screens.main.MainNavigator
+import co.nimblehq.ui.screen.main.MainNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

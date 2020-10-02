@@ -13,7 +13,6 @@ def globalConfig = rootProject.extensions.getByName("ext")
 
 android {
     compileSdkVersion globalConfig["android_compile_sdk_version"]
-    buildToolsVersion globalConfig["build_tool_version"]
     defaultConfig {
         applicationId "co.nimblehq.surveys"
         minSdkVersion globalConfig["android_min_sdk_version"]

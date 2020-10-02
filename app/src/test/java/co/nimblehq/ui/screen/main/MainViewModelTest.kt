@@ -1,4 +1,4 @@
-package co.nimblehq.ui.main
+package co.nimblehq.ui.screen.main
 
 import org.junit.Assert
 import org.junit.Test

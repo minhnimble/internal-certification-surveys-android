@@ -7,10 +7,10 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import co.nimblehq.data.lib.common.DEFAULT_DURATION
 
-fun ConstraintLayout.moveResourceToCenterTop(resId: Int, shouldAnimate: Boolean = true) {
+fun ConstraintLayout.animateResource(resId: Int, toTopOfResId: Int, shouldAnimate: Boolean = true) {
     val constraintSet = ConstraintSet()
     constraintSet.clone(this)
-    constraintSet.setVerticalBias(resId, 0.1f)
+    constraintSet.connect(resId, ConstraintSet.BOTTOM, toTopOfResId, ConstraintSet.TOP)
     val transition = AutoTransition()
     transition.duration = if (shouldAnimate) DEFAULT_DURATION else 0
     transition.interpolator = FastOutSlowInInterpolator()

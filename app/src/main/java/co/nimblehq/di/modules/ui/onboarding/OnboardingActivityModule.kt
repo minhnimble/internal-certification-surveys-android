@@ -1,7 +1,7 @@
 package co.nimblehq.di.modules.ui.onboarding
 
 import android.app.Activity
-import co.nimblehq.ui.screens.onboarding.*
+import co.nimblehq.ui.screen.onboarding.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

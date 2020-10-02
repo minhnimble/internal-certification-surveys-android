@@ -1,4 +1,4 @@
-package co.nimblehq.ui.screens.main
+package co.nimblehq.ui.screen.main
 
 import android.os.Bundle
 import androidx.activity.viewModels

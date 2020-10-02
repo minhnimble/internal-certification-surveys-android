@@ -6,11 +6,11 @@
 
     <color name="colorAccent">@color/pink</color>
 
-    <color name="colorClear">@color/clear</color>
+    <color name="colorTransparent">@color/transparent</color>
 
-    <color name="colorFreeSpeechBlue">@color/free_speech_blue</color>
+    <color name="colorFreeSpeechBlue">#3F51B5</color>
 
-    <color name="colorDimGray">@color/dim_gray</color>
+    <color name="colorDimGray">#616161</color>
 
     <color name="colorWhite">@color/white</color>
 </resources>

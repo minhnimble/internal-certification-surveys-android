@@ -1,4 +1,4 @@
-package co.nimblehq.ui.screens.onboarding
+package co.nimblehq.ui.screen.onboarding
 
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel

@@ -1,4 +1,4 @@
-package co.nimblehq.ui.screens.main.surveys
+package co.nimblehq.ui.screen.main.surveys
 
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel

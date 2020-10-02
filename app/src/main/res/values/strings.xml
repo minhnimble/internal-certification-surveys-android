@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">Nimble Surveys</string>
-    <string name="nimble_logo">Nimble Logo</string>
-    <string name="error_generic">Unknown error</string>
-    <string name="log_in">Log in</string>
-    <string name="splash_background">Splash Screen Background</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="is_forgot">Forgot?</string>
-    <string name="resetting_password_instructions">Enter your email to receive instructions for resetting your password.</string>
-    <string name="reset">Reset</string>
+    <string name="generic_error">Unknown error</string>
+    <string name="sign_in_log_in_btn_title">Log in</string>
+    <string name="sign_in_email_hint">Email</string>
+    <string name="sign_in_password_hint">Password</string>
+    <string name="sign_in_forgot_button_title">Forgot?</string>
+    <string name="forget_password_reset_password_instruction">Enter your email to receive instructions for resetting your password.</string>
+    <string name="forget_password_reset_btn_title">Reset</string>
 </resources>
