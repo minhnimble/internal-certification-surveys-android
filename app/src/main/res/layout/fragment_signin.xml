@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/ivNimbleLogo"
+        android:id="@+id/ivSigninNimbleLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="0"
@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/ic_nimble_logo_white" />
 
     <LinearLayout
-        android:id="@+id/llInputContents"
+        android:id="@+id/llSigninInputContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:alpha="0"
@@ -29,7 +29,7 @@
         app:layout_constraintWidth_percent="0.8">
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/etSigninEmail"
             style="@style/LoginEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
@@ -42,7 +42,7 @@
             android:paddingEnd="@dimen/_6sdp" />
 
         <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/etSigninPassword"
             style="@style/LoginEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
@@ -55,7 +55,7 @@
             android:paddingEnd="@dimen/_51sdp" />
 
         <Button
-            android:id="@+id/btLogIn"
+            android:id="@+id/btSigninLogin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
             android:background="@drawable/bg_user_login_button"

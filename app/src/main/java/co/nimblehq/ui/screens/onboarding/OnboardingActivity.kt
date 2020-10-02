@@ -2,16 +2,15 @@ package co.nimblehq.ui.screens.onboarding
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
 import co.nimblehq.R
-import co.nimblehq.extension.addBlurWithAnimation
+import co.nimblehq.extension.blurView
 import co.nimblehq.ui.base.BaseActivity
-import co.nimblehq.ui.screens.onboarding.signin.SigninFragment
+import co.nimblehq.ui.screens.onboarding.signin.BlurAnimatable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
 
 @AndroidEntryPoint
-class OnboardingActivity : BaseActivity(), SigninFragment.BlurAnimatable {
+class OnboardingActivity : BaseActivity(), BlurAnimatable {
 
     private val viewModel by viewModels<OnboardingViewModel>()
 
@@ -20,14 +19,9 @@ class OnboardingActivity : BaseActivity(), SigninFragment.BlurAnimatable {
         setContentView(R.layout.activity_onboarding)
     }
 
-    override fun onAttachFragment(fragment: Fragment) {
-        super.onAttachFragment(fragment)
-        if (fragment is SigninFragment) {
-            fragment.setBlurAnimator(this)
-        }
-    }
-
     override fun animateBlurBackground() {
-        clBackground.addBlurWithAnimation()
+        clOnboardingBackground.blurView(
+            shouldAnimate = true
+        )
     }
 }

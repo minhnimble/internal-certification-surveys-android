@@ -6,7 +6,7 @@ import co.nimblehq.data.lib.common.BLUR_SAMPLING
 import co.nimblehq.data.lib.common.DEFAULT_DURATION
 import jp.wasabeef.blurry.Blurry
 
-fun ViewGroup.addBlurWithAnimation(shouldAnimate: Boolean = true, shouldPost: Boolean = false) {
+fun ViewGroup.blurView(shouldAnimate: Boolean = true, shouldPost: Boolean = false) {
     fun addBlur() {
         Blurry.with(context)
             .radius(BLUR_RADIUS)
