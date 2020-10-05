@@ -70,11 +70,11 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
         }.bindForDisposable()
 
         etSignInEmail.addTextChangedListener {
-            viewModel.input.updateEmail(it.toString())
+            viewModel.inputs.updateEmail(it.toString())
         }
 
         etSignInPassword.addTextChangedListener {
-            viewModel.input.updatePassword(it.toString())
+            viewModel.inputs.updatePassword(it.toString())
         }
     }
 
