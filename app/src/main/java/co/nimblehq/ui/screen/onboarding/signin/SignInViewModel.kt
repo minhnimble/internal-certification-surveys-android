@@ -21,5 +21,3 @@ class SignInViewModel @ViewModelInject constructor(
         _firstInitialized = value
     }
 }
-
-
