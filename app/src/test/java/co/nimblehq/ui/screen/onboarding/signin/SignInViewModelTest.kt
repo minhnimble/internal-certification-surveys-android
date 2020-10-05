@@ -20,7 +20,7 @@ class SignInViewModelTest {
     @Before
     fun setUp() {
         mockLoginByPasswordCompletableUseCase = mock()
-        signingViewModel = SignInViewModelImpl(mockLoginByPasswordCompletableUseCase)
+        signingViewModel = SignInViewModel(mockLoginByPasswordCompletableUseCase)
     }
 
     @Test
@@ -51,8 +51,8 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.input.updateEmail("acbd")
-        signingViewModel.input.updatePassword("12345678")
+        signingViewModel.inputs.updateEmail("acbd")
+        signingViewModel.inputs.updatePassword("12345678")
 
         // Assert
         enableLoginButtonObserver
@@ -76,8 +76,8 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.input.updateEmail("test@nimblehq.co")
-        signingViewModel.input.updatePassword("")
+        signingViewModel.inputs.updateEmail("test@nimblehq.co")
+        signingViewModel.inputs.updatePassword("")
 
         // Assert
         enableLoginButtonObserver
@@ -101,8 +101,8 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.input.updateEmail("test@nimblehq.co")
-        signingViewModel.input.updatePassword("12345678")
+        signingViewModel.inputs.updateEmail("test@nimblehq.co")
+        signingViewModel.inputs.updatePassword("12345678")
 
         // Assert
         enableLoginButtonObserver
