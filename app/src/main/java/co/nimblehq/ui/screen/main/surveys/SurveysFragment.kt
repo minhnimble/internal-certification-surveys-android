@@ -13,7 +13,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     @Inject lateinit var navigator: MainNavigator
 
-    private val viewModel by viewModels<SurveysViewModelImpl>()
+    private val viewModel by viewModels<SurveysViewModel>()
 
     override val layoutRes = R.layout.fragment_surveys
 

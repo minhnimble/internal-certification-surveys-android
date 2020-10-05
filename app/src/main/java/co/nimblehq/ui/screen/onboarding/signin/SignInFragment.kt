@@ -20,7 +20,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
 
     @Inject lateinit var navigator: OnboardingNavigator
 
-    private val viewModel by viewModels<SignInViewModelImpl>()
+    private val viewModel by viewModels<SignInViewModel>()
 
     override val layoutRes = R.layout.fragment_sign_in
 
@@ -42,7 +42,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
                  btSignInForgotPassword.startFadeInAnimation()
                 llSignInInputContainer.startFadeInAnimation()
             }
-            viewModel.input.updateInitialized(false)
+            viewModel.inputs.updateInitialized(false)
         } else {
             ivSignInNimbleLogo.startFadeInAnimation(shouldAnimate = false)
             clSignIn.animateResource(
