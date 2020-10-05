@@ -50,12 +50,7 @@ class SignInViewModel @ViewModelInject constructor(
         return loginByPasswordCompletableUseCase
             .execute(LoginByPasswordCompletableUseCase.Input(email, password))
             .doOnSubscribe { _showLoading.onNext(true) }
-            .doOnError {
-                _showLoading.onNext(false)
-            }
-            .doOnComplete {
-                _showLoading.onNext(false)
-            }
+            .doFinally { _showLoading.onNext(false) }
     }
 
     override fun updateEmail(email: String) {
