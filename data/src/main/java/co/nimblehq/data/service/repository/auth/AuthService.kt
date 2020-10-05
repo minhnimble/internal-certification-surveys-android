@@ -12,7 +12,6 @@ import retrofit2.http.*
  */
 interface AuthService {
 
-
     @POST("/api/v1/oauth/token")
     fun loginByPasswordWithEmail(
         @Body request: AuthRequest.LoginByPasswordWithEmail,
