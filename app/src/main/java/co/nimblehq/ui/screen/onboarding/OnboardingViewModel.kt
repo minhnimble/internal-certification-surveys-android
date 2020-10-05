@@ -3,17 +3,12 @@ package co.nimblehq.ui.screen.onboarding
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
 
-abstract class OnboardingViewModel : BaseViewModel() {
+interface Inputs { }
 
-    abstract val inputs: Inputs
+class OnboardingViewModel @ViewModelInject constructor(
+) : BaseViewModel(), Inputs {
 
-    interface Inputs { }
-}
-
-class OnboardingViewModelImpl @ViewModelInject constructor(
-) : OnboardingViewModel(), OnboardingViewModel.Inputs {
-
-    override val inputs: Inputs = this
+    val inputs: Inputs = this
 
     init { }
 }

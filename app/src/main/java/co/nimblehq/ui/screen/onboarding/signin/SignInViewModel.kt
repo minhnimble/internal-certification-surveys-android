@@ -3,29 +3,23 @@ package co.nimblehq.ui.screen.onboarding.signin
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
 
-abstract class SignInViewModel : BaseViewModel() {
-
-    abstract val firstInitialized: Boolean
-
-    abstract val input: Input
-
-    interface Input {
-        fun updateInitialized(value: Boolean)
-    }
+interface Inputs {
+    fun updateInitialized(value: Boolean)
 }
 
-class SignInViewModelImpl @ViewModelInject constructor(
-) : SignInViewModel(), SignInViewModel.Input {
+class SignInViewModel @ViewModelInject constructor(
+) : BaseViewModel(), Inputs {
 
     private var _firstInitialized = true
 
-    override val firstInitialized: Boolean
+    val firstInitialized: Boolean
         get() = _firstInitialized
 
-    override val input: Input
-        get() = this
+    val inputs: Inputs = this
 
     override fun updateInitialized(value: Boolean) {
         _firstInitialized = value
     }
 }
+
+

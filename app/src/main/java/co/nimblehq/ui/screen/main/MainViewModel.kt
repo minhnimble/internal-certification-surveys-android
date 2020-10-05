@@ -3,6 +3,10 @@ package co.nimblehq.ui.screen.main
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
 
+interface Inputs { }
+
+interface Outputs { }
+
 class MainViewModel @ViewModelInject constructor(
 ) : BaseViewModel(), Inputs, Outputs {
 
@@ -11,8 +15,3 @@ class MainViewModel @ViewModelInject constructor(
 
     init { }
 }
-
-interface Inputs { }
-
-
-interface Outputs { }

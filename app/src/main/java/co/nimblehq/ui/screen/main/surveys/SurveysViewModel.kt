@@ -3,10 +3,13 @@ package co.nimblehq.ui.screen.main.surveys
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
 
-abstract class SurveysViewModel : BaseViewModel() {
+interface Inputs { }
 
-    interface Input { }
+class SurveysViewModel @ViewModelInject constructor(
+) : BaseViewModel(), Inputs {
+
+    val inputs: Inputs = this
+
+    init { }
 }
 
-class SurveysViewModelImpl @ViewModelInject constructor(
-) : SurveysViewModel(), SurveysViewModel.Input { }
