@@ -2,6 +2,7 @@ package co.nimblehq.di.modules
 
 import com.google.gson.Gson
 import co.nimblehq.data.service.interceptor.AppRequestInterceptor
+import co.nimblehq.data.service.providers.ApiRepositoryProvider
 import co.nimblehq.data.service.providers.ApiServiceProvider
 import co.nimblehq.data.service.providers.ConverterFactoryProvider
 import co.nimblehq.data.service.providers.RetrofitProvider
@@ -40,9 +41,7 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(authService: AuthService, secureStorage: SecureStorage): AuthRepository {
-        return AuthRepositoryImpl(authService, secureStorage)
-    }
+    fun provideAuthRepository(authService: AuthService, secureStorage: SecureStorage): AuthRepository = ApiRepositoryProvider.getAuthRepository(authService, secureStorage)
 
     @Provides
     @Singleton

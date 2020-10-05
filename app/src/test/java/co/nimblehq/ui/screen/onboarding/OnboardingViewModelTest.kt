@@ -1,4 +1,4 @@
-package co.nimblehq.ui.onboarding
+package co.nimblehq.ui.screen.onboarding
 
 import org.junit.Assert
 import org.junit.Test
