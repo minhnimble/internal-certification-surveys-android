@@ -17,7 +17,7 @@ import org.junit.Test
 import retrofit2.Retrofit
 
 @Suppress("IllegalIdentifier")
-class ApiServiceTest {
+class AuthServiceTest {
 
     @Test
     fun `API Service components should be initialize-able independently`() {
@@ -31,11 +31,11 @@ class ApiServiceTest {
         val schedulers: RxSchedulerProvider = RxSchedulerProviderImpl()
         Assert.assertNotNull("should provide Retrofit", appRetrofit)
 
-        val apiService: AuthService = ApiServiceProvider.getAuthService(appRetrofit)
-        Assert.assertNotNull("should provide AuthService", apiService)
+        val authService: AuthService = ApiServiceProvider.getAuthService(appRetrofit)
+        Assert.assertNotNull("should provide AuthService", authService)
 
-        val apiRepository: AuthRepository = ApiRepositoryProvider
-            .getAuthRepository(apiService, secureStorage)
-        Assert.assertNotNull("should provide ApiRepository", apiRepository)
+        val authRepository: AuthRepository = ApiRepositoryProvider
+            .getAuthRepository(authService, secureStorage)
+        Assert.assertNotNull("should provide AuthRepository", authRepository)
     }
 }
