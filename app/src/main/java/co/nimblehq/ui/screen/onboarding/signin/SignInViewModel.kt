@@ -62,7 +62,7 @@ class SignInViewModel @ViewModelInject constructor(
             .flatMapCompletable(updateTokenCompletableUseCase::execute)
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
-                onComplete = { _loginStatus.onNext(Ignored(null)) },
+                onComplete = { _loginStatus.onNext(Ignored(null)) }, // TODO: Use a navigator instead of _loginStatus Observable
                 onError = { _loginStatus.onNext(it) }
             )
             .bindForDisposable()

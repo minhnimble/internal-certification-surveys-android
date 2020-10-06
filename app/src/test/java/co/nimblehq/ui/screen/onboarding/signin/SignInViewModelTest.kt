@@ -30,16 +30,20 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `When input wrong email and password combination, it returns LoginError`() {
+    fun `When input wrong email and password combination, it returns LoginError, and showLoading when first call login will be true, then update to false when completes`() {
         // Arrange
         whenever(
             mockLoginByPasswordSingleUseCase.execute(any())
         ) doReturn Single.error(LoginError(null))
 
         // Act
+        val showLoadingObserver = signingViewModel
+            .showLoading
+            .test()
         val negativeLoginStatusObserver = signingViewModel
             .loginStatus
             .test()
+
         signingViewModel.inputs.email("invalid@nimblehq.co")
         signingViewModel.inputs.password("12345678")
         signingViewModel.login()
@@ -48,6 +52,15 @@ class SignInViewModelTest {
         negativeLoginStatusObserver
             .assertNoErrors()
             .assertValue { it is LoginError }
+
+        showLoadingObserver
+            .assertNoErrors()
+            .assertValueAt(0) {
+                it
+            }
+            .assertValueAt(1) {
+                !it
+            }
     }
 
     @Test
@@ -102,25 +115,5 @@ class SignInViewModelTest {
             .assertNoErrors()
             .assertValueCount(1)
             .assertValue(true)
-    }
-
-    @Test
-    fun `When logging in completed, loading progress is gone`() {
-        // Arrange
-        whenever(
-            mockLoginByPasswordSingleUseCase.execute(any())
-        ) doReturn Single.just(AuthData("","",0,"",0))
-
-        // Act
-        signingViewModel.inputs.email("test@nimblehq.co")
-        signingViewModel.inputs.password("12345678")
-        signingViewModel.login()
-
-        val showLoadingObserver = signingViewModel.showLoading.test()
-
-        showLoadingObserver
-            .assertNoErrors()
-            .assertValueCount(1)
-            .assertValue(false)
     }
 }
