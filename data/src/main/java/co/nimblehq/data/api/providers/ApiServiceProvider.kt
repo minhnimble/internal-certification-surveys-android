@@ -1,6 +1,6 @@
-package co.nimblehq.data.service.providers
+package co.nimblehq.data.api.providers
 
-import co.nimblehq.data.service.repository.auth.AuthService
+import co.nimblehq.data.api.service.auth.AuthService
 import retrofit2.Retrofit
 
 class ApiServiceProvider {

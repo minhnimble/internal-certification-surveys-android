@@ -1,7 +1,7 @@
 package co.nimblehq.di.modules
 
 import co.nimblehq.BuildConfig
-import co.nimblehq.data.service.interceptor.AppRequestInterceptor
+import co.nimblehq.data.api.interceptor.AppRequestInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ class OkHttpClientModule {
 
     @Provides
     fun provideOkHttpClient(apiRequestInterceptor: AppRequestInterceptor,
-                            httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+							httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         val httpClient = OkHttpClient.Builder().addInterceptor(apiRequestInterceptor)
         if (BuildConfig.DEBUG) {
             httpClient.addInterceptor(httpLoggingInterceptor)

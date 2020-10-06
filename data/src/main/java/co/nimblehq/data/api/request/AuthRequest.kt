@@ -1,4 +1,4 @@
-package co.nimblehq.data.service.request
+package co.nimblehq.data.api.request
 
 import com.google.gson.annotations.SerializedName
 

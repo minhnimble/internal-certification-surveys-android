@@ -1,7 +1,7 @@
-package co.nimblehq.data.service.repository.auth
+package co.nimblehq.data.api.service.auth
 
-import co.nimblehq.data.service.request.LoginByPasswordWithEmailRequest
-import co.nimblehq.data.service.response.OAuthResponse
+import co.nimblehq.data.api.request.LoginByPasswordWithEmailRequest
+import co.nimblehq.data.api.response.OAuthResponse
 import io.reactivex.Flowable
 import retrofit2.http.*
 

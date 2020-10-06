@@ -1,15 +1,13 @@
 package co.nimblehq.di.modules
 
 import com.google.gson.Gson
-import co.nimblehq.data.service.interceptor.AppRequestInterceptor
-import co.nimblehq.data.service.providers.ApiRepositoryProvider
-import co.nimblehq.data.service.providers.ApiServiceProvider
-import co.nimblehq.data.service.providers.ConverterFactoryProvider
-import co.nimblehq.data.service.providers.RetrofitProvider
-import co.nimblehq.data.service.repository.auth.AuthRepository
-import co.nimblehq.data.service.repository.auth.AuthRepositoryImpl
-import co.nimblehq.data.service.repository.auth.AuthService
-import co.nimblehq.data.storage.SecureStorage
+import co.nimblehq.data.api.interceptor.AppRequestInterceptor
+import co.nimblehq.data.api.providers.ApiServiceProvider
+import co.nimblehq.data.api.providers.ConverterFactoryProvider
+import co.nimblehq.data.api.providers.RetrofitProvider
+import co.nimblehq.data.repository.AuthRepository
+import co.nimblehq.data.api.service.auth.AuthService
+import co.nimblehq.data.provider.ApiRepositoryProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

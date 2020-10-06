@@ -2,10 +2,8 @@ package co.nimblehq.usecase.session
 
 import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.lib.schedulers.TestRxSchedulerProviderImpl
-import co.nimblehq.data.service.repository.auth.AuthRepository
-import co.nimblehq.data.service.response.OAuthAttributesResponse
-import co.nimblehq.data.service.response.OAuthDataResponse
-import co.nimblehq.data.service.response.OAuthResponse
+import co.nimblehq.data.repository.AuthRepository
+import co.nimblehq.data.model.AuthData
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -32,7 +30,7 @@ class LoginByPasswordSingleUseCaseTest {
         // Arrange
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
-        ) doReturn Single.just(OAuthResponse(OAuthDataResponse("", "", OAuthAttributesResponse("","",0,"",0))))
+        ) doReturn Single.just(AuthData("","",0,"",0))
 
         // Act
         val testSubscriber = useCase

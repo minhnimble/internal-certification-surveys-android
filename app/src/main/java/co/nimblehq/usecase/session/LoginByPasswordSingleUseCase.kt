@@ -2,8 +2,9 @@ package co.nimblehq.usecase.session
 
 import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
-import co.nimblehq.data.service.repository.auth.AuthRepository
-import co.nimblehq.data.service.response.OAuthResponse
+import co.nimblehq.data.repository.AuthRepository
+import co.nimblehq.data.api.response.OAuthResponse
+import co.nimblehq.data.model.AuthData
 import co.nimblehq.usecase.base.SingleUseCase
 import io.reactivex.Single
 import javax.inject.Inject
@@ -11,7 +12,7 @@ import javax.inject.Inject
 class LoginByPasswordSingleUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val authRepository: AuthRepository
-) : SingleUseCase<LoginByPasswordSingleUseCase.Input, OAuthResponse>(
+) : SingleUseCase<LoginByPasswordSingleUseCase.Input, AuthData>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
     ::LoginError
@@ -22,7 +23,7 @@ class LoginByPasswordSingleUseCase @Inject constructor(
         val password: String
     )
 
-    override fun create(input: Input): Single<OAuthResponse> {
+    override fun create(input: Input): Single<AuthData> {
         return with(input) {
             authRepository.loginByPasswordWithEmail(
                 email,

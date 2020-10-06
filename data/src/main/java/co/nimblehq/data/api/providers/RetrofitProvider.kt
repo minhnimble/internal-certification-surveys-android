@@ -1,6 +1,6 @@
-package co.nimblehq.data.service.providers
+package co.nimblehq.data.api.providers
 
-import co.nimblehq.data.service.common.secrets.Secrets
+import co.nimblehq.data.api.common.secrets.Secrets
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit

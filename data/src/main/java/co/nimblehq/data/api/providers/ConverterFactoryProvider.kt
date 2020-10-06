@@ -1,4 +1,4 @@
-package co.nimblehq.data.service.providers
+package co.nimblehq.data.api.providers
 
 import com.google.gson.Gson
 import retrofit2.Converter
