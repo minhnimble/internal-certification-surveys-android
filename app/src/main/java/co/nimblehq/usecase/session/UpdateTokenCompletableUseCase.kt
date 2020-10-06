@@ -24,12 +24,14 @@ class UpdateTokenCompletableUseCase @Inject constructor(
 
     override fun create(input: Input): Completable {
         return Completable.fromAction {
-            secureStorage.apply {
-                userAccessToken = input.response.accessToken
-                userAccessTokenCreatedAt = input.response.createdAt
-                userAccessTokenExpiresIn = input.response.expiresIn
-                userRefreshToken = input.response.refreshToken
-                userTokenType = input.response.tokenType
+            with(input.response) {
+                secureStorage.apply {
+                    userAccessToken = accessToken
+                    userAccessTokenCreatedAt = createdAt
+                    userAccessTokenExpiresIn = expiresIn
+                    userRefreshToken = refreshToken
+                    userTokenType = tokenType
+                }
             }
         }
     }
