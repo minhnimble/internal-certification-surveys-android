@@ -59,9 +59,9 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     override fun bindViewEvents() {
-        btSignInLogin.subscribeOnClick {
-            viewModel.login()
-        }.bindForDisposable()
+        btSignInLogin
+            .subscribeOnClick(viewModel::login)
+            .bindForDisposable()
 
         etSignInEmail.addTextChangedListener {
             viewModel.inputs.email(it.toString())
@@ -96,8 +96,8 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
 
     private fun bindLoginStatus(error: Throwable) {
         when (error) {
-            is LoginError -> { displayError(error) }
-            else -> { navigator.navigateToMainActivity() }
+            is LoginError -> displayError(error)
+            else -> navigator.navigateToMainActivity()
         }
     }
 }

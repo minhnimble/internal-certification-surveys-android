@@ -8,6 +8,7 @@ import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
 import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
@@ -55,15 +56,14 @@ class SignInViewModel @ViewModelInject constructor(
 
     fun login() {
         loginByPasswordSingleUseCase
-            .execute(LoginByPasswordSingleUseCase.Input(_email.value ?: "", _password.value ?: ""))
+            .execute(LoginByPasswordSingleUseCase.Input(_email.value.orEmpty(), _password.value.orEmpty()))
             .doOnSubscribe { _showLoading.onNext(true) }
-            .flatMapCompletable { response ->
-                updateTokenCompletableUseCase.execute(UpdateTokenCompletableUseCase.Input(response))
-            }
+            .map(UpdateTokenCompletableUseCase::Input)
+            .flatMapCompletable(updateTokenCompletableUseCase::execute)
             .doFinally { _showLoading.onNext(false) }
-            .subscribe(
-                { _loginStatus.onNext(Ignored(null)) },
-                { _loginStatus.onNext(it) }
+            .subscribeBy(
+                onComplete = { _loginStatus.onNext(Ignored(null)) },
+                onError = { _loginStatus.onNext(it) }
             )
             .bindForDisposable()
     }
