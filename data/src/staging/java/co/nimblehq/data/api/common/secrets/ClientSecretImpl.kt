@@ -1,6 +1,4 @@
-package co.nimblehq.data.service.common.secrets
-
-import co.nimblehq.data.api.common.secrets.ClientSecret
+package co.nimblehq.data.api.common.secrets
 
 class ClientSecretImpl : ClientSecret {
     override val value: String
