@@ -37,7 +37,7 @@ class SignInViewModelTest {
         ) doReturn Single.error(LoginError(null))
 
         // Act
-        val isLoginSuccessObserver = signingViewModel
+        val negativeLoginStatusObserver = signingViewModel
             .loginStatus
             .test()
         signingViewModel.inputs.email("invalid@nimblehq.co")
@@ -45,7 +45,7 @@ class SignInViewModelTest {
         signingViewModel.login()
 
         // Assert
-        isLoginSuccessObserver
+        negativeLoginStatusObserver
             .assertNoErrors()
             .assertValue { it is LoginError }
     }
