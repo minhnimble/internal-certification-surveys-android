@@ -30,7 +30,7 @@ class SignInViewModel @ViewModelInject constructor(
 
     private var _firstInitialized = true
 
-    private val _isLoginSuccess = PublishSubject.create<Throwable>()
+    private val _loginStatus = PublishSubject.create<Throwable>()
 
     private val _showLoading = BehaviorSubject.create<Boolean>()
 
@@ -47,8 +47,8 @@ class SignInViewModel @ViewModelInject constructor(
     val firstInitialized: Boolean
         get() = _firstInitialized
 
-    val isLoginSuccess: Observable<Throwable>
-        get() = _isLoginSuccess
+    val loginStatus: Observable<Throwable>
+        get() = _loginStatus
 
     val showLoading: Observable<Boolean>
         get() = _showLoading
@@ -62,8 +62,8 @@ class SignInViewModel @ViewModelInject constructor(
             }
             .doFinally { _showLoading.onNext(false) }
             .subscribe(
-                { _isLoginSuccess.onNext(Ignored(null)) },
-                { _isLoginSuccess.onNext(it) }
+                { _loginStatus.onNext(Ignored(null)) },
+                { _loginStatus.onNext(it) }
             )
             .bindForDisposable()
     }

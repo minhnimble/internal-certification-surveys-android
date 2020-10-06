@@ -1,8 +1,8 @@
-package co.nimblehq.data.service.request.helper
+package co.nimblehq.data.api.request.helper
 
 import co.nimblehq.data.lib.common.OAUTH_GRANT_TYPE_PASSWORD
-import co.nimblehq.data.service.common.secrets.Secrets
-import co.nimblehq.data.service.request.LoginByPasswordWithEmailRequest
+import co.nimblehq.data.api.common.secrets.Secrets
+import co.nimblehq.data.api.request.LoginByPasswordWithEmailRequest
 
 object RequestHelper {
 

@@ -74,10 +74,10 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun bindViewModel() {
         viewModel.enableLoginButton
-            .subscribe(::bindEnableLoginBtn)
+            .subscribe(::bindEnableLoginButton)
             .bindForDisposable()
 
-        viewModel.isLoginSuccess
+        viewModel.loginStatus
             .subscribe(::bindLoginStatus)
             .bindForDisposable()
 
@@ -86,7 +86,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             .bindForDisposable()
     }
 
-    private fun bindEnableLoginBtn(isEnabled: Boolean) {
+    private fun bindEnableLoginButton(isEnabled: Boolean) {
         btSignInLogin.isEnabled = isEnabled
     }
 

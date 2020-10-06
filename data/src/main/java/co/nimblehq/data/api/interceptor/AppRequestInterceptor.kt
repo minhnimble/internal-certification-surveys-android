@@ -1,4 +1,4 @@
-package co.nimblehq.data.service.interceptor
+package co.nimblehq.data.api.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response

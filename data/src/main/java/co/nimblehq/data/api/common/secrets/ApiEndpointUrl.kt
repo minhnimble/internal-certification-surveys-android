@@ -1,4 +1,4 @@
-package co.nimblehq.data.service.common.secrets
+package co.nimblehq.data.api.common.secrets
 
 interface ApiEndpointUrl {
     val value: String

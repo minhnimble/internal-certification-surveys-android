@@ -1,9 +1,10 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
 import co.nimblehq.data.error.LoginError
-import co.nimblehq.data.service.response.OAuthAttributesResponse
-import co.nimblehq.data.service.response.OAuthDataResponse
-import co.nimblehq.data.service.response.OAuthResponse
+import co.nimblehq.data.api.response.OAuthAttributesResponse
+import co.nimblehq.data.api.response.OAuthDataResponse
+import co.nimblehq.data.api.response.OAuthResponse
+import co.nimblehq.data.model.AuthData
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
 import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
@@ -37,7 +38,7 @@ class SignInViewModelTest {
 
         // Act
         val isLoginSuccessObserver = signingViewModel
-            .isLoginSuccess
+            .loginStatus
             .test()
         signingViewModel.inputs.email("invalid@nimblehq.co")
         signingViewModel.inputs.password("12345678")
@@ -108,7 +109,7 @@ class SignInViewModelTest {
         // Arrange
         whenever(
             mockLoginByPasswordSingleUseCase.execute(any())
-        ) doReturn Single.just(OAuthResponse(OAuthDataResponse("", "", OAuthAttributesResponse("","",0,"",0))))
+        ) doReturn Single.just(AuthData("","",0,"",0))
 
         // Act
         signingViewModel.inputs.email("test@nimblehq.co")

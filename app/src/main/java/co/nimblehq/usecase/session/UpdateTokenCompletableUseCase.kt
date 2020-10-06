@@ -2,7 +2,8 @@ package co.nimblehq.usecase.session
 
 import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
-import co.nimblehq.data.service.response.OAuthResponse
+import co.nimblehq.data.api.response.OAuthResponse
+import co.nimblehq.data.model.AuthData
 import co.nimblehq.data.storage.SecureStorage
 import co.nimblehq.usecase.base.CompletableUseCase
 import io.reactivex.Completable
@@ -18,17 +19,17 @@ class UpdateTokenCompletableUseCase @Inject constructor(
 ) {
 
     data class Input(
-        val response: OAuthResponse
+        val response: AuthData
     )
 
     override fun create(input: Input): Completable {
         return Completable.fromAction {
             secureStorage.apply {
-                userAccessToken = input.response?.data?.attributes?.accessToken
-                userAccessTokenCreatedAt = input.response?.data?.attributes?.createdAt
-                userAccessTokenExpiresIn = input.response?.data?.attributes?.expiresIn
-                userRefreshToken = input.response?.data?.attributes?.refreshToken
-                userTokenType = input.response?.data?.attributes?.tokenType
+                userAccessToken = input.response.accessToken
+                userAccessTokenCreatedAt = input.response.createdAt
+                userAccessTokenExpiresIn = input.response.expiresIn
+                userRefreshToken = input.response.refreshToken
+                userTokenType = input.response.tokenType
             }
         }
     }
