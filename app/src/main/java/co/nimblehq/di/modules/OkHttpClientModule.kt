@@ -15,7 +15,7 @@ class OkHttpClientModule {
 
     @Provides
     fun provideOkHttpClient(apiRequestInterceptor: AppRequestInterceptor,
-							httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+                            httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         val httpClient = OkHttpClient.Builder().addInterceptor(apiRequestInterceptor)
         if (BuildConfig.DEBUG) {
             httpClient.addInterceptor(httpLoggingInterceptor)
