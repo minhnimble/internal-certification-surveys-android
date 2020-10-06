@@ -1,6 +1,7 @@
 package co.nimblehq.usecase.base
 
 import co.nimblehq.data.error.AppError
+import okhttp3.internal.http2.ErrorCode
 import okhttp3.internal.http2.StreamResetException
 import java.io.IOException
 
@@ -20,8 +21,7 @@ open class BaseUseCase(
         error is IOException && error.message == MESSAGE_REQUEST_CANCELED
 
     private fun isCanceledStreamResetException(error: Throwable) =
-        error is StreamResetException && error.message == MESSAGE_STREAM_WAS_RESET_CANCEL
+        error is StreamResetException && error.errorCode == ErrorCode.CANCEL
 }
 
 private const val MESSAGE_REQUEST_CANCELED = "Canceled"
-private const val MESSAGE_STREAM_WAS_RESET_CANCEL = "stream was reset: CANCEL"

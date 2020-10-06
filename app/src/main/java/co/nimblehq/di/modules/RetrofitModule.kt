@@ -41,7 +41,7 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(authService: AuthService, secureStorage: SecureStorage): AuthRepository = ApiRepositoryProvider.getAuthRepository(authService, secureStorage)
+    fun provideAuthRepository(authService: AuthService): AuthRepository = ApiRepositoryProvider.getAuthRepository(authService)
 
     @Provides
     @Singleton

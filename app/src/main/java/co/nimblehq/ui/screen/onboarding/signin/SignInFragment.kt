@@ -3,6 +3,7 @@ package co.nimblehq.ui.screen.onboarding.signin
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
+import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.extension.animateResource
 import co.nimblehq.extension.startFadeInAnimation
@@ -45,7 +46,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
                  btSignInForgotPassword.startFadeInAnimation()
                 llSignInInputContainer.startFadeInAnimation()
             }
-            viewModel.inputs.updateInitialized(false)
+            viewModel.inputs.initialized(false)
         } else {
             ivSignInNimbleLogo.startFadeInAnimation(shouldAnimate = false)
             clSignIn.animateResource(
@@ -60,27 +61,25 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun bindViewEvents() {
         btSignInLogin.subscribeOnClick {
-            viewModel.login(
-                email = etSignInEmail.text.toString(),
-                password = etSignInPassword.text.toString()
-            ).subscribeBy(
-                onComplete = :: openMainActivity,
-                onError = ::handleError
-            ).bindForDisposable()
+            viewModel.login()
         }.bindForDisposable()
 
         etSignInEmail.addTextChangedListener {
-            viewModel.inputs.updateEmail(it.toString())
+            viewModel.inputs.email(it.toString())
         }
 
         etSignInPassword.addTextChangedListener {
-            viewModel.inputs.updatePassword(it.toString())
+            viewModel.inputs.password(it.toString())
         }
     }
 
     override fun bindViewModel() {
         viewModel.enableLoginButton
-            .subscribeBy { btSignInLogin.isEnabled = it }
+            .subscribe(::bindEnableLoginBtn)
+            .bindForDisposable()
+
+        viewModel.isLoginSuccess
+            .subscribe(::bindLoginStatus)
             .bindForDisposable()
 
         viewModel.showLoading
@@ -88,15 +87,18 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             .bindForDisposable()
     }
 
+    private fun bindEnableLoginBtn(isEnabled: Boolean) {
+        btSignInLogin.isEnabled = isEnabled
+    }
+
     private fun bindLoading(isLoading: Boolean) {
         toggleLoading(isLoading)
     }
 
-    private fun handleError(error: Throwable) {
-        displayError(error)
-    }
-
-    private fun openMainActivity() {
-        navigator.navigateToMainActivity()
+    private fun bindLoginStatus(error: Throwable) {
+        when (error) {
+            is LoginError -> { displayError(error) }
+            else -> { navigator.navigateToMainActivity() }
+        }
     }
 }

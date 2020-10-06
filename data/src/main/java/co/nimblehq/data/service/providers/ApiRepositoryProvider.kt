@@ -7,9 +7,10 @@ import co.nimblehq.data.storage.SecureStorage
 
 class ApiRepositoryProvider {
     companion object {
-        fun getAuthRepository(authService: AuthService,
-                              secureStorage: SecureStorage): AuthRepository {
-            return AuthRepositoryImpl(authService, secureStorage)
+        fun getAuthRepository(
+            authService: AuthService
+        ): AuthRepository {
+            return AuthRepositoryImpl(authService)
         }
     }
 }
