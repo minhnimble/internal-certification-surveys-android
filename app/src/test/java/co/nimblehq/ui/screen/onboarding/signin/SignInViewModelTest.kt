@@ -87,7 +87,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `When input valid email and password, Login button is enable`() {
+    fun `When input valid email and password, Login button is enabled`() {
         // Arrange
         val enableLoginButtonObserver = signingViewModel
             .enableLoginButton
