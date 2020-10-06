@@ -97,7 +97,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
     private fun bindLoginStatus(error: Throwable) {
         when (error) {
             is LoginError -> displayError(error)
-            else -> navigator.navigateToMainActivity()
+            else -> navigator.navigateToMainActivity() // TODO: Will remove this check and use a navigator class in VM instead
         }
     }
 }
