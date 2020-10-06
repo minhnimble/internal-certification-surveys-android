@@ -1,7 +1,12 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
+import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.error.LoginError
-import co.nimblehq.usecase.session.LoginByPasswordCompletableUseCase
+import co.nimblehq.data.service.response.OAuthAttributesResponse
+import co.nimblehq.data.service.response.OAuthDataResponse
+import co.nimblehq.data.service.response.OAuthResponse
+import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
+import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -13,34 +18,37 @@ import org.junit.Test
 
 class SignInViewModelTest {
 
-    private lateinit var mockLoginByPasswordCompletableUseCase: LoginByPasswordCompletableUseCase
+    private lateinit var mockLoginByPasswordSingleUseCase: LoginByPasswordSingleUseCase
+    private lateinit var mockUpdateTokenCompletableUseCase: UpdateTokenCompletableUseCase
 
     private lateinit var signingViewModel: SignInViewModel
 
     @Before
     fun setUp() {
-        mockLoginByPasswordCompletableUseCase = mock()
-        signingViewModel = SignInViewModel(mockLoginByPasswordCompletableUseCase)
+        mockLoginByPasswordSingleUseCase = mock()
+        mockUpdateTokenCompletableUseCase = mock()
+        signingViewModel = SignInViewModel(mockLoginByPasswordSingleUseCase, mockUpdateTokenCompletableUseCase)
     }
 
     @Test
     fun `When input wrong email and password combination, it returns LoginError`() {
         // Arrange
         whenever(
-            mockLoginByPasswordCompletableUseCase.execute(any())
-        ) doReturn Single.error<LoginError>(LoginError(null)).ignoreElement()
+            mockLoginByPasswordSingleUseCase.execute(any())
+        ) doReturn Single.error(LoginError(null))
 
         // Act
-        val testSubscriber = signingViewModel
-            .login("invalid@nimblehq.co", "12345678")
+        val isLoginSuccessObserver = signingViewModel
+            .isLoginSuccess
             .test()
+        signingViewModel.inputs.email("invalid@nimblehq.co")
+        signingViewModel.inputs.password("12345678")
+        signingViewModel.login()
 
         // Assert
-        testSubscriber
-            .assertError { error ->
-                error is LoginError
-            }
-            .assertValueCount(0)
+        isLoginSuccessObserver
+            .assertNoErrors()
+            .assertValue { it is LoginError }
     }
 
     @Test
@@ -51,21 +59,14 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.inputs.updateEmail("acbd")
-        signingViewModel.inputs.updatePassword("12345678")
+        signingViewModel.inputs.email("acbd")
+        signingViewModel.inputs.password("12345678")
 
         // Assert
         enableLoginButtonObserver
             .assertNoErrors()
-            .assertValueAt(0) {
-                !it
-            }
-            .assertValueAt(1) {
-                !it
-            }
-            .assertValueAt(2) {
-                !it
-            }
+            .assertValueCount(1)
+            .assertValue(false)
     }
 
     @Test
@@ -76,21 +77,14 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.inputs.updateEmail("test@nimblehq.co")
-        signingViewModel.inputs.updatePassword("")
+        signingViewModel.inputs.email("test@nimblehq.co")
+        signingViewModel.inputs.password("")
 
         // Assert
         enableLoginButtonObserver
             .assertNoErrors()
-            .assertValueAt(0) {
-                !it
-            }
-            .assertValueAt(1) {
-                !it
-            }
-            .assertValueAt(2) {
-                !it
-            }
+            .assertValueCount(1)
+            .assertValue(false)
     }
 
     @Test
@@ -101,34 +95,27 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.inputs.updateEmail("test@nimblehq.co")
-        signingViewModel.inputs.updatePassword("12345678")
+        signingViewModel.inputs.email("test@nimblehq.co")
+        signingViewModel.inputs.password("12345678")
 
         // Assert
         enableLoginButtonObserver
             .assertNoErrors()
-            .assertValueAt(0) {
-                !it
-            }
-            .assertValueAt(1) {
-                !it
-            }
-            .assertValueAt(2) {
-                it
-            }
+            .assertValueCount(1)
+            .assertValue(true)
     }
 
     @Test
     fun `When logging in completed, loading progress is gone`() {
         // Arrange
         whenever(
-            mockLoginByPasswordCompletableUseCase.execute(any())
-        ) doReturn Completable.complete()
+            mockLoginByPasswordSingleUseCase.execute(any())
+        ) doReturn Single.just(OAuthResponse(OAuthDataResponse("", "", OAuthAttributesResponse("","",0,"",0))))
 
         // Act
-        signingViewModel
-            .login("test@nimblehq.co", "12345678")
-            .test()
+        signingViewModel.inputs.email("test@nimblehq.co")
+        signingViewModel.inputs.password("12345678")
+        signingViewModel.login()
 
         val showLoadingObserver = signingViewModel.showLoading.test()
 
