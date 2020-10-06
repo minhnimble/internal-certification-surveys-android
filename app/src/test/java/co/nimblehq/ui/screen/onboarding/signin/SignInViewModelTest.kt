@@ -1,6 +1,5 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
-import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.service.response.OAuthAttributesResponse
 import co.nimblehq.data.service.response.OAuthDataResponse
@@ -11,7 +10,6 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
