@@ -1,6 +1,4 @@
-package co.nimblehq.data.service.common.secrets
-
-import co.nimblehq.data.api.common.secrets.ApiEndpointUrl
+package co.nimblehq.data.api.common.secrets
 
 class ApiEndpointUrlImpl : ApiEndpointUrl {
     override val value: String
