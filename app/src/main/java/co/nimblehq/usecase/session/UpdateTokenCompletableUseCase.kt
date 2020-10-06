@@ -14,7 +14,7 @@ class UpdateTokenCompletableUseCase @Inject constructor(
     private val secureStorage: SecureStorage
 ) : CompletableUseCase<UpdateTokenCompletableUseCase.Input>(
     rxSchedulerProvider.io(),
-    rxSchedulerProvider.main(),
+    rxSchedulerProvider.io(),
     ::Ignored
 ) {
 

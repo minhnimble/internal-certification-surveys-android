@@ -12,7 +12,7 @@ class ClearTokenCompletableUseCase @Inject constructor(
     private val secureStorage: SecureStorage
 ) : CompletableUseCase<Unit>(
     rxSchedulerProvider.io(),
-    rxSchedulerProvider.main(),
+    rxSchedulerProvider.io(),
     ::Ignored
 ) {
 
