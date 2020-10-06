@@ -11,7 +11,6 @@ import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.screen.onboarding.OnboardingNavigator
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import javax.inject.Inject
 
