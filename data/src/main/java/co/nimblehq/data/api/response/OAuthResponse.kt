@@ -3,7 +3,7 @@ package co.nimblehq.data.api.response
 import com.google.gson.annotations.SerializedName
 
 data class OAuthResponse(
-	@SerializedName("data")val data: OAuthDataResponse
+	@SerializedName("data") val data: OAuthDataResponse
 )
 
 data class OAuthDataResponse(
