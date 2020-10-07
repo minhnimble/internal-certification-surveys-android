@@ -1,12 +1,14 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
 import co.nimblehq.data.error.LoginError
+import co.nimblehq.data.model.AuthData
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
 import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +28,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `When input wrong email and password combination, it returns LoginError, and showLoading when first call login will be true, then update to false when completes`() {
+    fun `When input wrong email and password combination, first it will show the loading, then it returns LoginError and hides the loading when completed`() {
         // Arrange
         whenever(
             mockLoginByPasswordSingleUseCase.execute(any())
@@ -36,7 +38,8 @@ class SignInViewModelTest {
         val showLoadingObserver = signingViewModel
             .showLoading
             .test()
-        val negativeLoginStatusObserver = signingViewModel
+
+        val signInErrorObserver = signingViewModel
             .signInError
             .test()
 
@@ -45,7 +48,7 @@ class SignInViewModelTest {
         signingViewModel.login()
 
         // Assert
-        negativeLoginStatusObserver
+        signInErrorObserver
             .assertNoErrors()
             .assertValue { it is LoginError }
 
@@ -57,6 +60,31 @@ class SignInViewModelTest {
             .assertValueAt(1) {
                 !it
             }
+    }
+
+    @Test
+    fun `When input valid email and password combination, it will open Main Activity`() {
+        // Arrange
+        whenever(
+            mockLoginByPasswordSingleUseCase.execute(any())
+        ) doReturn Single.just(AuthData("",0,0,"",""))
+        whenever(
+            mockUpdateTokenCompletableUseCase.execute(any())
+        ) doReturn Completable.complete()
+
+        // Act
+        val navigatorObserver = signingViewModel
+            .navigator
+            .test()
+
+        signingViewModel.inputs.email("valid@nimblehq.co")
+        signingViewModel.inputs.password("12345678")
+        signingViewModel.login()
+
+        // Assert
+        navigatorObserver
+            .assertNoErrors()
+            .assertValueCount(1)
     }
 
     @Test
