@@ -29,11 +29,13 @@ class SignInViewModel @ViewModelInject constructor(
 
     private val _password = BehaviorSubject.create<String>()
 
-    private var _firstInitialized = true
-
-    private val _loginStatus = PublishSubject.create<Throwable>()
+    private val _loginError = PublishSubject.create<Throwable>()
 
     private val _showLoading = BehaviorSubject.create<Boolean>()
+
+    private val _showMain = PublishSubject.create<Unit>()
+
+    private var _firstInitialized = true
 
     val inputs: Inputs = this
 
@@ -45,14 +47,17 @@ class SignInViewModel @ViewModelInject constructor(
             password.isNotEmpty() && email.isEmail()
         }
 
-    val firstInitialized: Boolean
-        get() = _firstInitialized
-
-    val loginStatus: Observable<Throwable>
-        get() = _loginStatus
+    val loginError: Observable<Throwable>
+        get() = _loginError
 
     val showLoading: Observable<Boolean>
         get() = _showLoading
+
+    val showMain: Observable<Unit>
+        get() = _showMain
+
+    val firstInitialized: Boolean
+        get() = _firstInitialized
 
     fun login() {
         loginByPasswordSingleUseCase
@@ -62,8 +67,8 @@ class SignInViewModel @ViewModelInject constructor(
             .flatMapCompletable(updateTokenCompletableUseCase::execute)
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
-                onComplete = { _loginStatus.onNext(Ignored(null)) }, // TODO: Use a navigator instead of _loginStatus Observable
-                onError = { _loginStatus.onNext(it) }
+                onComplete = { _showMain.onNext(Unit) },
+                onError = { _loginError.onNext(it) }
             )
             .bindForDisposable()
     }
