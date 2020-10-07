@@ -30,7 +30,7 @@ class LoginByPasswordSingleUseCaseTest {
         // Arrange
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
-        ) doReturn Single.just(AuthData("","",0,"",0))
+        ) doReturn Single.just(AuthData("",0,0,"",""))
 
         // Act
         val testSubscriber = useCase
