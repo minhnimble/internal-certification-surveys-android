@@ -3,7 +3,6 @@ package co.nimblehq.ui.screen.onboarding.signin
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
-import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.extension.animateResource
 import co.nimblehq.extension.startFadeInAnimation
@@ -77,12 +76,16 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             .subscribe(::bindEnableLoginButton)
             .bindForDisposable()
 
-        viewModel.loginStatus
+        viewModel.loginError
             .subscribe(::bindLoginStatus)
             .bindForDisposable()
 
         viewModel.showLoading
             .subscribe(::bindLoading)
+            .bindForDisposable()
+
+        viewModel.showMain
+            .subscribe { showMainActivity() }
             .bindForDisposable()
     }
 
@@ -95,9 +98,10 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     private fun bindLoginStatus(error: Throwable) {
-        when (error) {
-            is LoginError -> displayError(error)
-            else -> navigator.navigateToMainActivity() // TODO: Will remove this check and use a navigator class in VM instead
-        }
+        displayError(error)
+    }
+
+    private fun showMainActivity() {
+        navigator.navigateToMainActivity()
     }
 }

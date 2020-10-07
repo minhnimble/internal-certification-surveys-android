@@ -1,10 +1,6 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
 import co.nimblehq.data.error.LoginError
-import co.nimblehq.data.api.response.OAuthAttributesResponse
-import co.nimblehq.data.api.response.OAuthDataResponse
-import co.nimblehq.data.api.response.OAuthResponse
-import co.nimblehq.data.model.AuthData
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
 import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
@@ -41,7 +37,7 @@ class SignInViewModelTest {
             .showLoading
             .test()
         val negativeLoginStatusObserver = signingViewModel
-            .loginStatus
+            .loginError
             .test()
 
         signingViewModel.inputs.email("invalid@nimblehq.co")
