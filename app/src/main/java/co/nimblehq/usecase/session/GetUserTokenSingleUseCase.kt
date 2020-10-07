@@ -15,7 +15,6 @@ class GetUserTokenSingleUseCase @Inject constructor(
 
     override fun create(input: Unit): Single<AuthData> {
         return Single.fromCallable {
-            secureStorage.userAccessToken
             AuthData(
                 secureStorage.userAccessToken ?: "",
                 secureStorage.userAccessTokenCreatedAt ?: 0,
@@ -25,7 +24,6 @@ class GetUserTokenSingleUseCase @Inject constructor(
             )
         }
             .filter { it.isValid }
-            .doOnError { throw Throwable("Refresh token not found") }
             .toSingle()
     }
 }

@@ -21,6 +21,7 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
         bindViewModel()
+
         if (viewModel.checkSession().blockingGet()) {
             navigator.navigateToMainActivity()
         }
