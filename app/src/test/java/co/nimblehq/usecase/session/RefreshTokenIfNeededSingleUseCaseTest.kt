@@ -1,17 +1,15 @@
 package co.nimblehq.usecase.session
 
 import co.nimblehq.data.authenticator.TokenRefresher
-import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.error.RefreshTokenError
 import co.nimblehq.data.lib.schedulers.TestRxSchedulerProviderImpl
-import co.nimblehq.data.repository.AuthRepository
 import co.nimblehq.data.model.AuthData
-import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
-import org.junit.*
+import org.junit.Before
+import org.junit.Test
 
 class RefreshTokenIfNeededSingleUseCaseTest {
 

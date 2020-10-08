@@ -1,8 +1,6 @@
 package co.nimblehq.ui.screen.onboarding
 
 import androidx.hilt.lifecycle.ViewModelInject
-import co.nimblehq.data.error.RefreshTokenError
-import co.nimblehq.data.error.TokenExpiredError
 import co.nimblehq.data.lib.rxjava.RxBus
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.event.PostSessionCheckEvent

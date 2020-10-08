@@ -2,8 +2,8 @@ package co.nimblehq.usecase.base
 
 import co.nimblehq.BuildConfig
 import co.nimblehq.data.error.AppError
-import io.reactivex.Completable
 import co.nimblehq.data.lib.schedulers.RxScheduler
+import io.reactivex.Completable
 
 abstract class CompletableUseCase<in UseCaseInput>(
         private val executionThread: RxScheduler,
