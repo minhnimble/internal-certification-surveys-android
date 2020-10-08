@@ -1,5 +1,6 @@
 package co.nimblehq.ui.screen.main
 
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -18,6 +19,6 @@ class MainViewModelTest {
     @Test
     fun `First test description for MainViewModel`() {
         // TODO: Update to the actual test
-
+        Assert.assertEquals(4, 2 + 2)
     }
 }
