@@ -7,6 +7,7 @@ import co.nimblehq.R
 import co.nimblehq.data.error.RefreshTokenError
 import co.nimblehq.data.error.TokenExpiredError
 import co.nimblehq.data.lib.rxjava.RxBus
+import co.nimblehq.event.NavigationEvent
 import co.nimblehq.event.PostSessionCheckEvent
 import co.nimblehq.extension.blurView
 import co.nimblehq.ui.base.BaseActivity
@@ -27,25 +28,40 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_onboarding)
+        bindViewModel()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        viewModel.checkSession().subscribeBy(
-            onError = {
-                when (it) {
-                    is RefreshTokenError -> displayError(TokenExpiredError(null))
-                }
-                RxBus.publish(PostSessionCheckEvent)
-            },
-            onComplete = { navigator.navigateToMainActivity() }
-        ).bindForDisposable()
+        viewModel.checkSession()
     }
 
     override fun animateBlurBackground() {
         clOnboardingBackground.blurView(
             shouldAnimate = true
         )
+    }
+
+    private fun bindViewModel() {
+        viewModel.error
+            .subscribeBy {
+                when (it) {
+                    is RefreshTokenError -> displayError(TokenExpiredError(null))
+                }
+            }
+            .bindForDisposable()
+
+        viewModel.navigator
+            .subscribeBy {
+                when (it) {
+                    is NavigationEvent.Onboarding.Main -> showMainActivity()
+                }
+            }
+            .bindForDisposable()
+    }
+
+    private fun showMainActivity() {
+        navigator.navigateToMainActivity()
     }
 }
