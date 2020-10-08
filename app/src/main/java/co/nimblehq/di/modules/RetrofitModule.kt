@@ -7,6 +7,7 @@ import co.nimblehq.data.api.providers.ConverterFactoryProvider
 import co.nimblehq.data.api.providers.RetrofitProvider
 import co.nimblehq.data.repository.AuthRepository
 import co.nimblehq.data.api.service.auth.AuthService
+import co.nimblehq.data.authenticator.TokenRefresher
 import co.nimblehq.data.provider.ApiRepositoryProvider
 import dagger.Module
 import dagger.Provides
@@ -44,4 +45,7 @@ class RetrofitModule {
     @Provides
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService = ApiServiceProvider.getAuthService(retrofit)
+
+    @Provides
+    fun provideTokenRefresher(authRepository: AuthRepository): TokenRefresher = authRepository
 }

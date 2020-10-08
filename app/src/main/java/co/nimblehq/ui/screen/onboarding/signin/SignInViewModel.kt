@@ -1,9 +1,9 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
 import androidx.hilt.lifecycle.ViewModelInject
-import co.nimblehq.data.error.Ignored
 import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.extension.isEmail
+import co.nimblehq.navigator.NavigationEvent
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
 import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
 import io.reactivex.Observable
@@ -29,11 +29,11 @@ class SignInViewModel @ViewModelInject constructor(
 
     private val _password = BehaviorSubject.create<String>()
 
-    private val _loginError = PublishSubject.create<Throwable>()
+    private val _signInError = PublishSubject.create<Throwable>()
 
     private val _showLoading = BehaviorSubject.create<Boolean>()
 
-    private val _showMain = PublishSubject.create<Unit>()
+    private val _navigator = PublishSubject.create<NavigationEvent>()
 
     private var _firstInitialized = true
 
@@ -47,14 +47,14 @@ class SignInViewModel @ViewModelInject constructor(
             password.isNotEmpty() && email.isEmail()
         }
 
-    val loginError: Observable<Throwable>
-        get() = _loginError
+    val signInError: Observable<Throwable>
+        get() = _signInError
 
     val showLoading: Observable<Boolean>
         get() = _showLoading
 
-    val showMain: Observable<Unit>
-        get() = _showMain
+    val navigator: Observable<NavigationEvent>
+        get() = _navigator
 
     val firstInitialized: Boolean
         get() = _firstInitialized
@@ -63,12 +63,11 @@ class SignInViewModel @ViewModelInject constructor(
         loginByPasswordSingleUseCase
             .execute(LoginByPasswordSingleUseCase.Input(_email.value.orEmpty(), _password.value.orEmpty()))
             .doOnSubscribe { _showLoading.onNext(true) }
-            .map(UpdateTokenCompletableUseCase::Input)
             .flatMapCompletable(updateTokenCompletableUseCase::execute)
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
-                onComplete = { _showMain.onNext(Unit) },
-                onError = { _loginError.onNext(it) }
+                onComplete = { _navigator.onNext(NavigationEvent.SignIn.Main) },
+                onError = { _signInError.onNext(it) }
             )
             .bindForDisposable()
     }

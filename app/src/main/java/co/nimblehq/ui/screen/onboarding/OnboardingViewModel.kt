@@ -30,12 +30,8 @@ class OnboardingViewModel @ViewModelInject constructor(
     fun checkSession(): Single<Boolean> {
         return getTokenSingleUseCase
             .execute(Unit)
-            .flatMap { authData ->
-                refreshTokenIfNeededSingleUseCase
-                    .execute(RefreshTokenIfNeededSingleUseCase.Input(authData))
-            }
+            .flatMap(refreshTokenIfNeededSingleUseCase::execute)
             .doOnError(_refreshTokenError::onNext)
-            .map(UpdateTokenCompletableUseCase::Input)
             .flatMapCompletable(updateTokenCompletableUseCase::execute)
             .toSingleDefault(true)
             .onErrorReturnItem(false)

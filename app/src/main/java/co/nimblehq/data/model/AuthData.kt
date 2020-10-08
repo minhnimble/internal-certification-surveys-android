@@ -16,7 +16,7 @@ data class AuthData(
         get() = System.currentTimeMillis() / 1000 >= createdAt + expiresIn
 }
 
-fun OAuthResponse.toAuthData() = with(this.data.attributes) {
+fun OAuthResponse.toAuthData() = with(data.attributes) {
 	AuthData(
 		accessToken,
 		createdAt,
