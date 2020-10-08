@@ -21,11 +21,9 @@ class OnboardingViewModel @ViewModelInject constructor(
 
     val showServerError: Observable<Unit>
         get() = _refreshTokenError
-            .filter { error -> error is RefreshTokenError }
-            .map { error -> error as RefreshTokenError }
-            .flatMapMaybe { error ->
-                if (error.hasInvalidGrantCode) Maybe.empty() else Maybe.just(Unit)
-            }
+            .filter { it is RefreshTokenError }
+            .map(::RefreshTokenError)
+            .flatMapMaybe { if (it.hasInvalidGrantCode) Maybe.empty() else Maybe.just(Unit) }
 
     fun checkSession(): Single<Boolean> {
         return getTokenSingleUseCase
