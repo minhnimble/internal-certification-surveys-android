@@ -41,14 +41,14 @@ class LoginByPasswordSingleUseCaseTest {
         )
 
         // Act
-        val testSubscriber = useCase
+        val positiveTestSubscriber = useCase
             .execute(
                 LoginByPasswordSingleUseCase.Input("email", "12345")
             )
             .test()
 
         // Assert
-        testSubscriber
+        positiveTestSubscriber
             .assertNoErrors()
             .assertComplete()
     }
@@ -61,14 +61,14 @@ class LoginByPasswordSingleUseCaseTest {
         ) doReturn  Single.error(LoginError(null))
 
         // Act
-        val testNegativeSubscriber = useCase
+        val negativeTestSubscriber = useCase
             .execute(
                 LoginByPasswordSingleUseCase.Input("email", "12345")
             )
             .test()
 
         // Assert
-        testNegativeSubscriber
+        negativeTestSubscriber
             .assertError { it is LoginError }
     }
 }
