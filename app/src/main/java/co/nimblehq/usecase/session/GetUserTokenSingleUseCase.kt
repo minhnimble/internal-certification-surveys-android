@@ -11,7 +11,11 @@ import javax.inject.Inject
 class GetUserTokenSingleUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val secureStorage: SecureStorage
-) : SingleUseCase<Unit, AuthData>(rxSchedulerProvider.io(), rxSchedulerProvider.io(), ::Ignored) {
+) : SingleUseCase<Unit, AuthData>(
+    rxSchedulerProvider.io(),
+    rxSchedulerProvider.io(),
+    ::Ignored
+) {
 
     override fun create(input: Unit): Single<AuthData> {
         return Single.fromCallable {

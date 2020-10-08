@@ -17,10 +17,5 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        if (!viewModel.checkSession().blockingGet()) {
-            navigator.navigateToOnboardingActivity()
-            return
-        }
     }
 }

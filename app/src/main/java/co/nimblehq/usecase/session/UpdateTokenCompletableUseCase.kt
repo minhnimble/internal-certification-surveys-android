@@ -12,19 +12,14 @@ import javax.inject.Inject
 class UpdateTokenCompletableUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val secureStorage: SecureStorage
-) : CompletableUseCase<UpdateTokenCompletableUseCase.Input>(
+) : CompletableUseCase<AuthData>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.io(),
     ::Ignored
 ) {
-
-    data class Input(
-        val response: AuthData
-    )
-
-    override fun create(input: Input): Completable {
+    override fun create(input: AuthData): Completable {
         return Completable.fromAction {
-            with(input.response) {
+            with(input) {
                 secureStorage.apply {
                     userAccessToken = accessToken
                     userAccessTokenCreatedAt = createdAt

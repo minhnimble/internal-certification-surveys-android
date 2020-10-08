@@ -24,6 +24,7 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
 
         if (viewModel.checkSession().blockingGet()) {
             navigator.navigateToMainActivity()
+            return
         }
     }
 

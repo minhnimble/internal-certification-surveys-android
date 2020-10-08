@@ -37,7 +37,7 @@ class SignInViewModelTest {
             .showLoading
             .test()
         val negativeLoginStatusObserver = signingViewModel
-            .loginError
+            .signInError
             .test()
 
         signingViewModel.inputs.email("invalid@nimblehq.co")

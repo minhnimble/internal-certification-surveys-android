@@ -6,6 +6,7 @@ import co.nimblehq.R
 import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.extension.animateResource
 import co.nimblehq.extension.startFadeInAnimation
+import co.nimblehq.navigator.NavigationEvent
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.screen.onboarding.OnboardingNavigator
@@ -76,7 +77,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             .subscribe(::bindEnableLoginButton)
             .bindForDisposable()
 
-        viewModel.loginError
+        viewModel.signInError
             .subscribe(::bindLoginStatus)
             .bindForDisposable()
 
@@ -84,8 +85,12 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             .subscribe(::bindLoading)
             .bindForDisposable()
 
-        viewModel.showMain
-            .subscribe { showMainActivity() }
+        viewModel.navigator
+            .subscribe {
+                when (it) {
+                    is NavigationEvent.SignIn.Main -> showMainActivity()
+                }
+            }
             .bindForDisposable()
     }
 
