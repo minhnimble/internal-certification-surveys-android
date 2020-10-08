@@ -1,4 +1,4 @@
-package co.nimblehq.navigator
+package co.nimblehq.event
 
 sealed class NavigationEvent {
 

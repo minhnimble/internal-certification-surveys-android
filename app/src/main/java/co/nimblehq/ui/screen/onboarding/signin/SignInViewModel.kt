@@ -3,7 +3,7 @@ package co.nimblehq.ui.screen.onboarding.signin
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.extension.isEmail
-import co.nimblehq.navigator.NavigationEvent
+import co.nimblehq.event.NavigationEvent
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
 import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
 import io.reactivex.Observable
