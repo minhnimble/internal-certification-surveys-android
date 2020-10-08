@@ -3,6 +3,7 @@ package co.nimblehq.ui.screen.onboarding
 import android.os.Bundle
 import androidx.activity.viewModels
 import co.nimblehq.R
+import co.nimblehq.data.error.TokenExpiredError
 import co.nimblehq.extension.blurView
 import co.nimblehq.ui.base.BaseActivity
 import co.nimblehq.ui.screen.onboarding.signin.BlurAnimatable
@@ -36,7 +37,7 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
 
     private fun bindViewModel() {
         viewModel.showServerError
-            .subscribe { displayError(Throwable("Server error")) }
+            .subscribe { displayError(TokenExpiredError(null)) }
             .bindForDisposable()
     }
 }

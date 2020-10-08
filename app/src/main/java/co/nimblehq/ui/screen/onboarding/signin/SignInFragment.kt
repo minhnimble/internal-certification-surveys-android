@@ -42,7 +42,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
                 )
 
                 // Animate to show user sign in inputs
-                 btSignInForgotPassword.startFadeInAnimation()
+                btSignInForgotPassword.startFadeInAnimation()
                 llSignInInputContainer.startFadeInAnimation()
             }
             viewModel.inputs.initialized(false)
@@ -78,7 +78,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             .bindForDisposable()
 
         viewModel.signInError
-            .subscribe(::bindLoginStatus)
+            .subscribe(::displayError)
             .bindForDisposable()
 
         viewModel.showLoading
@@ -100,10 +100,6 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
 
     private fun bindLoading(isLoading: Boolean) {
         toggleLoading(isLoading)
-    }
-
-    private fun bindLoginStatus(error: Throwable) {
-        displayError(error)
     }
 
     private fun showMainActivity() {
