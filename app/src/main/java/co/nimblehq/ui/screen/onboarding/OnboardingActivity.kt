@@ -2,13 +2,10 @@ package co.nimblehq.ui.screen.onboarding
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
 import co.nimblehq.R
 import co.nimblehq.data.error.RefreshTokenError
 import co.nimblehq.data.error.TokenExpiredError
-import co.nimblehq.data.lib.rxjava.RxBus
 import co.nimblehq.event.NavigationEvent
-import co.nimblehq.event.PostSessionCheckEvent
 import co.nimblehq.extension.blurView
 import co.nimblehq.ui.base.BaseActivity
 import co.nimblehq.ui.screen.onboarding.signin.BlurAnimatable
