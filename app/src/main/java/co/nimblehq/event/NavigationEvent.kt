@@ -6,7 +6,7 @@ sealed class NavigationEvent {
         object Main : Onboarding()
     }
 
-	sealed class SignIn : NavigationEvent() {
-		object Main : SignIn()
-	}
+    sealed class SignIn : NavigationEvent() {
+        object Main : SignIn()
+    }
 }
