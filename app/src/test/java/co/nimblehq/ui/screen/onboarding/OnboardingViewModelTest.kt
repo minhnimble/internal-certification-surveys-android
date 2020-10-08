@@ -2,6 +2,7 @@ package co.nimblehq.ui.screen.onboarding
 
 import co.nimblehq.data.error.RefreshTokenError
 import co.nimblehq.data.model.AuthData
+import co.nimblehq.event.NavigationEvent
 import co.nimblehq.usecase.session.GetUserTokenSingleUseCase
 import co.nimblehq.usecase.session.RefreshTokenIfNeededSingleUseCase
 import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
@@ -37,7 +38,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `When session has expired token but unable to refresh token, it will return checkSession as false, and serverError will trigger`() {
+    fun `When session has expired token but unable to refresh token, it will trigger RefreshTokenError`() {
         // Arrange
         whenever(
             mockGetUserTokenSingleUseCase.execute(any())
@@ -47,52 +48,40 @@ class OnboardingViewModelTest {
         ) doReturn Single.error(RefreshTokenError())
 
         // Act
-        val showServerErrorObserver = onboardingViewModel
-            .showServerError
+        val errorObserver = onboardingViewModel
+            .error
             .test()
-        val checkSessionObserver = onboardingViewModel
-            .checkSession()
-            .test()
+        onboardingViewModel.checkSession()
 
         // Assert
-        checkSessionObserver
+        errorObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue(false)
-
-        showServerErrorObserver
-            .assertNoErrors()
-            .assertValue(Unit)
+            .assertValue { it is RefreshTokenError }
     }
 
     @Test
-    fun `When session has invalid token it will return checkSession as false, but no trigger serverError`() {
+    fun `When session has invalid token, it will trigger an error, but not RefreshTokenError`() {
         // Arrange
         whenever(
             mockGetUserTokenSingleUseCase.execute(any())
         ) doReturn Maybe.empty<AuthData>().toSingle()
 
         // Act
-        val showServerErrorObserver = onboardingViewModel
-            .showServerError
+        val errorObserver = onboardingViewModel
+            .error
             .test()
-        val checkSessionObserver = onboardingViewModel
-            .checkSession()
-            .test()
+        onboardingViewModel.checkSession()
 
         // Assert
-        checkSessionObserver
+        errorObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue(false)
-
-        showServerErrorObserver
-            .assertNoErrors()
-            .assertValueCount(0)
+            .assertValue { it !is RefreshTokenError }
     }
 
     @Test
-    fun `When session has valid token, it will return checkSession as true`() {
+    fun `When session has valid token, it will navigate to Main Activity`() {
         // Arrange
         val validAuthData = AuthData(
             "abcderfasdas",
@@ -112,14 +101,15 @@ class OnboardingViewModelTest {
         ) doReturn Completable.complete()
 
         // Act
-        val checkSessionObserver = onboardingViewModel
-            .checkSession()
+        val navigatorObserver = onboardingViewModel
+            .navigator
             .test()
+        onboardingViewModel.checkSession()
 
         // Assert
-        checkSessionObserver
+        navigatorObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue(true)
+            .assertValue(NavigationEvent.Onboarding.Main)
     }
 }
