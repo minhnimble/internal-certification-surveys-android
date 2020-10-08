@@ -25,7 +25,7 @@ class AuthRepositoryImpl @Inject constructor(
         password: String
     ): Single<AuthData> {
         return authService
-            .authenticate(RequestHelper.loginWithEmail(email, password))
+            .loginByPasswordWithEmail(RequestHelper.loginWithEmail(email, password))
             .firstOrError()
             .map { it.toAuthData() }
     }
@@ -34,7 +34,7 @@ class AuthRepositoryImpl @Inject constructor(
         token: String
     ): Single<AuthData> {
         return authService
-            .authenticate(RequestHelper.refreshToken(token))
+            .refreshToken(RequestHelper.refreshToken(token))
             .firstOrError()
             .map { it.toAuthData() }
     }
