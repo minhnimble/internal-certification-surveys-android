@@ -2,7 +2,7 @@ package co.nimblehq.ui.screen.onboarding.signin
 
 import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.model.AuthData
-import co.nimblehq.navigator.NavigationEvent
+import co.nimblehq.event.NavigationEvent
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
 import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
