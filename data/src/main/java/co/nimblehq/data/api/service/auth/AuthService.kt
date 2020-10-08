@@ -1,5 +1,6 @@
 package co.nimblehq.data.api.service.auth
 
+import co.nimblehq.data.api.request.OAuthRequest
 import co.nimblehq.data.api.request.OAuthRequest.*
 import co.nimblehq.data.api.response.OAuthResponse
 import io.reactivex.Flowable
@@ -11,12 +12,7 @@ import retrofit2.http.*
 interface AuthService {
 
     @POST("/api/v1/oauth/token")
-    fun loginByPasswordWithEmail(
-        @Body request: LoginByPasswordWithEmailRequest
-    ): Flowable<OAuthResponse>
-
-    @POST("/api/v1/oauth/token")
-    fun refreshToken(
-        @Body request: RefreshTokenRequest
+    fun authenticate(
+        @Body request: OAuthRequest
     ): Flowable<OAuthResponse>
 }

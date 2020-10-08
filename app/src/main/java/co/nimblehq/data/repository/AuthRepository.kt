@@ -1,10 +1,10 @@
 package co.nimblehq.data.repository
 
 import co.nimblehq.data.model.AuthData
-import co.nimblehq.data.model.toAuthData
 import co.nimblehq.data.api.service.auth.AuthService
 import co.nimblehq.data.api.request.helper.RequestHelper
 import co.nimblehq.data.authenticator.TokenRefresher
+import co.nimblehq.data.model.toAuthData
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class AuthRepositoryImpl @Inject constructor(
         password: String
     ): Single<AuthData> {
         return authService
-            .loginByPasswordWithEmail(RequestHelper.loginWithEmailRequest(email, password))
+            .authenticate(RequestHelper.loginWithEmail(email, password))
             .firstOrError()
             .map { it.toAuthData() }
     }
@@ -34,7 +34,7 @@ class AuthRepositoryImpl @Inject constructor(
         token: String
     ): Single<AuthData> {
         return authService
-            .refreshToken(RequestHelper.refreshTokenRequest(token))
+            .authenticate(RequestHelper.refreshToken(token))
             .firstOrError()
             .map { it.toAuthData() }
     }

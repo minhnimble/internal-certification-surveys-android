@@ -7,11 +7,11 @@ import co.nimblehq.data.lib.common.OAUTH_GRANT_TYPE_REFRESH_TOKEN
 
 object RequestHelper {
 
-    fun loginWithEmailRequest(
+    fun loginWithEmail(
         email: String,
         password: String
-    ): LoginByPasswordWithEmailRequest {
-        return LoginByPasswordWithEmailRequest(
+    ): LoginByPasswordWithEmail {
+        return LoginByPasswordWithEmail(
             OAUTH_GRANT_TYPE_PASSWORD,
             email,
             password,
@@ -20,8 +20,8 @@ object RequestHelper {
         )
     }
 
-    fun refreshTokenRequest(refreshToken: String): RefreshTokenRequest {
-        return RefreshTokenRequest(
+    fun refreshToken(refreshToken: String): RefreshToken {
+        return RefreshToken(
             OAUTH_GRANT_TYPE_REFRESH_TOKEN,
             refreshToken,
             Secrets.clientId,

@@ -17,11 +17,11 @@ data class AuthData(
 }
 
 fun OAuthResponse.toAuthData() = with(data.attributes) {
-	AuthData(
-		accessToken,
-		createdAt,
-		expiresIn,
-		refreshToken,
-		tokenType
-	)
+    AuthData(
+        accessToken,
+        createdAt,
+        expiresIn,
+        refreshToken,
+        tokenType
+    )
 }
