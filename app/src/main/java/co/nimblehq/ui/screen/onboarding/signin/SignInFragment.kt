@@ -4,13 +4,16 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
 import co.nimblehq.data.lib.extension.subscribeOnClick
+import co.nimblehq.data.lib.rxjava.RxBus
 import co.nimblehq.extension.animateResource
 import co.nimblehq.extension.startFadeInAnimation
-import co.nimblehq.navigator.NavigationEvent
+import co.nimblehq.event.NavigationEvent
+import co.nimblehq.event.PostSessionCheckEvent
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.screen.onboarding.OnboardingNavigator
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import javax.inject.Inject
 
@@ -29,7 +32,49 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun initViewModel() { }
 
-    override fun setupView() {
+    override fun setupView() { }
+
+    override fun bindViewEvents() {
+        btSignInLogin
+            .subscribeOnClick(viewModel::login)
+            .bindForDisposable()
+
+        etSignInEmail.addTextChangedListener {
+            viewModel.inputs.email(it.toString())
+        }
+
+        etSignInPassword.addTextChangedListener {
+            viewModel.inputs.password(it.toString())
+        }
+
+        RxBus.listen(PostSessionCheckEvent::class.java)
+            .subscribe { executePostSessionCheck() }
+            .bindForDisposable()
+    }
+
+    override fun bindViewModel() {
+        viewModel.enableLoginButton
+            .subscribe(::bindEnableLoginButton)
+            .bindForDisposable()
+
+        viewModel.signInError
+            .subscribe(::displayError)
+            .bindForDisposable()
+
+        viewModel.showLoading
+            .subscribe(::bindLoading)
+            .bindForDisposable()
+
+        viewModel.navigator
+            .subscribe {
+                when (it) {
+                    is NavigationEvent.SignIn.Main -> showMainActivity()
+                }
+            }
+            .bindForDisposable()
+    }
+
+    private fun executePostSessionCheck() {
         if (viewModel.firstInitialized) {
             ivSignInNimbleLogo.startFadeInAnimation {
                 // Animate to show blur image on background of the current fragment's activity if it conforms BlurAnimatable
@@ -56,42 +101,6 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             btSignInForgotPassword.startFadeInAnimation(shouldAnimate = false)
             llSignInInputContainer.startFadeInAnimation(shouldAnimate = false)
         }
-    }
-
-    override fun bindViewEvents() {
-        btSignInLogin
-            .subscribeOnClick(viewModel::login)
-            .bindForDisposable()
-
-        etSignInEmail.addTextChangedListener {
-            viewModel.inputs.email(it.toString())
-        }
-
-        etSignInPassword.addTextChangedListener {
-            viewModel.inputs.password(it.toString())
-        }
-    }
-
-    override fun bindViewModel() {
-        viewModel.enableLoginButton
-            .subscribe(::bindEnableLoginButton)
-            .bindForDisposable()
-
-        viewModel.signInError
-            .subscribe(::displayError)
-            .bindForDisposable()
-
-        viewModel.showLoading
-            .subscribe(::bindLoading)
-            .bindForDisposable()
-
-        viewModel.navigator
-            .subscribe {
-                when (it) {
-                    is NavigationEvent.SignIn.Main -> showMainActivity()
-                }
-            }
-            .bindForDisposable()
     }
 
     private fun bindEnableLoginButton(isEnabled: Boolean) {

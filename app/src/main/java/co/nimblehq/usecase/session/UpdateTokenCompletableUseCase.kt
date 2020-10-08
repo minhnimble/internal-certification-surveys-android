@@ -14,7 +14,7 @@ class UpdateTokenCompletableUseCase @Inject constructor(
     private val secureStorage: SecureStorage
 ) : CompletableUseCase<AuthData>(
     rxSchedulerProvider.io(),
-    rxSchedulerProvider.io(),
+    rxSchedulerProvider.main(),
     ::Ignored
 ) {
     override fun create(input: AuthData): Completable {
