@@ -2,7 +2,6 @@ package co.nimblehq.usecase.session
 
 import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
-import co.nimblehq.data.api.response.OAuthResponse
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.data.storage.SecureStorage
 import co.nimblehq.usecase.base.CompletableUseCase

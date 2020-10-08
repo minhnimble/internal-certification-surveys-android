@@ -2,9 +2,8 @@ package co.nimblehq.usecase.session
 
 import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
-import co.nimblehq.data.repository.AuthRepository
-import co.nimblehq.data.api.response.OAuthResponse
 import co.nimblehq.data.model.AuthData
+import co.nimblehq.data.repository.AuthRepository
 import co.nimblehq.usecase.base.SingleUseCase
 import io.reactivex.Single
 import javax.inject.Inject
