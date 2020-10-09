@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import co.nimblehq.R
 import co.nimblehq.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.shimmer_loading_indicator_main.*
 import javax.inject.Inject
 
 interface LoaderAnimatable {
