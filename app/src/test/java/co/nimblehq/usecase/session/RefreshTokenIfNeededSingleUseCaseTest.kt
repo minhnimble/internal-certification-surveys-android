@@ -28,7 +28,7 @@ class RefreshTokenIfNeededSingleUseCaseTest {
     }
 
     @Test
-    fun `When authData is expired and the refresh API call is successful, it returns a new AuthData`() {
+    fun `When authData is expired and the refresh token API call is successful, it returns a new AuthData`() {
         // Arrange
         whenever(
             mockAuthData.isExpired
@@ -58,7 +58,7 @@ class RefreshTokenIfNeededSingleUseCaseTest {
     }
 
     @Test
-    fun `When authData is expired and the refresh API call is successful, it returns a new RefreshTokenError`() {
+    fun `When authData is expired and the refresh token API call is unsuccessful, it returns a new RefreshTokenError`() {
         // Arrange
         whenever(
             mockAuthData.isExpired
@@ -76,7 +76,7 @@ class RefreshTokenIfNeededSingleUseCaseTest {
     }
 
     @Test
-    fun `When authData is not expired, it returns the same AuthData`() {
+    fun `When authData is not expired, it returns back the same authData`() {
         // Arrange
         whenever(
             mockAuthData.isExpired

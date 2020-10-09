@@ -6,7 +6,8 @@ import co.nimblehq.data.storage.SecureStorage
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import org.junit.*
+import org.junit.Before
+import org.junit.Test
 
 class GetUserTokenSingleUseCaseTest {
 

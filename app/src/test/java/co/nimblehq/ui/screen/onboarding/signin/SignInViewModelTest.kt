@@ -29,7 +29,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `When input wrong email and password combination, first it will show the loading, then it returns LoginError and hides the loading when completed`() {
+    fun `When providing a wrong email and password combination, first it shows the loading, then returns a LoginError and hides the loading when completed`() {
         // Arrange
         whenever(
             mockLoginByPasswordSingleUseCase.execute(any())
@@ -64,7 +64,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `When input valid email and password combination, it will open Main Activity`() {
+    fun `When providing a valid email and password combination, it opens Main Activity`() {
         // Arrange
         whenever(
             mockLoginByPasswordSingleUseCase.execute(any())
@@ -90,7 +90,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `When input incorrect email format, Login button is disabled`() {
+    fun `When providing an email with incorrect format, Login button is disabled`() {
         // Arrange
         val enableLoginButtonObserver = signingViewModel
             .enableLoginButton
@@ -108,7 +108,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `When input empty password, Login button is disabled`() {
+    fun `When providing an empty password, Login button is disabled`() {
         // Arrange
         val enableLoginButtonObserver = signingViewModel
             .enableLoginButton
@@ -126,7 +126,7 @@ class SignInViewModelTest {
     }
 
     @Test
-    fun `When input valid email and password, Login button is enabled`() {
+    fun `When providing a valid email and password combination, Login button is enabled`() {
         // Arrange
         val enableLoginButtonObserver = signingViewModel
             .enableLoginButton

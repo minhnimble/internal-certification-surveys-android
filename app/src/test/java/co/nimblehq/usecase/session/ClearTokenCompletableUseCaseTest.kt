@@ -3,7 +3,8 @@ package co.nimblehq.usecase.session
 import co.nimblehq.data.lib.schedulers.TestRxSchedulerProviderImpl
 import co.nimblehq.data.storage.SecureStorage
 import com.nhaarman.mockitokotlin2.mock
-import org.junit.*
+import org.junit.Before
+import org.junit.Test
 
 class ClearTokenCompletableUseCaseTest {
 
@@ -20,7 +21,7 @@ class ClearTokenCompletableUseCaseTest {
     }
 
     @Test
-    fun `When trigger the use case to clear data, it always returns Complete`() {
+    fun `When triggering this use case to clear data, it always returns Complete`() {
         // Act
         val testSubscriber = useCase.execute(Unit).test()
 
