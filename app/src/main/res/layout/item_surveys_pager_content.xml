@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clSurveysItemPagerContent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSurveysItemBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/bg_surveys_sample_item" />
+
+    <TextView
+        android:id="@+id/tvSurveysItemHeader"
+        style="@style/Widget.Template.TextView.Header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="11dp"
+        android:gravity="start"
+        android:maxLines="2"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/tvSurveysItemDescription"
+        app:layout_constraintStart_toStartOf="@+id/ivSurveysItemBackground"
+        tools:text="@string/surveys_sample_item_header" />
+
+    <TextView
+        android:id="@+id/tvSurveysItemDescription"
+        style="@style/Widget.Template.TextView.Header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="54dp"
+        android:gravity="start"
+        android:lines="2"
+        android:maxLines="2"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/surveys_sample_item_description" />
+</androidx.constraintlayout.widget.ConstraintLayout>

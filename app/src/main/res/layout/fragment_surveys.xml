@@ -1,6 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clSurveys"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:background="@color/colorDimGray">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpSurveys"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/ciSurveysIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:layout_marginBottom="200dp"
+        app:ci_drawable="@drawable/ic_surveys_indicator_selected_circle"
+        app:ci_drawable_unselected="@drawable/ic_surveys_indicator_unselected_circle"
+        app:ci_height="5dp"
+        app:ci_width="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
