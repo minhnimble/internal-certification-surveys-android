@@ -10,7 +10,7 @@
 
     <color name="colorFreeSpeechBlue">#3F51B5</color>
 
-    <color name="colorDimGray">#616161</color>
+    <color name="colorNero">#202020</color>
 
     <color name="colorWhite">@color/white</color>
 </resources>
