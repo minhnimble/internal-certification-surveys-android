@@ -22,7 +22,7 @@ class UpdateTokenCompletableUseCaseTest {
     }
 
     @Test
-    fun `When trigger the use case to update data, it always returns Complete`() {
+    fun `When triggering this use case to update secureStorage with a new AuthData object, it always returns Complete`() {
         // Act
         val positiveTestSubscriber = useCase.execute(AuthData()).test()
 
