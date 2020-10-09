@@ -69,13 +69,7 @@ class SignInViewModelTest {
         whenever(
             mockLoginByPasswordSingleUseCase.execute(any())
         ) doReturn Single.just(
-            AuthData(
-                "",
-                0,
-                0,
-                "",
-                ""
-            )
+            AuthData()
         )
         whenever(
             mockUpdateTokenCompletableUseCase.execute(any())
