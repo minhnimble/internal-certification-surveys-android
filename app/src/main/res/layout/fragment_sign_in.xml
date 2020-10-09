@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_nimble_logo_white"
+        app:srcCompat="@drawable/ic_sign_in_nimble_logo_white"
         tools:alpha="1" />
 
     <LinearLayout
@@ -61,7 +61,7 @@
             android:id="@+id/btSignInLogin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
-            android:background="@drawable/bg_user_login_button"
+            android:background="@drawable/bg_sign_in_login_button"
             android:enabled="false"
             android:text="@string/sign_in_log_in_btn_title"
             android:textAllCaps="false"

@@ -11,7 +11,7 @@
     </style>
 
     <style name="LoginEditTextStyle">
-        <item name="android:background">@drawable/bg_user_login_input</item>
+        <item name="android:background">@drawable/bg_sign_in_user_input</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textColorHighlight">@color/colorWhite</item>
