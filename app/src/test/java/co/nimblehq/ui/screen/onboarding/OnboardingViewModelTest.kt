@@ -1,6 +1,5 @@
 package co.nimblehq.ui.screen.onboarding
 
-import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.error.RefreshTokenError
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.event.NavigationEvent
@@ -39,7 +38,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `When the access token has expired token but the app is unable to refresh token, it triggers a RefreshTokenError`() {
+    fun `When the session has an expired token but the app is unable to refresh that token, it triggers a RefreshTokenError`() {
         // Arrange
         whenever(
             mockGetUserTokenSingleUseCase.execute(any())
@@ -69,7 +68,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `When session has invalid token, it triggers an Ignored error`() {
+    fun `When the session has an invalid token, it triggers an Ignored error`() {
         // Arrange
         whenever(
             mockGetUserTokenSingleUseCase.execute(any())
@@ -89,7 +88,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `When session has valid token, it navigates to Main Activity`() {
+    fun `When the session has a valid token, it navigates to Main Activity`() {
         // Arrange
         val validAuthData = AuthData(
             "access token",
