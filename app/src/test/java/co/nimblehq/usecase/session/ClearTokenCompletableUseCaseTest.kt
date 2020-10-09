@@ -22,8 +22,7 @@ class ClearTokenCompletableUseCaseTest {
     @Test
     fun `When trigger the use case to clear data, it always returns Complete`() {
         // Act
-        val testSubscriber = useCase.execute(Unit)
-            .test()
+        val testSubscriber = useCase.execute(Unit).test()
 
         // Assert
         testSubscriber
