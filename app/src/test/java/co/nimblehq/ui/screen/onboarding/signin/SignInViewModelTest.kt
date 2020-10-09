@@ -68,9 +68,7 @@ class SignInViewModelTest {
         // Arrange
         whenever(
             mockLoginByPasswordSingleUseCase.execute(any())
-        ) doReturn Single.just(
-            AuthData()
-        )
+        ) doReturn Single.just(AuthData())
         whenever(
             mockUpdateTokenCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
