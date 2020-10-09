@@ -1,5 +1,6 @@
 package co.nimblehq.ui.screen.onboarding
 
+import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.error.RefreshTokenError
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.event.NavigationEvent
@@ -38,11 +39,18 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `When session has expired token but unable to refresh token, it will trigger RefreshTokenError`() {
+    fun `When the access token has expired token but the app is unable to refresh token, it triggers a RefreshTokenError`() {
         // Arrange
         whenever(
             mockGetUserTokenSingleUseCase.execute(any())
-        ) doReturn Single.just(AuthData("abc",1000,100,"cde","password"))
+        ) doReturn Single.just(
+            AuthData(
+                "access token",
+                1000,
+                100,
+                "refresh token",
+                "token type")
+        )
         whenever(
             mockRefreshTokenIfNeededSingleUseCase.execute(any())
         ) doReturn Single.error(RefreshTokenError())
@@ -61,7 +69,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `When session has invalid token, it will trigger an error, but not RefreshTokenError`() {
+    fun `When session has invalid token, it triggers an Ignored error`() {
         // Arrange
         whenever(
             mockGetUserTokenSingleUseCase.execute(any())
@@ -77,18 +85,18 @@ class OnboardingViewModelTest {
         errorObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue { it !is RefreshTokenError }
+            .assertValue { it is Throwable }
     }
 
     @Test
-    fun `When session has valid token, it will navigate to Main Activity`() {
+    fun `When session has valid token, it navigates to Main Activity`() {
         // Arrange
         val validAuthData = AuthData(
-            "abcderfasdas",
+            "access token",
             1234,
             7200,
-            "abcderqweq",
-            "password"
+            "refresh token",
+            "token type"
         )
         whenever(
             mockGetUserTokenSingleUseCase.execute(any())

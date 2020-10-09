@@ -30,14 +30,15 @@ class LoginByPasswordSingleUseCaseTest {
         // Arrange
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
-        ) doReturn Single.just(
-            AuthData()
-        )
+        ) doReturn Single.just(AuthData())
 
         // Act
         val positiveTestSubscriber = useCase
             .execute(
-                LoginByPasswordSingleUseCase.Input("email", "12345")
+                LoginByPasswordSingleUseCase.Input(
+                    "email",
+                    "password"
+                )
             )
             .test()
 
@@ -48,7 +49,7 @@ class LoginByPasswordSingleUseCaseTest {
     }
 
     @Test
-    fun `When logging in fails, it returns LoginError`() {
+    fun `When logging in fails, it returns a LoginError`() {
         // Arrange
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
@@ -57,7 +58,10 @@ class LoginByPasswordSingleUseCaseTest {
         // Act
         val negativeTestSubscriber = useCase
             .execute(
-                LoginByPasswordSingleUseCase.Input("email", "12345")
+                LoginByPasswordSingleUseCase.Input(
+                    "email",
+                    "12345"
+                )
             )
             .test()
 

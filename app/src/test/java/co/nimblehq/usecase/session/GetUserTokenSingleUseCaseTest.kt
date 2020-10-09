@@ -27,18 +27,16 @@ class GetUserTokenSingleUseCaseTest {
         // Arrange
         whenever(
             secureStorage.userAccessToken
-        ) doReturn  "abc"
+        ) doReturn  "user access token"
         whenever(
             secureStorage.userRefreshToken
-        ) doReturn  "def"
+        ) doReturn  "user refresh token"
         whenever(
             secureStorage.userTokenType
-        ) doReturn  "password"
+        ) doReturn  "user token type"
 
         // Act
-        val positiveTestSubscriber = useCase
-            .execute(Unit)
-            .test()
+        val positiveTestSubscriber = useCase.execute(Unit).test()
 
         // Assert
         positiveTestSubscriber
@@ -47,7 +45,7 @@ class GetUserTokenSingleUseCaseTest {
     }
 
     @Test
-    fun `When stored token data is invalid (empty access token or refresh token or token type), it returns an error`() {
+    fun `When stored token data is invalid, it returns a Ignored error`() {
         // Arrange
         whenever(
             secureStorage.userAccessToken
@@ -60,15 +58,11 @@ class GetUserTokenSingleUseCaseTest {
         ) doReturn  ""
 
         // Act
-        val negativeTestSubscriber = useCase
-            .execute(Unit)
-            .test()
+        val negativeTestSubscriber = useCase.execute(Unit).test()
 
         // Assert
         negativeTestSubscriber
-            .assertError {
-                it is Ignored
-            }
             .assertValueCount(0)
+            .assertError { it is Ignored }
     }
 }

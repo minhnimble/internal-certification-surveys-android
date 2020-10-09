@@ -28,7 +28,7 @@ class RefreshTokenIfNeededSingleUseCaseTest {
     }
 
     @Test
-    fun `When authData is expired and the refresh APi call is success, it will return a new AuthData`() {
+    fun `When authData is expired and the refresh API call is successful, it returns a new AuthData`() {
         // Arrange
         whenever(
             mockAuthData.isExpired
@@ -46,21 +46,19 @@ class RefreshTokenIfNeededSingleUseCaseTest {
         )
 
         // Act
-        val positiveTestSubscriber = useCase
-            .execute(
-                mockAuthData
-            )
-            .test()
+        val positiveTestSubscriber = useCase.execute(mockAuthData).test()
 
         // Assert
         positiveTestSubscriber
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue { it != mockAuthData }
+            .assertValue {
+                it != mockAuthData
+            }
     }
 
     @Test
-    fun `When authData is expired and the refresh APi call is success, it will return a new RefreshTokenError`() {
+    fun `When authData is expired and the refresh API call is successful, it returns a new RefreshTokenError`() {
         // Arrange
         whenever(
             mockAuthData.isExpired
@@ -70,21 +68,15 @@ class RefreshTokenIfNeededSingleUseCaseTest {
         ) doReturn Single.error(RefreshTokenError())
 
         // Act
-        val negativeTestSubscriber = useCase
-            .execute(
-                mockAuthData
-            )
-            .test()
+        val negativeTestSubscriber = useCase.execute(mockAuthData).test()
 
         // Assert
         negativeTestSubscriber
-            .assertError {
-                it is RefreshTokenError
-            }
+            .assertError { it is RefreshTokenError }
     }
 
     @Test
-    fun `When authData is not expired it will return the same AuthData`() {
+    fun `When authData is not expired, it returns the same AuthData`() {
         // Arrange
         whenever(
             mockAuthData.isExpired
@@ -94,11 +86,7 @@ class RefreshTokenIfNeededSingleUseCaseTest {
         ) doReturn Single.just(mockAuthData)
 
         // Act
-        val negativeTestSubscriber = useCase
-            .execute(
-                mockAuthData
-            )
-            .test()
+        val negativeTestSubscriber = useCase.execute(mockAuthData).test()
 
         // Assert
         negativeTestSubscriber

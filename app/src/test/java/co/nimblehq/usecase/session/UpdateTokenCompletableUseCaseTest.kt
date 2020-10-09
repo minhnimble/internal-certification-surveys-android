@@ -24,10 +24,7 @@ class UpdateTokenCompletableUseCaseTest {
     @Test
     fun `When trigger the use case to update data, it always returns Complete`() {
         // Act
-        val positiveTestSubscriber = useCase.execute(
-            AuthData()
-        )
-            .test()
+        val positiveTestSubscriber = useCase.execute(AuthData()).test()
 
         // Assert
         positiveTestSubscriber
