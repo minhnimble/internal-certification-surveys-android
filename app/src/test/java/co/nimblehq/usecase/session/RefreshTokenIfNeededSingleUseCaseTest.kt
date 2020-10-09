@@ -56,7 +56,7 @@ class RefreshTokenIfNeededSingleUseCaseTest {
         positiveTestSubscriber
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue { it is AuthData && it != mockAuthData }
+            .assertValue { it != mockAuthData }
     }
 
     @Test
