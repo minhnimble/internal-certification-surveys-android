@@ -31,13 +31,7 @@ class LoginByPasswordSingleUseCaseTest {
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
         ) doReturn Single.just(
-            AuthData(
-                "",
-                0,
-                0,
-                "",
-                ""
-            )
+            AuthData()
         )
 
         // Act

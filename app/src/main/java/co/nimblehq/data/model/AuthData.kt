@@ -14,6 +14,14 @@ data class AuthData(
 
     val isExpired: Boolean
         get() = System.currentTimeMillis() / 1000 >= createdAt + expiresIn
+
+    constructor() : this(
+        "",
+        0,
+        0,
+        "",
+        ""
+    )
 }
 
 fun OAuthResponse.toAuthData() = with(data.attributes) {
