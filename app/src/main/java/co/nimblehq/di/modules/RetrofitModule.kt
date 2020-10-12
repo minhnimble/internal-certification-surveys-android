@@ -1,14 +1,14 @@
 package co.nimblehq.di.modules
 
-import com.google.gson.Gson
-import co.nimblehq.data.api.interceptor.AppRequestInterceptor
 import co.nimblehq.data.api.providers.ApiServiceProvider
 import co.nimblehq.data.api.providers.ConverterFactoryProvider
 import co.nimblehq.data.api.providers.RetrofitProvider
-import co.nimblehq.data.repository.AuthRepository
-import co.nimblehq.data.api.service.auth.AuthService
-import co.nimblehq.data.authenticator.TokenRefresher
-import co.nimblehq.data.provider.ApiRepositoryProvider
+import co.nimblehq.data.api.service.survey.AuthService
+import co.nimblehq.di.qualifier.AppOkHttpClient
+import co.nimblehq.di.qualifier.AppRetrofit
+import co.nimblehq.di.qualifier.AuthOkHttpClient
+import co.nimblehq.di.qualifier.AuthRetrofit
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,28 +24,32 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideApiRetrofit(okHttpClient: OkHttpClient, converterFactory: Converter.Factory): Retrofit {
+    @AppRetrofit
+    fun provideAppRetrofit(
+        @AppOkHttpClient okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory
+    ): Retrofit {
         return RetrofitProvider
             .getRetrofitBuilder(converterFactory, okHttpClient)
             .build()
     }
 
     @Provides
-    fun provideConverterFactory(gson: Gson): Converter.Factory {
-        return ConverterFactoryProvider.getConverterFactoryProvider(gson)
+    @Singleton
+    @AuthRetrofit
+    fun provideAuthRetrofit(
+        @AuthOkHttpClient okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory
+    ): Retrofit {
+        return RetrofitProvider
+            .getRetrofitBuilder(converterFactory, okHttpClient)
+            .build()
     }
 
     @Provides
-    fun provideAppRequestInterceptor(): AppRequestInterceptor = AppRequestInterceptor()
+    fun provideConverterFactory(gson: Gson): Converter.Factory = ConverterFactoryProvider.getConverterFactoryProvider(gson)
 
     @Provides
     @Singleton
-    fun provideAuthRepository(authService: AuthService): AuthRepository = ApiRepositoryProvider.getAuthRepository(authService)
-
-    @Provides
-    @Singleton
-    fun provideAuthService(retrofit: Retrofit): AuthService = ApiServiceProvider.getAuthService(retrofit)
-
-    @Provides
-    fun provideTokenRefresher(authRepository: AuthRepository): TokenRefresher = authRepository
+    fun provideAuthService(@AuthRetrofit retrofit: Retrofit): AuthService = ApiServiceProvider.getAuthService(retrofit)
 }

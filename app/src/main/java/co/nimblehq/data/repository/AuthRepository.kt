@@ -1,7 +1,7 @@
 package co.nimblehq.data.repository
 
 import co.nimblehq.data.model.AuthData
-import co.nimblehq.data.api.service.auth.AuthService
+import co.nimblehq.data.api.service.survey.AuthService
 import co.nimblehq.data.api.request.helper.RequestHelper
 import co.nimblehq.data.authenticator.TokenRefresher
 import co.nimblehq.data.model.toAuthData

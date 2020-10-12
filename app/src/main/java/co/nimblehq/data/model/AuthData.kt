@@ -1,6 +1,6 @@
 package co.nimblehq.data.model
 
-import co.nimblehq.data.api.response.OAuthResponse
+import co.nimblehq.data.api.response.auth.OAuthResponse
 
 data class AuthData(
     val accessToken: String,

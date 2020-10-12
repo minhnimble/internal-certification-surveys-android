@@ -1,6 +1,6 @@
 package co.nimblehq.data.provider
 
-import co.nimblehq.data.api.service.auth.AuthService
+import co.nimblehq.data.api.service.survey.AuthService
 import co.nimblehq.data.repository.AuthRepository
 import co.nimblehq.data.repository.AuthRepositoryImpl
 
