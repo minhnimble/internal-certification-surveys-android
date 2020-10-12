@@ -8,10 +8,8 @@
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/sflMainContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -20,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:id="@+id/clMainShimmerAvatar"
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"
@@ -30,9 +28,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintWidth_percent="0.3">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </View>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:id="@+id/clMainShimmerBar1"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_15sdp"
@@ -43,9 +41,9 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.3">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </View>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:id="@+id/clMainShimmerBar2"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_15sdp"
@@ -55,9 +53,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/clMainShimmerBar1"
                 app:layout_constraintWidth_percent="0.25">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </View>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:id="@+id/clMainShimmerBar3"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_15sdp"
@@ -67,9 +65,9 @@
                 app:layout_constraintStart_toStartOf="@+id/clMainShimmerBar4"
                 app:layout_constraintWidth_percent="0.1">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </View>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:id="@+id/clMainShimmerBar4"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_15sdp"
@@ -79,9 +77,9 @@
                 app:layout_constraintStart_toStartOf="@+id/clMainShimmerBar5"
                 app:layout_constraintWidth_percent="0.7">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </View>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:id="@+id/clMainShimmerBar5"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_15sdp"
@@ -91,9 +89,9 @@
                 app:layout_constraintStart_toStartOf="@+id/clMainShimmerBar6"
                 app:layout_constraintWidth_percent="0.3">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </View>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:id="@+id/clMainShimmerBar6"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_15sdp"
@@ -103,9 +101,9 @@
                 app:layout_constraintStart_toStartOf="@+id/clMainShimmerBar7"
                 app:layout_constraintWidth_percent="0.8">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </View>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
                 android:id="@+id/clMainShimmerBar7"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_15sdp"
@@ -116,7 +114,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintWidth_percent="0.6">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </View>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
