@@ -28,10 +28,6 @@ class MainActivity : BaseActivity(), LoaderAnimatable {
 
     override fun toggleShimmerLoader(shouldShow: Boolean) {
         clMainShimmerContainer.visibility = if (shouldShow) View.VISIBLE else View.GONE
-        if (shouldShow) {
-            sflMainContainer.startShimmer()
-        } else {
-            sflMainContainer.stopShimmer()
-        }
+        if (shouldShow) sflMainContainer.startShimmer() else sflMainContainer.stopShimmer()
     }
 }

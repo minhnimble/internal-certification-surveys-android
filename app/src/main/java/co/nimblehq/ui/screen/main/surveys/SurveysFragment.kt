@@ -35,6 +35,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
         }, 2000)
 
         // TODO: update this to real data in logic PR
+        tvSurveysDate.text = getString(R.string.surveys_sample_date_desc)
         val testData = listOf(
             SurveysPagerItemUiModel(R.drawable.bg_surveys_sample_item, getString(R.string.surveys_sample_item_header), getString(R.string.surveys_sample_item_description)),
             SurveysPagerItemUiModel(R.drawable.bg_surveys_sample_item, getString(R.string.surveys_sample_item_header), getString(R.string.surveys_sample_item_description)),
