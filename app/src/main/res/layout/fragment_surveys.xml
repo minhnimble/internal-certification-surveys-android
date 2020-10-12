@@ -20,7 +20,7 @@
         android:id="@+id/ciSurveysIndicator"
         android:layout_width="wrap_content"
         android:layout_height="10dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="@dimen/_159sdp"
         app:ci_drawable="@drawable/ic_surveys_indicator_selected_circle"
         app:ci_drawable_unselected="@drawable/ic_surveys_indicator_unselected_circle"
         app:ci_height="5dp"
@@ -29,5 +29,51 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSurveysDate"
+        style="@style/Widget.Template.TextView.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@+id/tvSurveysToday"
+        app:layout_constraintEnd_toStartOf="@+id/cvSurveysUserAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/surveys_sample_date_desc" />
+
+    <TextView
+        android:id="@+id/tvSurveysToday"
+        style="@style/Widget.Template.TextView.Header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:text="@string/today"
+        app:layout_constraintEnd_toStartOf="@+id/cvSurveysUserAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cvSurveysUserAvatar" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvSurveysUserAvatar"
+        android:layout_width="@dimen/_31sdp"
+        android:layout_height="@dimen/_31sdp"
+        android:layout_marginTop="@dimen/_60sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        app:cardCornerRadius="@dimen/_15sdp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivSurveysUserAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/user_avatar"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_general_default_user_avatar" />
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

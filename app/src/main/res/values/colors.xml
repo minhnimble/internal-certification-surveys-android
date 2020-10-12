@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Declaring colors for using in themes/UI component attributes with a meaningful name -->
-    <color name="colorPrimary">@color/light_blue</color>
-    <color name="colorPrimaryDark">@color/dark_blue</color>
+    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimaryDark">@color/black</color>
 
     <color name="colorAccent">@color/light_blue</color>
 

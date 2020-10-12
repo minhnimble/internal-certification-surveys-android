@@ -1,9 +1,9 @@
-package com.swd.edeeremit.ui.onboarding.introduction.adapter
+package co.nimblehq.ui.screen.main.surveys.adapter
 
 import androidx.annotation.DrawableRes
 
 data class SurveysPagerItemUiModel(
     @DrawableRes val imageDrawable: Int,
-    val title: String,
-    val subtitle: String
+    val header: String,
+    val description: String
 )

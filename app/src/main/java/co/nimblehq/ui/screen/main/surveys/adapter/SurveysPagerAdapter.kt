@@ -1,17 +1,18 @@
 package co.nimblehq.ui.screen.main.surveys.adapter
 
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import co.nimblehq.R
-import com.swd.edeeremit.ui.onboarding.introduction.adapter.SurveysPagerItemUiModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_surveys_pager_content.*
 
 internal class SurveysPagerAdapter(
-    private val SurveysPagerItems: List<SurveysPagerItemUiModel>
+    private val surveysPagerItems: List<SurveysPagerItemUiModel>
 ) : RecyclerView.Adapter<SurveysPagerAdapter.SurveysViewHolder>() {
 
-    override fun getItemCount() = SurveysPagerItems.size
+    override fun getItemCount() = surveysPagerItems.size
 
     override fun getItemViewType(position: Int) = R.layout.item_surveys_pager_content
 
@@ -21,7 +22,7 @@ internal class SurveysPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: SurveysViewHolder, position: Int) {
-        holder.bind(SurveysPagerItems[position])
+        holder.bind(surveysPagerItems[position])
     }
 
     internal inner class SurveysViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -33,8 +34,8 @@ internal class SurveysPagerAdapter(
         fun bind(uiModel: SurveysPagerItemUiModel) {
             with(uiModel) {
                 ivSurveysItemBackground.setImageResource(imageDrawable)
-                tvSurveysItemHeader.text = title
-                tvSurveysItemDescription.text = subtitle
+                tvSurveysItemHeader.text = header
+                tvSurveysItemDescription.text = description
             }
         }
     }

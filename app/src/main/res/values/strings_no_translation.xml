@@ -1,6 +1,8 @@
 <resources>
     <string name="onboarding_splash_background_desc">Splash Screen Background</string>
     <string name="sign_in_nimble_logo_desc">Nimble Logo</string>
-    <string name="surveys_sample_item_description">We would like to know how you feel about our work from home...</string>
+    <string name="user_avatar">User avatar</string>
+    <string name="surveys_sample_date_desc">MONDAY, JUNE 15</string>
+    <string name="surveys_sample_item_description">We would like to know how you feel about our work from home</string>
     <string name="surveys_sample_item_header">Working from home Check-In</string>
 </resources>
