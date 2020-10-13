@@ -3,7 +3,8 @@ package co.nimblehq.di.modules
 import co.nimblehq.data.api.providers.ApiServiceProvider
 import co.nimblehq.data.api.providers.ConverterFactoryProvider
 import co.nimblehq.data.api.providers.RetrofitProvider
-import co.nimblehq.data.api.service.survey.AuthService
+import co.nimblehq.data.api.service.auth.AuthService
+import co.nimblehq.data.api.service.survey.SurveyService
 import co.nimblehq.di.qualifier.AppOkHttpClient
 import co.nimblehq.di.qualifier.AppRetrofit
 import co.nimblehq.di.qualifier.AuthOkHttpClient
@@ -52,4 +53,8 @@ class RetrofitModule {
     @Provides
     @Singleton
     fun provideAuthService(@AuthRetrofit retrofit: Retrofit): AuthService = ApiServiceProvider.getAuthService(retrofit)
+
+    @Provides
+    @Singleton
+    fun provideSurveyService(@AppRetrofit retrofit: Retrofit): SurveyService = ApiServiceProvider.getSurveyService(retrofit)
 }

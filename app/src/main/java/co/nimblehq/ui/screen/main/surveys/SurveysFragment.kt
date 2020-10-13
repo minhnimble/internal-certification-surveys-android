@@ -18,6 +18,8 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     @Inject lateinit var navigator: MainNavigator
 
+    private lateinit var surveysPagerAdapter: SurveysPagerAdapter
+
     private val viewModel by viewModels<SurveysViewModel>()
 
     private val loaderAnimator: LoaderAnimatable? by lazy {
@@ -26,24 +28,16 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override val layoutRes = R.layout.fragment_surveys
 
-    override fun initViewModel() { }
+    override fun initViewModel() {
+        viewModel.getSurveysList()
+    }
 
     override fun setupView() {
-        // TODO: Will remove in logic PR
-        Handler().postDelayed({
-            loaderAnimator?.toggleShimmerLoader(false)
-        }, 2000)
-
         // TODO: update this to real data in logic PR
         tvSurveysDate.text = getString(R.string.surveys_sample_date_desc)
-        val testData = listOf(
-            SurveysPagerItemUiModel(R.drawable.bg_surveys_sample_item, getString(R.string.surveys_sample_item_header), getString(R.string.surveys_sample_item_description)),
-            SurveysPagerItemUiModel(R.drawable.bg_surveys_sample_item, getString(R.string.surveys_sample_item_header), getString(R.string.surveys_sample_item_description)),
-            SurveysPagerItemUiModel(R.drawable.bg_surveys_sample_item, getString(R.string.surveys_sample_item_header), getString(R.string.surveys_sample_item_description)),
-            SurveysPagerItemUiModel(R.drawable.bg_surveys_sample_item, getString(R.string.surveys_sample_item_header), getString(R.string.surveys_sample_item_description))
-        )
 
-        vpSurveys.adapter = SurveysPagerAdapter(testData).also {
+        vpSurveys.adapter = SurveysPagerAdapter(listOf()).also {
+            surveysPagerAdapter = it
             it.registerAdapterDataObserver(ciSurveysIndicator.adapterDataObserver)
         }
         ciSurveysIndicator.setViewPager(vpSurveys)
@@ -51,5 +45,29 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun bindViewEvents() { }
 
-    override fun bindViewModel() { }
+    override fun bindViewModel() {
+        viewModel.error
+            .subscribe(::displayError)
+            .bindForDisposable()
+
+        viewModel.showLoading
+            .subscribe(::bindLoading)
+            .bindForDisposable()
+
+        viewModel.surveysPagerItemUiModels
+            .subscribe(::bindSurveysPagerItemUiModels)
+            .bindForDisposable()
+    }
+
+    private fun bindLoading(isLoading: Boolean) {
+        if (!isLoading)
+            loaderAnimator?.toggleShimmerLoader(false)
+        toggleLoading(isLoading)
+    }
+
+    private fun bindSurveysPagerItemUiModels(uiModels: List<SurveysPagerItemUiModel>) {
+        if (uiModels.isNotEmpty()) {
+            surveysPagerAdapter.uiModels = uiModels
+        }
+    }
 }

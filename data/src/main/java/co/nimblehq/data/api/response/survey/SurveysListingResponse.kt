@@ -3,25 +3,25 @@ package co.nimblehq.data.api.response.survey
 import com.google.gson.annotations.SerializedName
 
 data class SurveysListingResponse(
-    @SerializedName("data") val data: List<SurveyItem> = listOf(),
-    @SerializedName("meta") val meta: SurveysListingMeta
+    @SerializedName("data") val data: List<SurveyItemResponse> = listOf(),
+    @SerializedName("meta") val meta: SurveysListingMetaResponse
 )
 
-data class SurveysListingMeta(
+data class SurveysListingMetaResponse(
     @SerializedName("page") val page: Int = 0,
-    @SerializedName("pages") val pages: Int = 10,
+    @SerializedName("pages") val pages: Int = 0,
     @SerializedName("page_size") val pageSize: Int = 0,
     @SerializedName("records") val records: Int = 0
 )
 
-data class SurveyItem(
+data class SurveyItemResponse(
     @SerializedName("id") val id: String = "",
     @SerializedName("type") val type: String = "",
-    @SerializedName("attributes") val attributes: SurveyItemAttributes,
-    @SerializedName("relationships") val relationships: List<SurveyItemRelationships> = listOf()
+    @SerializedName("attributes") val attributes: SurveyItemAttributesResponse,
+    @SerializedName("relationships") val relationships: List<SurveyItemRelationshipsResponse> = listOf()
 )
 
-data class SurveyItemAttributes(
+data class SurveyItemAttributesResponse(
     @SerializedName("title") val title: String = "",
     @SerializedName("description") val description: String = "",
     @SerializedName("thank_email_above_threshold") val thankEmailAboveThres: String = "",
@@ -34,15 +34,15 @@ data class SurveyItemAttributes(
     @SerializedName("survey_type") val surveyType: String = ""
 )
 
-data class SurveyItemRelationships(
-    @SerializedName("questions") val questions: SurveyItemQuestionsListing
+data class SurveyItemRelationshipsResponse(
+    @SerializedName("questions") val questions: SurveyItemQuestionsListingResponse
 )
 
-data class SurveyItemQuestionsListing(
-    @SerializedName("data") val data: List<SurveyItemQuestion> = listOf()
+data class SurveyItemQuestionsListingResponse(
+    @SerializedName("data") val data: List<SurveyItemQuestionResponse> = listOf()
 )
 
-data class SurveyItemQuestion(
+data class SurveyItemQuestionResponse(
     @SerializedName("id") val id: String = "",
     @SerializedName("type") val type: String = ""
 )
