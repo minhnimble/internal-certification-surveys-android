@@ -18,16 +18,15 @@
 
     <me.relex.circleindicator.CircleIndicator3
         android:id="@+id/ciSurveysIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="10dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_13sdp"
         android:layout_marginBottom="@dimen/_159sdp"
         app:ci_drawable="@drawable/ic_surveys_indicator_selected_circle"
         app:ci_drawable_unselected="@drawable/ic_surveys_indicator_unselected_circle"
-        app:ci_height="5dp"
-        app:ci_width="5dp"
+        app:ci_height="@dimen/ci_size"
+        app:ci_width="@dimen/ci_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
