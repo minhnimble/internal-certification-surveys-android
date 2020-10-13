@@ -20,3 +20,8 @@ internal const val REQUEST_KEY_PAGE_NUMBER = "page[number]"
 
 internal const val REQUEST_KEY_PAGE_SIZE = "page[size]"
 
+// Date
+
+const val dd_MMM_yyyy_hh_mm_a = "dd MMM yyyy, hh:mm a"
+
+const val EEEE_MMMM_dd = "EEEE, MMMM dd"

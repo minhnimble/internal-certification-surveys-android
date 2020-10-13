@@ -18,7 +18,6 @@ class SurveysViewModel @ViewModelInject constructor(
     private val getSurveysListSingleUseCase: GetSurveysListSingleUseCase
 ) : BaseViewModel(), Inputs {
 
-
     private val _error = PublishSubject.create<Throwable>()
 
     private val _showLoading = BehaviorSubject.create<Boolean>()
@@ -28,23 +27,18 @@ class SurveysViewModel @ViewModelInject constructor(
     val error: Observable<Throwable>
         get() = _error
 
-    val inputs: Inputs = this
-
     val showLoading: Observable<Boolean>
         get() = _showLoading
 
     val surveysPagerItemUiModels: Observable<List<SurveysPagerItemUiModel>>
         get() = _surveysPagerItemUiModels
 
-    fun getSurveysList(pageNumber: Int = 0, pageSize: Int = 10) {
+    fun getSurveysList(pageNumber: Int = 1, pageSize: Int = 10) {
         getSurveysListSingleUseCase
             .execute(GetSurveysListSingleUseCase.Input(pageNumber, pageSize))
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
-                onSuccess = {
-                    _surveysPagerItemUiModels.onNext(it.map { survey -> survey.toSurveysPagerItemUiModel() })
-                    _showLoading.onNext(false)
-                },
+                onSuccess = { _surveysPagerItemUiModels.onNext(it.map { survey -> survey.toSurveysPagerItemUiModel() }) },
                 onError = { _error.onNext(it) }
             )
             .bindForDisposable()

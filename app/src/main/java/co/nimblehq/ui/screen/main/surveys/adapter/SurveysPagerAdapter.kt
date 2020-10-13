@@ -11,9 +11,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_surveys_pager_content.*
 import kotlin.properties.Delegates
 
-internal class SurveysPagerAdapter(
-    private val surveysPagerItems: List<SurveysPagerItemUiModel>
-) : RecyclerView.Adapter<SurveysPagerAdapter.SurveysViewHolder>(), DiffUpdateAdapter {
+internal class SurveysPagerAdapter : RecyclerView.Adapter<SurveysPagerAdapter.SurveysViewHolder>(), DiffUpdateAdapter {
 
     var uiModels: List<SurveysPagerItemUiModel> by Delegates.observable(emptyList()) { _, old, new ->
         autoNotify(
@@ -23,7 +21,7 @@ internal class SurveysPagerAdapter(
         )
     }
 
-    override fun getItemCount() = surveysPagerItems.size
+    override fun getItemCount() = uiModels.size
 
     override fun getItemViewType(position: Int) = R.layout.item_surveys_pager_content
 
@@ -33,7 +31,7 @@ internal class SurveysPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: SurveysViewHolder, position: Int) {
-        holder.bind(surveysPagerItems[position])
+        holder.bind(uiModels[position])
     }
 
     internal inner class SurveysViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),

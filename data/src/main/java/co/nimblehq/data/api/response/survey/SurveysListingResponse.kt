@@ -18,7 +18,7 @@ data class SurveyItemResponse(
     @SerializedName("id") val id: String = "",
     @SerializedName("type") val type: String = "",
     @SerializedName("attributes") val attributes: SurveyItemAttributesResponse,
-    @SerializedName("relationships") val relationships: List<SurveyItemRelationshipsResponse> = listOf()
+    @SerializedName("relationships") val relationships: SurveyItemRelationshipsResponse
 )
 
 data class SurveyItemAttributesResponse(
