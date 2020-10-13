@@ -7,7 +7,6 @@ data class SurveysPagerItemUiModel(
     val description: String,
     val header: String,
     val imageUrl: String
-
 )
 
 fun Survey.toSurveysPagerItemUiModel() = SurveysPagerItemUiModel(

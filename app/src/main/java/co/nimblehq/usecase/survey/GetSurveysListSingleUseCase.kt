@@ -1,6 +1,6 @@
 package co.nimblehq.usecase.survey
 
-import co.nimblehq.data.error.GetSurveysListError
+import co.nimblehq.data.error.SurveyError.GetSurveysListError
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
 import co.nimblehq.data.model.Survey
 import co.nimblehq.data.repository.SurveyRepository
