@@ -1,4 +1,8 @@
 <resources>
-    <string name="sign_in_nimble_logo_desc">Nimble Logo</string>
-    <string name="onboarding_splash_background_desc">Splash Screen Background</string>
+    <string name="onboarding_splash_background_desc" translatable="false">Splash Screen Background</string>
+    <string name="sign_in_nimble_logo_desc" translatable="false">Nimble Logo</string>
+    <string name="surveys_user_avatar" translatable="false">User avatar</string>
+    <string name="surveys_sample_date_desc" translatable="false">MONDAY, JUNE 15</string>
+    <string name="surveys_sample_item_description" translatable="false">We would like to know how you feel about our work from home</string>
+    <string name="surveys_sample_item_header" translatable="false">Working from home Check-In</string>
 </resources>

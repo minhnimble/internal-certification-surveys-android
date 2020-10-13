@@ -33,8 +33,8 @@ class ThrowableExtensionKtTest {
     fun `using userReadableMessage with AppError object should return context's message when there is no provided message`() {
 
         // Arrange
-        val errorMessage = context.getString(R.string.test_error)
-        var appError = AppError(null, null, R.string.test_error)
+        val errorMessage = context.getString(R.string.general_test_error)
+        var appError = AppError(null, null, R.string.general_test_error)
 
         // Act
         val userReadableMessage = appError.userReadableMessage(context)
@@ -47,7 +47,7 @@ class ThrowableExtensionKtTest {
     fun `using userReadableMessage with AppError object should return default message when there is no context and no provided message`() {
 
         // Arrange
-        val errorMessage = context.getString(R.string.generic_error)
+        val errorMessage = context.getString(R.string.general_unknown_error)
         var appError = AppError(null, null, null)
 
         // Act
@@ -61,7 +61,7 @@ class ThrowableExtensionKtTest {
     fun `using userReadableMessage with Throwable object should return default message`() {
 
         // Arrange
-        val errorMessage = context.getString(R.string.generic_error)
+        val errorMessage = context.getString(R.string.general_unknown_error)
         var throwable = Throwable()
 
         // Act

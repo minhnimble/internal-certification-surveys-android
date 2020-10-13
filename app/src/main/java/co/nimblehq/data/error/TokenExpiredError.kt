@@ -6,5 +6,5 @@ class TokenExpiredError(
     cause: Throwable?
 ) : AppError(
     cause = cause,
-    readableMessageRes = R.string.session_expired_error
+    readableMessageRes = R.string.general_session_expired_error
 )

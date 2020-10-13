@@ -1,6 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clSurveys"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:background="@color/colorNero">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpSurveys"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/ciSurveysIndicator"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_13sdp"
+        android:layout_marginBottom="@dimen/_150sdp"
+        app:ci_animator="@animator/ci_alpha"
+        app:ci_drawable="@drawable/ic_surveys_indicator_selected_circle"
+        app:ci_drawable_unselected="@drawable/ic_surveys_indicator_unselected_circle"
+        app:ci_height="@dimen/ci_size"
+        app:ci_width="@dimen/ci_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSurveysDate"
+        style="@style/Widget.Template.TextView.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@+id/tvSurveysToday"
+        app:layout_constraintEnd_toStartOf="@+id/ivSurveysUserAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/surveys_sample_date_desc" />
+
+    <TextView
+        android:id="@+id/tvSurveysToday"
+        style="@style/Widget.Template.TextView.Header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:text="@string/surveys_today"
+        app:layout_constraintEnd_toStartOf="@+id/ivSurveysUserAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivSurveysUserAvatar" />
+
+    <ImageView
+        android:id="@+id/ivSurveysUserAvatar"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_60sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:contentDescription="@string/surveys_user_avatar"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_general_default_user_avatar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,4 +16,18 @@
         <item name="android:focusable">true</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
+
+    <style name="Widget.Template.TextView.Description">
+        <item name="android:textSize">@dimen/_13ssp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textColor">@color/white_70a</item>
+    </style>
+
+    <style name="Widget.Template.TextView.Header">
+        <item name="android:textSize">@dimen/_21ssp</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:fontFamily">@font/circularstd_bold</item>
+    </style>
+
 </resources>
