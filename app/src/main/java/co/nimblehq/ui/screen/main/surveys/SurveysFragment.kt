@@ -2,8 +2,8 @@ package co.nimblehq.ui.screen.main.surveys
 
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
-import co.nimblehq.data.lib.common.EEEE_MMMM_dd
-import co.nimblehq.extension.getString
+import co.nimblehq.data.lib.common.DATE_FORMAT_SHORT_DISPLAY
+import co.nimblehq.extension.toDisplayFormat
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.screen.main.LoaderAnimatable
@@ -35,7 +35,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     override fun setupView() {
-        tvSurveysDate.text = Date().getString(EEEE_MMMM_dd).toUpperCase()
+        tvSurveysDate.text = Date().toDisplayFormat(DATE_FORMAT_SHORT_DISPLAY).toUpperCase()
 
         vpSurveys.adapter = SurveysPagerAdapter().also {
             surveysPagerAdapter = it
@@ -61,8 +61,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     private fun bindLoading(isLoading: Boolean) {
-        if (!isLoading)
-            loaderAnimator?.toggleShimmerLoader(false)
+        if (!isLoading) loaderAnimator?.toggleShimmerLoader(isLoading)
         toggleLoading(isLoading)
     }
 

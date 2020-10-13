@@ -6,11 +6,11 @@ import retrofit2.Retrofit
 
 class ApiServiceProvider {
     companion object {
-        fun getAuthService(retrofit: Retrofit) : AuthService {
+        fun getAuthService(retrofit: Retrofit): AuthService {
             return retrofit.create(AuthService::class.java)
         }
 
-        fun getSurveyService(retrofit: Retrofit) : SurveyService {
+        fun getSurveyService(retrofit: Retrofit): SurveyService {
             return retrofit.create(SurveyService::class.java)
         }
     }

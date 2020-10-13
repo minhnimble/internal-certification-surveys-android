@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ConverterFactoryProvider {
     companion object {
-        fun getConverterFactoryProvider(gson: Gson) : Converter.Factory {
+        fun getConverterFactoryProvider(gson: Gson): Converter.Factory {
             return GsonConverterFactory.create(gson)
         }
     }

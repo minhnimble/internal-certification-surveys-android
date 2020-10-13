@@ -23,7 +23,7 @@ class OkHttpClientModule {
         apiRequestInterceptor: AppRequestInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
-        return OkHttpClientProvider.getApiOkHttpClient(apiRequestInterceptor, httpLoggingInterceptor)
+        return OkHttpClientProvider.getOkHttpClient(apiRequestInterceptor, httpLoggingInterceptor)
     }
 
     @Provides
@@ -32,7 +32,7 @@ class OkHttpClientModule {
         authRequestInterceptor: AuthRequestInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
-        return OkHttpClientProvider.getApiOkHttpClient(authRequestInterceptor, httpLoggingInterceptor)
+        return OkHttpClientProvider.getOkHttpClient(authRequestInterceptor, httpLoggingInterceptor)
     }
 
     @Provides

@@ -9,7 +9,7 @@ sealed class SurveyError(
 ) : AppError(cause, (cause as? JsonApiException)?.error?.detail, readableMessageRes) {
     
     class GetSurveysListError(cause: Throwable?) : SurveyError(
-        cause, R.string.get_surveys_list_error
+        cause, R.string.general_get_surveys_list_error
     )
 
     // TODO: Add new class for handling error when getting survey's details

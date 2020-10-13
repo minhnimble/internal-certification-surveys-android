@@ -1,10 +1,16 @@
 package co.nimblehq.extension
 
-import co.nimblehq.data.lib.common.dd_MMM_yyyy_hh_mm_a
+import co.nimblehq.data.lib.common.DATE_FORMAT_FULL_DISPLAY
+import timber.log.Timber
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Date.getString(format: String = dd_MMM_yyyy_hh_mm_a): String {
-    val sdf = SimpleDateFormat(format)
-    return sdf.format(this)
+fun Date.toDisplayFormat(format: String = DATE_FORMAT_FULL_DISPLAY): String {
+    return try {
+        SimpleDateFormat(format, Locale.getDefault()).format(this)
+    } catch (e: Exception) {
+        Timber.d(e, "Unable to parse the provided format")
+        ""
+    }
 }

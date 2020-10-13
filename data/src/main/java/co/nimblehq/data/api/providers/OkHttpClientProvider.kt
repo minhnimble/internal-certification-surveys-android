@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 
 class OkHttpClientProvider {
     companion object {
-        fun getApiOkHttpClient(
+        fun getOkHttpClient(
             apiRequestInterceptor: Interceptor,
             httpLoggingInterceptor: Interceptor
         ) : OkHttpClient {
