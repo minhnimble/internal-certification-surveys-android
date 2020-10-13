@@ -7,8 +7,8 @@ import co.nimblehq.data.error.AppError
 fun Throwable.userReadableMessage(context: Context): String {
     return when (this) {
         is AppError -> {
-            readableMessage ?: context.getString(readableMessageRes ?: R.string.generic_error)
+            readableMessage ?: context.getString(readableMessageRes ?: R.string.general_unknown_error)
         }
-        else -> context.getString(R.string.generic_error)
+        else -> context.getString(R.string.general_unknown_error)
     }
 }

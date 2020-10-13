@@ -22,6 +22,7 @@
         android:layout_height="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_13sdp"
         android:layout_marginBottom="@dimen/_150sdp"
+        app:ci_animator="@animator/ci_alpha"
         app:ci_drawable="@drawable/ic_surveys_indicator_selected_circle"
         app:ci_drawable_unselected="@drawable/ic_surveys_indicator_unselected_circle"
         app:ci_height="@dimen/ci_size"
@@ -49,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_8sdp"
-        android:text="@string/today"
+        android:text="@string/surveys_today"
         app:layout_constraintEnd_toStartOf="@+id/cvSurveysUserAvatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cvSurveysUserAvatar" />
@@ -69,7 +70,7 @@
             android:id="@+id/ivSurveysUserAvatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/user_avatar"
+            android:contentDescription="@string/surveys_user_avatar"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/ic_general_default_user_avatar" />
 
