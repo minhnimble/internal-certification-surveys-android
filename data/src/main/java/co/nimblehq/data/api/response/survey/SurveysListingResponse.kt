@@ -1,48 +1,48 @@
 package co.nimblehq.data.api.response.survey
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class SurveysListingResponse(
-    @SerializedName("data") val data: List<SurveyItemResponse> = listOf(),
-    @SerializedName("meta") val meta: SurveysListingMetaResponse
+    @Json(name = "data") val data: List<SurveyItemResponse> = listOf(),
+    @Json(name = "meta") val meta: SurveysListingMetaResponse
 )
 
 data class SurveysListingMetaResponse(
-    @SerializedName("page") val page: Int = 0,
-    @SerializedName("pages") val pages: Int = 0,
-    @SerializedName("page_size") val pageSize: Int = 0,
-    @SerializedName("records") val records: Int = 0
+    @Json(name = "page") val page: Int = 0,
+    @Json(name = "pages") val pages: Int = 0,
+    @Json(name = "page_size") val pageSize: Int = 0,
+    @Json(name = "records") val records: Int = 0
 )
 
 data class SurveyItemResponse(
-    @SerializedName("id") val id: String = "",
-    @SerializedName("type") val type: String = "",
-    @SerializedName("attributes") val attributes: SurveyItemAttributesResponse,
-    @SerializedName("relationships") val relationships: SurveyItemRelationshipsResponse
+    @Json(name = "id") val id: String = "",
+    @Json(name = "type") val type: String = "",
+    @Json(name = "attributes") val attributes: SurveyItemAttributesResponse,
+    @Json(name = "relationships") val relationships: SurveyItemRelationshipsResponse
 )
 
 data class SurveyItemAttributesResponse(
-    @SerializedName("title") val title: String = "",
-    @SerializedName("description") val description: String = "",
-    @SerializedName("thank_email_above_threshold") val thankEmailAboveThres: String = "",
-    @SerializedName("thank_email_below_threshold") val thankEmailBelowThres: String = "",
-    @SerializedName("is_active") val isActive: Boolean = false,
-    @SerializedName("cover_image_url") val coverImageUrl: String = "",
-    @SerializedName("created_at") val createdAt: String = "",
-    @SerializedName("active_at") val activeAt: String = "",
-    @SerializedName("inactive_at") val inactiveAt: String? = null,
-    @SerializedName("survey_type") val surveyType: String = ""
+    @Json(name = "title") val title: String = "",
+    @Json(name = "description") val description: String = "",
+    @Json(name = "thank_email_above_threshold") val thankEmailAboveThres: String = "",
+    @Json(name = "thank_email_below_threshold") val thankEmailBelowThres: String = "",
+    @Json(name = "is_active") val isActive: Boolean = false,
+    @Json(name = "cover_image_url") val coverImageUrl: String = "",
+    @Json(name = "created_at") val createdAt: String = "",
+    @Json(name = "active_at") val activeAt: String = "",
+    @Json(name = "inactive_at") val inactiveAt: String? = null,
+    @Json(name = "survey_type") val surveyType: String = ""
 )
 
 data class SurveyItemRelationshipsResponse(
-    @SerializedName("questions") val questions: SurveyItemQuestionsListingResponse
+    @Json(name = "questions") val questions: SurveyItemQuestionsListingResponse
 )
 
 data class SurveyItemQuestionsListingResponse(
-    @SerializedName("data") val data: List<SurveyItemQuestionResponse> = listOf()
+    @Json(name = "data") val data: List<SurveyItemQuestionResponse> = listOf()
 )
 
 data class SurveyItemQuestionResponse(
-    @SerializedName("id") val id: String = "",
-    @SerializedName("type") val type: String = ""
+    @Json(name = "id") val id: String = "",
+    @Json(name = "type") val type: String = ""
 )

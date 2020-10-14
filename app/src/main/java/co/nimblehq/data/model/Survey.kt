@@ -1,6 +1,6 @@
 package co.nimblehq.data.model
 
-import co.nimblehq.data.api.response.survey.SurveysListingResponse
+import co.nimblehq.data.api.response.survey.SurveyResponse
 
 data class Survey(
     val description: String = "",
@@ -12,13 +12,11 @@ data class Survey(
         get() = imageUrl + "l"
 }
 
-fun SurveysListingResponse.toSurveys() = with(data) {
-    map {
-        Survey(
-            it.attributes.description,
-            it.id,
-            it.attributes.coverImageUrl,
-            it.attributes.title
-        )
-    }
-}
+fun SurveyResponse.toSurvey() = Survey(
+    description = description,
+    id = id,
+    imageUrl = coverImageUrl,
+    title = title
+)
+
+fun List<SurveyResponse>.toSurveys() = this.map { it.toSurvey() }

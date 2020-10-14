@@ -1,6 +1,6 @@
 package co.nimblehq.data.api.service.survey
 
-import co.nimblehq.data.api.response.survey.SurveysListingResponse
+import co.nimblehq.data.api.response.survey.SurveyResponse
 import co.nimblehq.data.lib.common.REQUEST_KEY_PAGE_NUMBER
 import co.nimblehq.data.lib.common.REQUEST_KEY_PAGE_SIZE
 import io.reactivex.Flowable
@@ -16,5 +16,5 @@ interface SurveyService {
     fun getSurveysList(
         @Query(REQUEST_KEY_PAGE_NUMBER) pageNumber: Int,
         @Query(REQUEST_KEY_PAGE_SIZE) pageSize: Int
-    ): Flowable<SurveysListingResponse>
+    ): Flowable<List<SurveyResponse>>
 }

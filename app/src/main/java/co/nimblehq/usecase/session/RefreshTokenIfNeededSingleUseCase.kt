@@ -13,7 +13,7 @@ class RefreshTokenIfNeededSingleUseCase @Inject constructor(
     private val tokenRefresher: TokenRefresher
 ) : SingleUseCase<AuthData, AuthData>(
     rxSchedulerProvider.io(),
-    rxSchedulerProvider.io(),
+    rxSchedulerProvider.main(),
     ::RefreshTokenError
 ) {
 

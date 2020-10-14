@@ -1,21 +1,21 @@
 package co.nimblehq.data.api.response.auth
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class OAuthResponse(
-    @SerializedName("data") val data: OAuthDataResponse
+    @Json(name = "data") val data: OAuthDataResponse
 )
 
 data class OAuthDataResponse(
-    @SerializedName("id") val id: String = "",
-    @SerializedName("type") val type: String = "",
-    @SerializedName("attributes") val attributes: OAuthAttributesResponse
+    @Json(name = "id") val id: String = "",
+    @Json(name = "type") val type: String = "",
+    @Json(name = "attributes") val attributes: OAuthAttributesResponse
 )
 
 data class OAuthAttributesResponse(
-    @SerializedName("access_token") val accessToken: String = "",
-    @SerializedName("refresh_token") val refreshToken: String = "",
-    @SerializedName("created_at") val createdAt: Long = 0,
-    @SerializedName("expires_in") val expiresIn: Long = 0,
-    @SerializedName("token_type") val tokenType: String = ""
+    @Json(name = "access_token") val accessToken: String = "",
+    @Json(name = "refresh_token") val refreshToken: String = "",
+    @Json(name = "created_at") val createdAt: Long = 0,
+    @Json(name = "expires_in") val expiresIn: Long = 0,
+    @Json(name = "token_type") val tokenType: String = ""
 )
