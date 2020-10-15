@@ -8,7 +8,6 @@ import co.nimblehq.data.api.response.survey.SurveyResponse
 import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "survey")
-
 @Parcelize
 data class Survey(
     @PrimaryKey
