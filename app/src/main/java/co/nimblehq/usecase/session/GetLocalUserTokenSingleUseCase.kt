@@ -8,7 +8,7 @@ import co.nimblehq.usecase.base.SingleUseCase
 import io.reactivex.Single
 import javax.inject.Inject
 
-class GetUserTokenSingleUseCase @Inject constructor(
+class GetLocalUserTokenSingleUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val secureStorage: SecureStorage
 ) : SingleUseCase<Unit, AuthData>(

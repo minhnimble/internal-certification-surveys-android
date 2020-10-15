@@ -8,10 +8,10 @@ import co.nimblehq.usecase.base.SingleUseCase
 import io.reactivex.Single
 import javax.inject.Inject
 
-class GetSurveysListSingleUseCase @Inject constructor(
+class LoadSurveysListSingleUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val surveyRepository: SurveyRepository
-) : SingleUseCase<GetSurveysListSingleUseCase.Input, List<Survey>>(
+) : SingleUseCase<LoadSurveysListSingleUseCase.Input, List<Survey>>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
     ::GetSurveysListError

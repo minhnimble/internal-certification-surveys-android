@@ -5,7 +5,7 @@ import co.nimblehq.event.NavigationEvent
 import co.nimblehq.extension.isEmail
 import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
-import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
+import co.nimblehq.usecase.session.UpdateLocalUserTokenCompletableUseCase
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
@@ -22,7 +22,7 @@ interface Inputs {
 
 class SignInViewModel @ViewModelInject constructor(
     private val loginByPasswordSingleUseCase: LoginByPasswordSingleUseCase,
-    private val updateTokenCompletableUseCase: UpdateTokenCompletableUseCase
+    private val updateLocalUserTokenCompletableUseCase: UpdateLocalUserTokenCompletableUseCase
 ) : BaseViewModel(), Inputs {
 
     private val _email = BehaviorSubject.create<String>()
@@ -63,7 +63,7 @@ class SignInViewModel @ViewModelInject constructor(
         loginByPasswordSingleUseCase
             .execute(LoginByPasswordSingleUseCase.Input(_email.value.orEmpty(), _password.value.orEmpty()))
             .doOnSubscribe { _showLoading.onNext(true) }
-            .flatMapCompletable(updateTokenCompletableUseCase::execute)
+            .flatMapCompletable(updateLocalUserTokenCompletableUseCase::execute)
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
                 onComplete = { _navigator.onNext(NavigationEvent.SignIn.Main) },

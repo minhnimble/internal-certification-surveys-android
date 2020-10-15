@@ -4,7 +4,7 @@ import co.nimblehq.data.error.LoginError
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
-import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
+import co.nimblehq.usecase.session.UpdateLocalUserTokenCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -17,15 +17,15 @@ import org.junit.Test
 class SignInViewModelTest {
 
     private lateinit var mockLoginByPasswordSingleUseCase: LoginByPasswordSingleUseCase
-    private lateinit var mockUpdateTokenCompletableUseCase: UpdateTokenCompletableUseCase
+    private lateinit var mockUpdateLocalUserTokenCompletableUseCase: UpdateLocalUserTokenCompletableUseCase
 
     private lateinit var signingViewModel: SignInViewModel
 
     @Before
     fun setUp() {
         mockLoginByPasswordSingleUseCase = mock()
-        mockUpdateTokenCompletableUseCase = mock()
-        signingViewModel = SignInViewModel(mockLoginByPasswordSingleUseCase, mockUpdateTokenCompletableUseCase)
+        mockUpdateLocalUserTokenCompletableUseCase = mock()
+        signingViewModel = SignInViewModel(mockLoginByPasswordSingleUseCase, mockUpdateLocalUserTokenCompletableUseCase)
     }
 
     @Test
@@ -70,7 +70,7 @@ class SignInViewModelTest {
             mockLoginByPasswordSingleUseCase.execute(any())
         ) doReturn Single.just(AuthData())
         whenever(
-            mockUpdateTokenCompletableUseCase.execute(any())
+            mockUpdateLocalUserTokenCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
 
         // Act
