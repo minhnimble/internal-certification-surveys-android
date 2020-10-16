@@ -9,15 +9,15 @@ import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Before
 import org.junit.Test
 
-class GetUserTokenSingleUseCaseTest {
+class GetLocalUserTokenSingleUseCaseTest {
 
     private lateinit var secureStorage: SecureStorage
-    private lateinit var useCase: GetUserTokenSingleUseCase
+    private lateinit var useCase: GetLocalUserTokenSingleUseCase
 
     @Before
     fun setUp() {
         secureStorage = mock()
-        useCase = GetUserTokenSingleUseCase(
+        useCase = GetLocalUserTokenSingleUseCase(
             TestRxSchedulerProviderImpl(),
             secureStorage
         )

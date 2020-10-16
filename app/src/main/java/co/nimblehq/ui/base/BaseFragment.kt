@@ -32,6 +32,12 @@ abstract class BaseFragment: Fragment() {
     }
 
     @CallSuper
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (this as? BaseFragmentCallbacks)?.let { initViewModel() }
+    }
+
+    @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (this as? BaseFragmentCallbacks)?.let {

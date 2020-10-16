@@ -5,14 +5,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import co.nimblehq.R
+import co.nimblehq.extension.loadImage
+import co.nimblehq.ui.common.adapter.DiffUpdateAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_surveys_pager_content.*
+import kotlin.properties.Delegates
 
-internal class SurveysPagerAdapter(
-    private val surveysPagerItems: List<SurveysPagerItemUiModel>
-) : RecyclerView.Adapter<SurveysPagerAdapter.SurveysViewHolder>() {
+internal class SurveysPagerAdapter : RecyclerView.Adapter<SurveysPagerAdapter.SurveysViewHolder>(), DiffUpdateAdapter {
 
-    override fun getItemCount() = surveysPagerItems.size
+    var uiModels: List<SurveysPagerItemUiModel> by Delegates.observable(emptyList()) { _, old, new ->
+        autoNotify(
+            old,
+            new,
+            { oldItem, newItem -> oldItem.id == newItem.id }
+        )
+    }
+
+    override fun getItemCount() = uiModels.size
 
     override fun getItemViewType(position: Int) = R.layout.item_surveys_pager_content
 
@@ -22,7 +31,7 @@ internal class SurveysPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: SurveysViewHolder, position: Int) {
-        holder.bind(surveysPagerItems[position])
+        holder.bind(uiModels[position])
     }
 
     internal inner class SurveysViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -33,7 +42,7 @@ internal class SurveysPagerAdapter(
 
         fun bind(uiModel: SurveysPagerItemUiModel) {
             with(uiModel) {
-                ivSurveysItemBackground.setImageResource(imageDrawable)
+                ivSurveysItemBackground.loadImage(imageUrl)
                 tvSurveysItemHeader.text = header
                 tvSurveysItemDescription.text = description
             }

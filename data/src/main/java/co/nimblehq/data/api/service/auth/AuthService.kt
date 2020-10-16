@@ -1,7 +1,7 @@
 package co.nimblehq.data.api.service.auth
 
 import co.nimblehq.data.api.request.OAuthRequest
-import co.nimblehq.data.api.response.OAuthResponse
+import co.nimblehq.data.api.response.auth.OAuthResponse
 import io.reactivex.Flowable
 import retrofit2.http.*
 

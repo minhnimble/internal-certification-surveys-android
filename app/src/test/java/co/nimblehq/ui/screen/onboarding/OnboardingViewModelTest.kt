@@ -3,9 +3,9 @@ package co.nimblehq.ui.screen.onboarding
 import co.nimblehq.data.error.RefreshTokenError
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.event.NavigationEvent
-import co.nimblehq.usecase.session.GetUserTokenSingleUseCase
+import co.nimblehq.usecase.session.GetLocalUserTokenSingleUseCase
 import co.nimblehq.usecase.session.RefreshTokenIfNeededSingleUseCase
-import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
+import co.nimblehq.usecase.session.UpdateLocalUserTokenCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -19,21 +19,21 @@ import org.junit.Test
 @Suppress("IllegalIdentifier")
 class OnboardingViewModelTest {
 
-    private lateinit var mockGetUserTokenSingleUseCase: GetUserTokenSingleUseCase
+    private lateinit var mockGetLocalUserTokenSingleUseCase: GetLocalUserTokenSingleUseCase
     private lateinit var mockRefreshTokenIfNeededSingleUseCase: RefreshTokenIfNeededSingleUseCase
-    private lateinit var mockUpdateTokenCompletableUseCase: UpdateTokenCompletableUseCase
+    private lateinit var mockUpdateLocalUserTokenCompletableUseCase: UpdateLocalUserTokenCompletableUseCase
 
     private lateinit var onboardingViewModel: OnboardingViewModel
 
     @Before
     fun setUp() {
-        mockGetUserTokenSingleUseCase = mock()
+        mockGetLocalUserTokenSingleUseCase = mock()
         mockRefreshTokenIfNeededSingleUseCase = mock()
-        mockUpdateTokenCompletableUseCase = mock()
+        mockUpdateLocalUserTokenCompletableUseCase = mock()
         onboardingViewModel = OnboardingViewModel(
-            mockGetUserTokenSingleUseCase,
+            mockGetLocalUserTokenSingleUseCase,
             mockRefreshTokenIfNeededSingleUseCase,
-            mockUpdateTokenCompletableUseCase
+            mockUpdateLocalUserTokenCompletableUseCase
         )
     }
 
@@ -41,7 +41,7 @@ class OnboardingViewModelTest {
     fun `When the session has an expired token but the app is unable to refresh that token, it triggers a RefreshTokenError`() {
         // Arrange
         whenever(
-            mockGetUserTokenSingleUseCase.execute(any())
+            mockGetLocalUserTokenSingleUseCase.execute(any())
         ) doReturn Single.just(
             AuthData(
                 "access token",
@@ -71,7 +71,7 @@ class OnboardingViewModelTest {
     fun `When the session has an invalid token, it triggers an Ignored error`() {
         // Arrange
         whenever(
-            mockGetUserTokenSingleUseCase.execute(any())
+            mockGetLocalUserTokenSingleUseCase.execute(any())
         ) doReturn Maybe.empty<AuthData>().toSingle()
 
         // Act
@@ -98,13 +98,13 @@ class OnboardingViewModelTest {
             "token type"
         )
         whenever(
-            mockGetUserTokenSingleUseCase.execute(any())
+            mockGetLocalUserTokenSingleUseCase.execute(any())
         ) doReturn Single.just(validAuthData)
         whenever(
             mockRefreshTokenIfNeededSingleUseCase.execute(any())
         ) doReturn Single.just(validAuthData)
         whenever(
-            mockUpdateTokenCompletableUseCase.execute(any())
+            mockUpdateLocalUserTokenCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
 
         // Act

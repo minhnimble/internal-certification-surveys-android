@@ -5,6 +5,7 @@ import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
 import co.nimblehq.data.lib.schedulers.RxSchedulerProviderImpl
 import co.nimblehq.data.api.providers.ApiServiceProvider
 import co.nimblehq.data.api.providers.ConverterFactoryProvider
+import co.nimblehq.data.api.providers.MoshiBuilderProvider
 import co.nimblehq.data.api.providers.RetrofitProvider
 import co.nimblehq.data.api.service.auth.AuthService
 import okhttp3.OkHttpClient
@@ -18,8 +19,8 @@ class AuthServiceTest {
     @Test
     fun `API Service components should be initialize-able independently`() {
         val httpClient = OkHttpClient.Builder().build()
-        val gson = Gson()
-        val converterFactory = ConverterFactoryProvider.getConverterFactoryProvider(gson)
+        val moshi = MoshiBuilderProvider.moshiBuilder.build()
+        val converterFactory = ConverterFactoryProvider.getMoshiConverterFactory(moshi)
         val retrofitBuilder = RetrofitProvider.getRetrofitBuilder(converterFactory, httpClient)
         val appRetrofit: Retrofit = retrofitBuilder.build()
 

@@ -1,21 +1,21 @@
 package co.nimblehq.data.api.request
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 sealed class OAuthRequest {
 
 	data class LoginByPasswordWithEmail(
-		@SerializedName("grant_type") val grantType: String,
-		@SerializedName("email") val email: String,
-		@SerializedName("password") val password: String,
-		@SerializedName("client_id") val clientId: String,
-		@SerializedName("client_secret") val clientSecret: String
+        @Json(name = "grant_type") val grantType: String,
+        @Json(name = "email") val email: String,
+        @Json(name = "password") val password: String,
+        @Json(name = "client_id") val clientId: String,
+        @Json(name = "client_secret") val clientSecret: String
 	) : OAuthRequest()
 
 	data class RefreshToken(
-		@SerializedName("grant_type") val grantType: String,
-		@SerializedName("refresh_token") val refreshToken: String,
-		@SerializedName("client_id") val clientId: String,
-		@SerializedName("client_secret") val clientSecret: String
+		@Json(name = "grant_type") val grantType: String,
+		@Json(name = "refresh_token") val refreshToken: String,
+		@Json(name = "client_id") val clientId: String,
+		@Json(name = "client_secret") val clientSecret: String
 	) : OAuthRequest()
 }
