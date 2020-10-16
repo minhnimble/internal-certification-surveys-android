@@ -8,7 +8,7 @@ import co.nimblehq.usecase.base.CompletableUseCase
 import io.reactivex.Completable
 import javax.inject.Inject
 
-class UpdateTokenCompletableUseCase @Inject constructor(
+class UpdateLocalUserTokenCompletableUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val secureStorage: SecureStorage
 ) : CompletableUseCase<AuthData>(

@@ -6,7 +6,7 @@ import co.nimblehq.data.lib.common.DEFAULT_SURVEYS_PAGE_SIZE
 import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.ui.screen.main.surveys.adapter.SurveysPagerItemUiModel
 import co.nimblehq.ui.screen.main.surveys.adapter.toSurveysPagerItemUiModel
-import co.nimblehq.usecase.survey.GetSurveysListSingleUseCase
+import co.nimblehq.usecase.survey.GetSurveysListFlowableUseCase
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
@@ -15,7 +15,7 @@ import io.reactivex.subjects.PublishSubject
 interface Inputs { }
 
 class SurveysViewModel @ViewModelInject constructor(
-    private val getSurveysListSingleUseCase: GetSurveysListSingleUseCase
+    private val getSurveysListFlowableUseCase: GetSurveysListFlowableUseCase
 ) : BaseViewModel(), Inputs {
 
     private val _error = PublishSubject.create<Throwable>()
@@ -33,12 +33,16 @@ class SurveysViewModel @ViewModelInject constructor(
     val surveysPagerItemUiModels: Observable<List<SurveysPagerItemUiModel>>
         get() = _surveysPagerItemUiModels
 
-    fun getSurveysList(pageNumber: Int = DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, pageSize: Int = DEFAULT_SURVEYS_PAGE_SIZE) {
-        getSurveysListSingleUseCase
-            .execute(GetSurveysListSingleUseCase.Input(pageNumber, pageSize))
+    fun checkAndLoadSurveysListIfNeeded(pageNumber: Int = DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, pageSize: Int = DEFAULT_SURVEYS_PAGE_SIZE) {
+        getSurveysListFlowableUseCase
+            .execute(GetSurveysListFlowableUseCase.Input(pageNumber, pageSize))
+            .map { it.map { survey -> survey.toSurveysPagerItemUiModel() } }
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
-                onSuccess = { _surveysPagerItemUiModels.onNext(it.map { survey -> survey.toSurveysPagerItemUiModel() }) },
+                onNext = {
+                    if (it.isNotEmpty()) _showLoading.onNext(false)
+                    _surveysPagerItemUiModels.onNext(it)
+                },
                 onError = { _error.onNext(it) }
             )
             .bindForDisposable()

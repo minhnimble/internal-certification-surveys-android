@@ -31,7 +31,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     override val layoutRes = R.layout.fragment_surveys
 
     override fun initViewModel() {
-        viewModel.getSurveysList()
+        viewModel.checkAndLoadSurveysListIfNeeded()
     }
 
     override fun setupView() {

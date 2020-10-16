@@ -7,15 +7,15 @@ import com.nhaarman.mockitokotlin2.mock
 import org.junit.Before
 import org.junit.Test
 
-class UpdateTokenCompletableUseCaseTest {
+class UpdateLocalUserTokenCompletableUseCaseTest {
 
     private lateinit var secureStorage: SecureStorage
-    private lateinit var useCase: UpdateTokenCompletableUseCase
+    private lateinit var useCase: UpdateLocalUserTokenCompletableUseCase
 
     @Before
     fun setUp() {
         secureStorage = mock()
-        useCase = UpdateTokenCompletableUseCase(
+        useCase = UpdateLocalUserTokenCompletableUseCase(
             TestRxSchedulerProviderImpl(),
             secureStorage
         )

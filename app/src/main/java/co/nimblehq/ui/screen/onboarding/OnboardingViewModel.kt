@@ -5,17 +5,17 @@ import co.nimblehq.data.lib.rxjava.RxBus
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.event.PostSessionCheckEvent
 import co.nimblehq.ui.base.BaseViewModel
-import co.nimblehq.usecase.session.GetUserTokenSingleUseCase
+import co.nimblehq.usecase.session.GetLocalUserTokenSingleUseCase
 import co.nimblehq.usecase.session.RefreshTokenIfNeededSingleUseCase
-import co.nimblehq.usecase.session.UpdateTokenCompletableUseCase
+import co.nimblehq.usecase.session.UpdateLocalUserTokenCompletableUseCase
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 
 class OnboardingViewModel @ViewModelInject constructor(
-    private val getTokenSingleUseCase: GetUserTokenSingleUseCase,
+    private val getLocalTokenSingleUseCase: GetLocalUserTokenSingleUseCase,
     private val refreshTokenIfNeededSingleUseCase: RefreshTokenIfNeededSingleUseCase,
-    private val updateTokenCompletableUseCase: UpdateTokenCompletableUseCase
+    private val updateLocalUserTokenCompletableUseCase: UpdateLocalUserTokenCompletableUseCase
 ) : BaseViewModel() {
 
     private val _error = PublishSubject.create<Throwable>()
@@ -29,10 +29,10 @@ class OnboardingViewModel @ViewModelInject constructor(
         get() = _navigator
 
     fun checkSession() {
-        getTokenSingleUseCase
+        getLocalTokenSingleUseCase
             .execute(Unit)
             .flatMap(refreshTokenIfNeededSingleUseCase::execute)
-            .flatMapCompletable(updateTokenCompletableUseCase::execute)
+            .flatMapCompletable(updateLocalUserTokenCompletableUseCase::execute)
             .subscribeBy(
                 onError = {
                     _error.onNext(it)
