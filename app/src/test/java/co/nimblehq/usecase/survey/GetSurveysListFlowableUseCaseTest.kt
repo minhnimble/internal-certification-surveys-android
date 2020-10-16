@@ -8,34 +8,35 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.Flowable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 
-class LoadSurveysListSingleUseCaseTest {
+class GetSurveysListFlowableUseCaseTest {
 
     private lateinit var surveyRepository: SurveyRepository
-    private lateinit var useCase: LoadSurveysListSingleUseCase
+    private lateinit var useCase: GetSurveysListFlowableUseCase
 
     @Before
     fun setUp() {
         surveyRepository = mock()
-        useCase = LoadSurveysListSingleUseCase(
+        useCase = GetSurveysListFlowableUseCase(
             TestRxSchedulerProviderImpl(),
             surveyRepository
         )
     }
 
     @Test
-    fun `When loading surveys list from backend successfully, it returns a list of surveys`() {
+    fun `When getting surveys list from backend successfully, it returns a list of surveys`() {
         // Arrange
         whenever(
-            surveyRepository.getSurveysList(1, 10)
-        ) doReturn Single.just(listOf(Survey()))
+            surveyRepository.getSurveysList(any(), any())
+        ) doReturn Flowable.just(listOf(Survey()))
 
         // Act
         val positiveTestSubscriber = useCase.execute(
-            LoadSurveysListSingleUseCase.Input(
+            GetSurveysListFlowableUseCase.Input(
                 1,
                 10
             )
@@ -53,11 +54,11 @@ class LoadSurveysListSingleUseCaseTest {
         // Arrange
         whenever(
             surveyRepository.getSurveysList(any(), any())
-        ) doReturn Single.error(SurveyError.GetSurveysListError(null))
+        ) doReturn Flowable.error(SurveyError.GetSurveysListError(null))
 
         // Act
         val negativeTestSubscriber = useCase.execute(
-            LoadSurveysListSingleUseCase.Input(
+            GetSurveysListFlowableUseCase.Input(
                 1,
                 10
             )
