@@ -76,7 +76,7 @@
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_44sdp"
         android:alpha="0"
-        android:background="@color/colorTransparent"
+        android:background="@color/transparent"
         android:text="@string/sign_in_forgot_button_title"
         android:textAllCaps="false"
         android:textColor="@color/white_50a"

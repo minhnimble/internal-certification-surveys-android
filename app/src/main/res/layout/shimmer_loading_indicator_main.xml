@@ -4,7 +4,7 @@
     android:id="@+id/clMainShimmerContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorNero">
+    android:background="@color/nero1">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/sflMainContainer"

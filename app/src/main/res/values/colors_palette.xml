@@ -5,6 +5,13 @@
     <color name="black_20a">#20000000</color>
     <color name="black_60a">#99000000</color>
 
+    <color name="free_speech_blue">#3F51B5</color>
+
+    <color name="nero0">#1E1E1E</color>
+    <color name="nero0_90a">#E61E1E1E</color>
+
+    <color name="nero1">#202020</color>
+
     <color name="transparent">#00000000</color>
 
     <color name="dark_blue">#303F9F</color>

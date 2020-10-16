@@ -1,3 +1,4 @@
 <resources>
     <dimen name="ci_size">@dimen/_6sdp</dimen>
+    <dimen name="nav_header_height">@dimen/_129sdp</dimen>
 </resources>
