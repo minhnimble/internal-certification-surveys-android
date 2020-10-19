@@ -72,7 +72,11 @@ class SurveysViewModel @ViewModelInject constructor(
                         _selectedSurveyIndex.onNext(nextIndex)
                         _selectedSurveyItem.onNext(surveyItems[nextIndex])
                     }
-                    if (surveyItems.size - 1 <= nextIndex) { loadMoreSurveysList() }
+                    if (surveyItems.size - 1 == nextIndex && !loadedLastPage) {
+                        loadMoreSurveysList()
+                    } else if (surveyItems.size == nextIndex) {
+                        loadMoreSurveysList()
+                    }
                 }
             }
         }
@@ -111,11 +115,7 @@ class SurveysViewModel @ViewModelInject constructor(
                     }
                     _surveysPagerItemUiModels.onNext(finalSurveysList)
                 },
-                onError = { _error.onNext(it)
-                    if ((it as? SurveyError.GetSurveysListError)?.isNotFound == true) {
-                        loadedLastPage = true
-                    }
-                }
+                onError = { _error.onNext(it) }
             )
             .bindForDisposable()
     }
@@ -152,6 +152,9 @@ class SurveysViewModel @ViewModelInject constructor(
                     _error.onNext(error)
                     if ((error as? SurveyError.GetSurveysListError)?.isNotFound == true) {
                         loadedLastPage = true
+                        _error.onNext(SurveyError.NoMoreSurveysListError(null))
+                    } else {
+                        _error.onNext(error)
                     }
                 }
             )

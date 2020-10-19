@@ -3,6 +3,7 @@ package co.nimblehq.ui.screen.main.surveys
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
 import co.nimblehq.data.lib.common.DATE_FORMAT_SHORT_DISPLAY
+import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.extension.loadImageWithFadeAnimation
 import co.nimblehq.extension.switchTextWithFadeAnimation
 import co.nimblehq.extension.toDisplayFormat
@@ -45,12 +46,11 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     override fun bindViewEvents() {
-        vSurveysItemTransparent.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+        btSurveysItemNext.subscribeOnClick {
+            // TODO: Handle navigate to survey details screen
+        }.bindForDisposable()
 
-            override fun onSwipeTop() {
-                super.onSwipeTop()
-                Timber.d("Swiped top")
-            }
+        vSurveysItemTransparent.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
 
             override fun onSwipeBottom() {
                 super.onSwipeBottom()

@@ -3,7 +3,8 @@ package co.nimblehq.ui.screen.main.surveys
 import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.model.Survey
 import co.nimblehq.ui.screen.main.surveys.adapter.toSurveysPagerItemUiModel
-import co.nimblehq.usecase.survey.GetSurveysListFlowableUseCase
+import co.nimblehq.usecase.survey.GetInitialSurveysListFlowableUseCase
+import co.nimblehq.usecase.survey.LoadMoreSurveysListSingleUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -15,15 +16,18 @@ import org.junit.Test
 @Suppress("IllegalIdentifier")
 class SurveysViewModelTest {
 
-    private lateinit var mockGetSurveysListFlowableUseCase: GetSurveysListFlowableUseCase
+    private lateinit var mockGetInitialSurveysListFlowableUseCase: GetInitialSurveysListFlowableUseCase
+    private lateinit var mockLoadMoreSurveysListSingleUseCase: LoadMoreSurveysListSingleUseCase
 
     private lateinit var surveysViewModel: SurveysViewModel
 
     @Before
     fun setUp() {
-        mockGetSurveysListFlowableUseCase = mock()
+        mockGetInitialSurveysListFlowableUseCase = mock()
+        mockLoadMoreSurveysListSingleUseCase = mock()
         surveysViewModel = SurveysViewModel(
-            mockGetSurveysListFlowableUseCase
+            mockGetInitialSurveysListFlowableUseCase,
+            mockLoadMoreSurveysListSingleUseCase
         )
     }
 
@@ -31,14 +35,14 @@ class SurveysViewModelTest {
     fun `When getting surveys list failed, it triggers a GetSurveysListError`() {
         // Arrange
         whenever(
-            mockGetSurveysListFlowableUseCase.execute(any())
+            mockGetInitialSurveysListFlowableUseCase.execute(any())
         ) doReturn Flowable.error(SurveyError.GetSurveysListError(null))
 
         // Act
         val errorObserver = surveysViewModel
             .error
             .test()
-        surveysViewModel.checkAndLoadSurveysListIfNeeded()
+        surveysViewModel.checkAndLoadInitialSurveysListIfNeeded()
 
         // Assert
         errorObserver
@@ -52,7 +56,7 @@ class SurveysViewModelTest {
         // Arrange
         val sampleSurveysList = listOf(Survey())
         whenever(
-            mockGetSurveysListFlowableUseCase.execute(any())
+            mockGetInitialSurveysListFlowableUseCase.execute(any())
         ) doReturn Flowable.just(sampleSurveysList)
 
         // Act
@@ -62,7 +66,7 @@ class SurveysViewModelTest {
         val surveysPagerItemUiModelsObserver = surveysViewModel
             .surveysPagerItemUiModels
             .test()
-        surveysViewModel.checkAndLoadSurveysListIfNeeded()
+        surveysViewModel.checkAndLoadInitialSurveysListIfNeeded()
 
         // Assert
         showLoadingObserver

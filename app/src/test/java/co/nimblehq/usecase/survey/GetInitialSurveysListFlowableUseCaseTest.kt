@@ -13,15 +13,15 @@ import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 
-class GetSurveysListFlowableUseCaseTest {
+class GetInitialSurveysListFlowableUseCaseTest {
 
     private lateinit var surveyRepository: SurveyRepository
-    private lateinit var useCase: GetSurveysListFlowableUseCase
+    private lateinit var useCase: GetInitialSurveysListFlowableUseCase
 
     @Before
     fun setUp() {
         surveyRepository = mock()
-        useCase = GetSurveysListFlowableUseCase(
+        useCase = GetInitialSurveysListFlowableUseCase(
             TestRxSchedulerProviderImpl(),
             surveyRepository
         )
@@ -31,13 +31,13 @@ class GetSurveysListFlowableUseCaseTest {
     fun `When getting surveys list from backend successfully, it returns a list of surveys`() {
         // Arrange
         whenever(
-            surveyRepository.getSurveysList(any(), any())
+            surveyRepository.getInitialSurveysListWithCache(any(), any())
         ) doReturn Flowable.just(listOf(Survey()))
 
         // Act
         val positiveTestSubscriber = useCase
             .execute(
-                GetSurveysListFlowableUseCase.Input(
+                GetInitialSurveysListFlowableUseCase.Input(
                     1,
                     10
                 )
@@ -54,13 +54,13 @@ class GetSurveysListFlowableUseCaseTest {
     fun `When loading local surveys list from backend failed, it returns GetSurveysListError`() {
         // Arrange
         whenever(
-            surveyRepository.getSurveysList(any(), any())
+            surveyRepository.getInitialSurveysListWithCache(any(), any())
         ) doReturn Flowable.error(SurveyError.GetSurveysListError(null))
 
         // Act
         val negativeTestSubscriber = useCase
             .execute(
-                GetSurveysListFlowableUseCase.Input(
+                GetInitialSurveysListFlowableUseCase.Input(
                     1,
                     10
                 )

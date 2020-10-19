@@ -2,8 +2,8 @@
     <string name="app_name">Nimble Surveys</string>
     <string name="forget_password_reset_password_instruction">Enter your email to receive instructions for resetting your password.</string>
     <string name="forget_password_reset_btn_title">Reset</string>
-    <string name="general_get_surveys_list_error">Getting surveys list failed. Please try again.</string>
-    <string name="general_no_more_surveys_list_error">No more surveys list to load.</string>
+    <string name="general_get_surveys_list_error">Getting surveys list failed. Please try again</string>
+    <string name="general_no_more_surveys_list_error">No more surveys list to load</string>
     <string name="general_session_expired_error">Session expired</string>
     <string name="general_test_error">Test error</string>
     <string name="general_unknown_error">Unknown error</string>

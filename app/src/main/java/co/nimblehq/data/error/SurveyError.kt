@@ -13,7 +13,7 @@ sealed class SurveyError(
         cause, R.string.general_get_surveys_list_error
     ) {
         val isNotFound: Boolean
-            get() = (cause as? HttpException)?.code() == 404
+            get() = code == 404
     }
 
     class NoMoreSurveysListError(cause: Throwable?) : SurveyError(

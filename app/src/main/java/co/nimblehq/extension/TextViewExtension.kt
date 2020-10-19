@@ -5,10 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.widget.TextView
 import co.nimblehq.data.lib.common.DEFAULT_DURATION
 
-/**
- * Provide extension functions relates to ImageView and loading image mechanism.
- */
-
 fun TextView.switchTextWithFadeAnimation(newText: String) {
     animate()
         .alpha(0f)
