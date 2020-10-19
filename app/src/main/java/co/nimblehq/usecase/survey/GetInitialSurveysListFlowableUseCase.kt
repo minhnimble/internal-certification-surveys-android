@@ -8,10 +8,10 @@ import co.nimblehq.usecase.base.FlowableUseCase
 import io.reactivex.Flowable
 import javax.inject.Inject
 
-class GetSurveysListFlowableUseCase @Inject constructor(
+class GetInitialSurveysListFlowableUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val surveyRepository: SurveyRepository
-) : FlowableUseCase<GetSurveysListFlowableUseCase.Input, List<Survey>>(
+) : FlowableUseCase<GetInitialSurveysListFlowableUseCase.Input, List<Survey>>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
     ::GetSurveysListError
@@ -24,7 +24,7 @@ class GetSurveysListFlowableUseCase @Inject constructor(
 
     override fun create(input: Input): Flowable<List<Survey>> {
         return with(input) {
-            surveyRepository.getSurveysList(
+            surveyRepository.getInitialSurveysListWithCache(
                 pageNumber,
                 pageSize
             )

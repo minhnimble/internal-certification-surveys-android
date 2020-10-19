@@ -8,8 +8,8 @@ open class AppError(
     @StringRes open val readableMessageRes: Int? = null
 ) : Throwable(cause) {
 
-    protected open val code: String?
-        get() = (cause as? JsonApiException)?.error?.code
+    val code: Int?
+        get() = (cause as? JsonApiException)?.code()
 }
 
 class Ignored(cause: Throwable?) : AppError(cause, null, null)

@@ -11,10 +11,15 @@ import javax.inject.Inject
 
 interface SurveyRepository {
 
-    fun getSurveysList(
+    fun getInitialSurveysListWithCache(
         pageNumber: Int = DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER,
         pageSize: Int
     ): Flowable<List<Survey>>
+
+    fun loadMoreSurveysList(
+        pageNumber: Int,
+        pageSize: Int
+    ): Single<List<Survey>>
 }
 
 class SurveyRepositoryImpl @Inject constructor(
@@ -22,7 +27,7 @@ class SurveyRepositoryImpl @Inject constructor(
     private val surveyService: SurveyService
 ) : SurveyRepository {
 
-    override fun getSurveysList(
+    override fun getInitialSurveysListWithCache(
         pageNumber: Int,
         pageSize: Int
     ): Flowable<List<Survey>> {
@@ -34,5 +39,16 @@ class SurveyRepositoryImpl @Inject constructor(
             .map { it.toSurveys() }
             .doOnSuccess { surveyDao.insertAll(it) }
         )
+    }
+
+    override fun loadMoreSurveysList(
+        pageNumber: Int,
+        pageSize: Int
+    ): Single<List<Survey>> {
+        return surveyService
+            .getSurveysList(pageNumber, pageSize)
+            .firstOrError()
+            .map { it.toSurveys() }
+            .doOnSuccess { surveyDao.insertAll(it) }
     }
 }

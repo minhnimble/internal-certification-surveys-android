@@ -7,28 +7,78 @@
     android:layout_height="match_parent"
     android:background="@color/colorNero">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vpSurveys"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSurveysItemBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/bg_surveys_sample_item" />
+
+    <View
+        android:id="@+id/vSurveysItemTransparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_20a"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSurveysItemHeader"
+        style="@style/Widget.Template.TextView.Header"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_52sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="2"
+        app:layout_constraintBottom_toTopOf="@id/tvSurveysItemDescription"
+        app:layout_constraintEnd_toEndOf="@+id/tvSurveysItemDescription"
+        app:layout_constraintStart_toStartOf="@+id/ivSurveysItemBackground"
+        tools:text="@string/surveys_sample_item_header" />
+
+    <TextView
+        android:id="@+id/tvSurveysItemDescription"
+        style="@style/Widget.Template.TextView.Description"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_42sdp"
+        android:ellipsize="end"
+        android:gravity="start|top"
+        android:maxLines="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btSurveysItemNext"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/surveys_sample_item_description" />
+
+    <Button
+        android:id="@+id/btSurveysItemNext"
+        android:layout_width="@dimen/_44sdp"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_42sdp"
+        android:background="@drawable/bg_surveys_item_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <me.relex.circleindicator.CircleIndicator3
         android:id="@+id/ciSurveysIndicator"
         android:layout_width="0dp"
         android:layout_height="@dimen/_8sdp"
-        android:layout_marginStart="@dimen/_13sdp"
-        android:layout_marginBottom="@dimen/_150sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
         app:ci_animator="@animator/ci_alpha"
         app:ci_drawable="@drawable/ic_surveys_indicator_selected_circle"
         app:ci_drawable_unselected="@drawable/ic_surveys_indicator_unselected_circle"
         app:ci_height="@dimen/ci_size"
         app:ci_width="@dimen/ci_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/tvSurveysItemHeader"
+        app:layout_constraintStart_toStartOf="@+id/tvSurveysItemHeader" />
 
     <TextView
         android:id="@+id/tvSurveysDate"
