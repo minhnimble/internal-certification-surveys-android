@@ -78,7 +78,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
             }
         }
         toggleDrawer(false)
-        return true
+        return false
     }
 
     private fun bindLoading(isLoading: Boolean) {
