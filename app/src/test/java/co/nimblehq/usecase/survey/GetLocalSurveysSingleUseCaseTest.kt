@@ -25,7 +25,7 @@ class GetLocalSurveysSingleUseCaseTest {
     }
 
     @Test
-    fun `When getting surveys list from backend successfully, it returns a list of surveys`() {
+    fun `When getting surveys list successfully, it returns a list of surveys`() {
         // Arrange
         whenever(
             surveyDao.getAllSurveys()
@@ -43,7 +43,7 @@ class GetLocalSurveysSingleUseCaseTest {
     }
 
     @Test
-    fun `When loading local surveys list from backend failed, it returns GetSurveysListError`() {
+    fun `When getting surveys list failed, it returns GetSurveysListError`() {
         // Arrange
         whenever(
             surveyDao.getAllSurveys()
