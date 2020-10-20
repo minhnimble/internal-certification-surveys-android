@@ -35,12 +35,13 @@ class GetSurveysListFlowableUseCaseTest {
         ) doReturn Flowable.just(listOf(Survey()))
 
         // Act
-        val positiveTestSubscriber = useCase.execute(
-            GetSurveysListFlowableUseCase.Input(
-                1,
-                10
+        val positiveTestSubscriber = useCase
+            .execute(
+                GetSurveysListFlowableUseCase.Input(
+                    1,
+                    10
+                )
             )
-        )
             .test()
 
         // Assert
@@ -57,12 +58,13 @@ class GetSurveysListFlowableUseCaseTest {
         ) doReturn Flowable.error(SurveyError.GetSurveysListError(null))
 
         // Act
-        val negativeTestSubscriber = useCase.execute(
-            GetSurveysListFlowableUseCase.Input(
-                1,
-                10
+        val negativeTestSubscriber = useCase
+            .execute(
+                GetSurveysListFlowableUseCase.Input(
+                    1,
+                    10
+                )
             )
-        )
             .test()
 
         // Assert
