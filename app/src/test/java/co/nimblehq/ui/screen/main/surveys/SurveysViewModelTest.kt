@@ -68,13 +68,11 @@ class SurveysViewModelTest {
         showLoadingObserver
             .assertNoErrors()
             .assertValueCount(2)
-            .assertValueAt(0) { !it }
-            .assertValueAt(1) { !it }
+            .assertValues(false, false)
 
         surveysPagerItemUiModelsObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue { it.size == sampleSurveysList.size }
             .assertValue { it == sampleSurveysList.map { survey -> survey.toSurveysPagerItemUiModel() } }
     }
 }

@@ -6,7 +6,7 @@ import org.junit.Test
 import java.util.*
 
 @Suppress("IllegalIdentifier")
-class DateExtensionKtTest {
+class DateExtensionTest {
 
     @Test
     fun `using toDisplayFormat should return an empty string if provided format string is invalid`() {
