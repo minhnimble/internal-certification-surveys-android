@@ -25,7 +25,6 @@ open class OnSwipeTouchListener(ctx: Context) : View.OnTouchListener {
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
 
-
         override fun onDown(e: MotionEvent): Boolean {
             return true
         }
@@ -55,11 +54,8 @@ open class OnSwipeTouchListener(ctx: Context) : View.OnTouchListener {
             } catch (exception: Exception) {
                 exception.printStackTrace()
             }
-
             return result
         }
-
-
     }
 
     open fun onSwipeRight() {}

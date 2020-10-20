@@ -3,6 +3,7 @@ package co.nimblehq.ui.screen.main.surveys
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
 import co.nimblehq.data.lib.common.DATE_FORMAT_SHORT_DISPLAY
+import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.extension.loadImageWithFadeAnimation
 import co.nimblehq.extension.switchTextWithFadeAnimation
@@ -34,8 +35,6 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     override val layoutRes = R.layout.fragment_surveys
-
-    private var currentSelectedSurveyItemIndex = -1
 
     override fun initViewModel() {
         viewModel.checkAndLoadInitialSurveysListIfNeeded()
@@ -98,7 +97,6 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     private fun bindSelectedSurveyIndex(index: Int) {
         if (index != -1) {
-            currentSelectedSurveyItemIndex = index
             ciSurveysIndicator.animatePageSelected(index)
         }
     }
@@ -113,7 +111,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     private fun bindSurveysPagerItemUiModels(uiModels: List<SurveysPagerItemUiModel>) {
         if (uiModels.isNotEmpty()) {
-            ciSurveysIndicator.createIndicators(uiModels.size, currentSelectedSurveyItemIndex)
+            ciSurveysIndicator.createIndicators(uiModels.size, viewModel.selectedSurveyIndexValue)
         }
 
     }

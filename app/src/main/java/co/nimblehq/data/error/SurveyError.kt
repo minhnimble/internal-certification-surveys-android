@@ -20,5 +20,9 @@ sealed class SurveyError(
         cause, R.string.general_no_more_surveys_list_error
     )
 
+    class DeleteLocalSurveysListError(cause: Throwable?) : SurveyError(
+        cause, R.string.general_no_more_surveys_list_error
+    )
+
     // TODO: Add new class for handling error when getting survey's details
 }

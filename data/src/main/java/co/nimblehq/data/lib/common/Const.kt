@@ -25,4 +25,8 @@ internal const val REQUEST_KEY_PAGE_SIZE = "page[size]"
 const val DATE_FORMAT_FULL_DISPLAY = "dd MMM yyyy, hh:mm a"
 const val DATE_FORMAT_SHORT_DISPLAY = "EEEE, MMMM dd"
 
+// General
+
+const val DEFAULT_UNSELECTED_INDEX = -1
+
 

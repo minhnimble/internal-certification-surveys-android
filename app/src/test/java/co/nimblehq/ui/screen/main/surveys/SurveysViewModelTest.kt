@@ -3,6 +3,7 @@ package co.nimblehq.ui.screen.main.surveys
 import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.model.Survey
 import co.nimblehq.ui.screen.main.surveys.adapter.toSurveysPagerItemUiModel
+import co.nimblehq.usecase.survey.DeleteLocalSurveysCompletableUseCase
 import co.nimblehq.usecase.survey.GetInitialSurveysListFlowableUseCase
 import co.nimblehq.usecase.survey.LoadMoreSurveysListSingleUseCase
 import com.nhaarman.mockitokotlin2.any
@@ -16,6 +17,7 @@ import org.junit.Test
 @Suppress("IllegalIdentifier")
 class SurveysViewModelTest {
 
+    private lateinit var mockDeleteLocalSurveysCompletableUseCase: DeleteLocalSurveysCompletableUseCase
     private lateinit var mockGetInitialSurveysListFlowableUseCase: GetInitialSurveysListFlowableUseCase
     private lateinit var mockLoadMoreSurveysListSingleUseCase: LoadMoreSurveysListSingleUseCase
 
@@ -23,9 +25,11 @@ class SurveysViewModelTest {
 
     @Before
     fun setUp() {
+        mockDeleteLocalSurveysCompletableUseCase = mock()
         mockGetInitialSurveysListFlowableUseCase = mock()
         mockLoadMoreSurveysListSingleUseCase = mock()
         surveysViewModel = SurveysViewModel(
+            mockDeleteLocalSurveysCompletableUseCase,
             mockGetInitialSurveysListFlowableUseCase,
             mockLoadMoreSurveysListSingleUseCase
         )

@@ -4,16 +4,17 @@ import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.lib.common.DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER
 import co.nimblehq.data.lib.common.DEFAULT_SURVEYS_PAGE_SIZE
+import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.ui.screen.main.surveys.adapter.SurveysPagerItemUiModel
 import co.nimblehq.ui.screen.main.surveys.adapter.toSurveysPagerItemUiModel
+import co.nimblehq.usecase.survey.DeleteLocalSurveysCompletableUseCase
 import co.nimblehq.usecase.survey.GetInitialSurveysListFlowableUseCase
 import co.nimblehq.usecase.survey.LoadMoreSurveysListSingleUseCase
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 
 interface Inputs {
     fun nextIndex()
@@ -21,6 +22,7 @@ interface Inputs {
 }
 
 class SurveysViewModel @ViewModelInject constructor(
+    private val deleteLocalSurveysCompletableUseCase: DeleteLocalSurveysCompletableUseCase,
     private val getInitialSurveysListFlowableUseCase: GetInitialSurveysListFlowableUseCase,
     private val loadMoreSurveysListSingleUseCase: LoadMoreSurveysListSingleUseCase
 ) : BaseViewModel(), Inputs {
@@ -31,7 +33,7 @@ class SurveysViewModel @ViewModelInject constructor(
 
     private val _selectedSurveyItem = BehaviorSubject.create<SurveysPagerItemUiModel>()
 
-    private val _selectedSurveyIndex = BehaviorSubject.createDefault(-1)
+    private val _selectedSurveyIndex = BehaviorSubject.createDefault(DEFAULT_UNSELECTED_INDEX)
 
     private val _surveysPagerItemUiModels = BehaviorSubject.create<List<SurveysPagerItemUiModel>>()
 
@@ -52,6 +54,9 @@ class SurveysViewModel @ViewModelInject constructor(
 
     val inputs: Inputs = this
 
+    val selectedSurveyIndexValue: Int
+        get() = _selectedSurveyIndex.value ?: DEFAULT_UNSELECTED_INDEX
+
     private var activePageSize = DEFAULT_SURVEYS_PAGE_SIZE
     private var currentPageNumber = DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER
     private var loadedLastPage = false
@@ -60,21 +65,21 @@ class SurveysViewModel @ViewModelInject constructor(
         _selectedSurveyIndex.value?.let {
             val surveyItems = _surveysPagerItemUiModels.value.orEmpty()
             when {
-                it == -1 -> {
+                it == DEFAULT_UNSELECTED_INDEX -> { // Selected index is not set yet
                     if (surveyItems.isNotEmpty()) {
                         _selectedSurveyIndex.onNext(0)
                         _selectedSurveyItem.onNext(surveyItems[0])
                     }
                 }
-                it >= 0 -> {
+                it >= 0 -> { // Selected index is already set before
                     val nextIndex = it + 1
                     if (surveyItems.size > nextIndex) {
                         _selectedSurveyIndex.onNext(nextIndex)
                         _selectedSurveyItem.onNext(surveyItems[nextIndex])
                     }
-                    if (surveyItems.size - 1 == nextIndex && !loadedLastPage) {
-                        loadMoreSurveysList()
-                    } else if (surveyItems.size == nextIndex) {
+
+                    // When we reach the last item, trigger to load more
+                    if (surveyItems.size - 1 == nextIndex && !loadedLastPage || surveyItems.size == nextIndex) {
                         loadMoreSurveysList()
                     }
                 }
@@ -84,35 +89,58 @@ class SurveysViewModel @ViewModelInject constructor(
 
     override fun previousIndex() {
         _selectedSurveyIndex.value?.let {
-            val surveyItems = _surveysPagerItemUiModels.value.orEmpty()
-            if (it > 0) {
+            if (it > 0) { // Selected index is already set before
                 val previousIndex = it - 1
                 _selectedSurveyIndex.onNext(previousIndex)
-                _selectedSurveyItem.onNext(surveyItems[previousIndex])
+                _selectedSurveyItem.onNext(_surveysPagerItemUiModels.value.orEmpty()[previousIndex])
             }
         }
     }
 
     fun refreshSurveysList() {
-        // TODO: Add logic to refresh surveys list
+        resetSurveysPagingAttributes()
+
+        deleteLocalSurveysCompletableUseCase
+            .execute(Unit)
+            .doOnSubscribe { _showLoading.onNext(true) }
+            .andThen(loadMoreSurveysListSingleUseCase.execute(LoadMoreSurveysListSingleUseCase.Input(currentPageNumber, activePageSize)))
+            .map { it.map { survey -> survey.toSurveysPagerItemUiModel() } }
+            .doFinally { _showLoading.onNext(false) }
+            .subscribeBy(
+                onSuccess = {
+                    // Clear current displaying survey
+                    _selectedSurveyIndex.onNext(DEFAULT_UNSELECTED_INDEX)
+                    _selectedSurveyItem.onNext(SurveysPagerItemUiModel())
+
+                    bindOnSuccessLoadSurveyItems(it, false)
+
+                    if (it.isNotEmpty()) { // Reset displaying contents to first item if available
+                        _selectedSurveyIndex.onNext(0)
+                        _selectedSurveyItem.onNext(it[0])
+                    }
+
+                },
+                onError = { bindOnErrorLoadSurveyItems(it) }
+            )
+            .bindForDisposable()
     }
 
     fun checkAndLoadInitialSurveysListIfNeeded() {
         getInitialSurveysListFlowableUseCase
-            .execute(GetInitialSurveysListFlowableUseCase.Input(currentPageNumber, activePageSize))
+            .execute(GetInitialSurveysListFlowableUseCase.Input(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, activePageSize))
             .map { it.map { survey -> survey.toSurveysPagerItemUiModel() } }
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
                 onNext = {
-                    val finalSurveysList = mergeSurveysList(it)
                     if (it.isNotEmpty()) {
                         _showLoading.onNext(false)
-                        if (_selectedSurveyIndex.value == -1) {
+                        if (_selectedSurveyIndex.value == DEFAULT_UNSELECTED_INDEX) {
                             _selectedSurveyIndex.onNext(0)
                             _selectedSurveyItem.onNext(it[0])
                         }
-                        calculateCurrentPageNumber(finalSurveysList.size)
                     }
+                    val finalSurveysList = mergeSurveysList(it)
+                    calculateInitialPageNumber(finalSurveysList.size)
                     _surveysPagerItemUiModels.onNext(finalSurveysList)
                 },
                 onError = { _error.onNext(it) }
@@ -120,7 +148,7 @@ class SurveysViewModel @ViewModelInject constructor(
             .bindForDisposable()
     }
 
-    private fun calculateCurrentPageNumber(totalItems: Int) {
+    private fun calculateInitialPageNumber(totalItems: Int) {
         var pageNumber = totalItems / activePageSize
         if (pageNumber < 1) pageNumber = 1
         currentPageNumber = pageNumber
@@ -128,6 +156,25 @@ class SurveysViewModel @ViewModelInject constructor(
         if (totalItems % activePageSize != 0) {
             loadedLastPage = true
         }
+    }
+
+    private fun bindOnErrorLoadSurveyItems(error: Throwable) {
+        _error.onNext(error)
+        if ((error as? SurveyError.GetSurveysListError)?.isNotFound == true) {
+            loadedLastPage = true
+            _error.onNext(SurveyError.NoMoreSurveysListError(null))
+        } else {
+            _error.onNext(error)
+        }
+    }
+
+    private fun bindOnSuccessLoadSurveyItems(items: List<SurveysPagerItemUiModel>, shouldMerge: Boolean = true) {
+        if (items.isEmpty() || items.size % activePageSize != 0) {
+            loadedLastPage = true
+        }
+        var finalItems = items
+        if (shouldMerge) finalItems = mergeSurveysList(items)
+        _surveysPagerItemUiModels.onNext(finalItems)
     }
 
     private fun loadMoreSurveysList() {
@@ -142,21 +189,8 @@ class SurveysViewModel @ViewModelInject constructor(
             .map { it.map { survey -> survey.toSurveysPagerItemUiModel() } }
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
-                onSuccess = {
-                    if (it.isEmpty() || it.size % activePageSize != 0) {
-                        loadedLastPage = true
-                    }
-                    _surveysPagerItemUiModels.onNext(mergeSurveysList(it))
-                },
-                onError = { error ->
-                    _error.onNext(error)
-                    if ((error as? SurveyError.GetSurveysListError)?.isNotFound == true) {
-                        loadedLastPage = true
-                        _error.onNext(SurveyError.NoMoreSurveysListError(null))
-                    } else {
-                        _error.onNext(error)
-                    }
-                }
+                onSuccess = { bindOnSuccessLoadSurveyItems(it) },
+                onError = { bindOnErrorLoadSurveyItems(it) }
             )
             .bindForDisposable()
     }
@@ -165,6 +199,12 @@ class SurveysViewModel @ViewModelInject constructor(
         return _surveysPagerItemUiModels.value?.let {
             it.plus(newList).distinctBy { survey -> survey.id }
         } ?: run { newList }
+    }
+
+    private fun resetSurveysPagingAttributes() {
+        activePageSize = DEFAULT_SURVEYS_PAGE_SIZE
+        currentPageNumber = DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER
+        loadedLastPage = false
     }
 }
 
