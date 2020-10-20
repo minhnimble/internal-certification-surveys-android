@@ -9,7 +9,6 @@ import co.nimblehq.di.qualifier.AppOkHttpClient
 import co.nimblehq.di.qualifier.AppRetrofit
 import co.nimblehq.di.qualifier.AuthOkHttpClient
 import co.nimblehq.di.qualifier.AuthRetrofit
-import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

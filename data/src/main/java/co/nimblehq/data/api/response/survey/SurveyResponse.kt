@@ -8,3 +8,8 @@ data class SurveyResponse(
     @Json(name = "description") var description: String = "",
     @Json(name = "cover_image_url") var coverImageUrl: String = ""
 )
+
+data class SurveysResponse(
+    @Json(name = "pages") var pages: Int = 0,
+    @Json(name = "surveys") var surveys: List<SurveyResponse> = listOf(),
+)

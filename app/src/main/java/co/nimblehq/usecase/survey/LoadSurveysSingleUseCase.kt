@@ -1,20 +1,20 @@
 package co.nimblehq.usecase.survey
 
-import co.nimblehq.data.error.SurveyError.GetSurveysListError
+import co.nimblehq.data.error.SurveyError.GetSurveysError
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
 import co.nimblehq.data.model.Survey
 import co.nimblehq.data.repository.SurveyRepository
-import co.nimblehq.usecase.base.FlowableUseCase
-import io.reactivex.Flowable
+import co.nimblehq.usecase.base.SingleUseCase
+import io.reactivex.Single
 import javax.inject.Inject
 
-class GetInitialSurveysListFlowableUseCase @Inject constructor(
+class LoadSurveysSingleUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val surveyRepository: SurveyRepository
-) : FlowableUseCase<GetInitialSurveysListFlowableUseCase.Input, List<Survey>>(
+) : SingleUseCase<LoadSurveysSingleUseCase.Input, List<Survey>>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
-    ::GetSurveysListError
+    ::GetSurveysError
 ) {
 
     data class Input(
@@ -22,9 +22,9 @@ class GetInitialSurveysListFlowableUseCase @Inject constructor(
         val pageSize: Int
     )
 
-    override fun create(input: Input): Flowable<List<Survey>> {
+    override fun create(input: Input): Single<List<Survey>> {
         return with(input) {
-            surveyRepository.getInitialSurveysListWithCache(
+            surveyRepository.loadSurveys(
                 pageNumber,
                 pageSize
             )

@@ -7,6 +7,9 @@ const val DEFAULT_DURATION = 1000L // in milliseconds
 const val BLUR_RADIUS = 25
 const val BLUR_SAMPLING = 2
 
+const val SWIPE_THRESHOLD = 100
+const val SWIPE_VELOCITY_THRESHOLD = 100
+
 // Api related
 
 const val AUTHORIZATION_HEADER = "Authorization"

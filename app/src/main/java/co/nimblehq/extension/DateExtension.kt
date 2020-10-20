@@ -2,7 +2,6 @@ package co.nimblehq.extension
 
 import co.nimblehq.data.lib.common.DATE_FORMAT_FULL_DISPLAY
 import timber.log.Timber
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 

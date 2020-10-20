@@ -1,14 +1,16 @@
 package co.nimblehq.data.api.parser
 
 import co.nimblehq.data.api.response.survey.SurveyResponse
+import co.nimblehq.data.api.response.survey.SurveysResponse
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 
-class SurveysListResponseParser: JsonAdapter<List<SurveyResponse>>() {
+class SurveysResponseParser: JsonAdapter<SurveysResponse>() {
 
-    override fun fromJson(reader: JsonReader): List<SurveyResponse> {
+    override fun fromJson(reader: JsonReader): SurveysResponse {
         reader.isLenient = true
+        val surveysResponse = SurveysResponse()
         var surveysListResponse = listOf<SurveyResponse>()
 
         return try {
@@ -36,16 +38,25 @@ class SurveysListResponseParser: JsonAdapter<List<SurveyResponse>>() {
                             surveyResponse
                         }
                     }
+                    "meta" -> {
+                        reader.readObject {
+                            when (reader.nextName()) {
+                                "pages" -> surveysResponse.pages = reader.nextInt()
+                                else -> reader.skipValue()
+                            }
+                        }
+                    }
                     else -> reader.skipValue()
                 }
             }
 
-            surveysListResponse
+            surveysResponse.surveys = surveysListResponse
+            surveysResponse
         } catch (e: Exception) {
-            surveysListResponse
+            surveysResponse
         }
     }
 
-    override fun toJson(writer: JsonWriter, value: List<SurveyResponse>?) { }
+    override fun toJson(writer: JsonWriter, value: SurveysResponse?) { }
 }
 

@@ -2,15 +2,26 @@ package co.nimblehq.data.storage
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import io.reactivex.Completable
 import javax.inject.Inject
 
 interface AppPreferences {
-    // TODO: Add new keys here
+
+    var surveysTotalPages: Int?
+
+    // TODO: Will use this function when implementing logout feature
+    fun clearAll() = Completable.fromAction {
+        surveysTotalPages = null
+    }
 }
 
 class AppPreferencesImpl @Inject constructor(
     private val preferences: SharedPreferences
 ) : AppPreferences {
+
+    override var surveysTotalPages: Int?
+        get() = getInt(KEY_SURVEYS_TOTAL_PAGES)
+        set(pages) = setOrRemove(KEY_SURVEYS_TOTAL_PAGES, pages)
 
     private fun getString(key: String): String? {
         return preferences.getString(key, null)
@@ -50,3 +61,5 @@ class AppPreferencesImpl @Inject constructor(
         }
     }
 }
+
+private const val KEY_SURVEYS_TOTAL_PAGES = "surveys_total_pages"

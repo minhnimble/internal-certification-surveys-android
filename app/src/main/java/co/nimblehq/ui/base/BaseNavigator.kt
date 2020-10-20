@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.annotation.IdRes
 import androidx.navigation.NavController
 import timber.log.Timber
-import java.lang.Exception
 
 interface BaseNavigator {
 

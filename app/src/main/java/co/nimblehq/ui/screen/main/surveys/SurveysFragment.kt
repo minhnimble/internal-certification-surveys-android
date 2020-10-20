@@ -2,6 +2,7 @@ package co.nimblehq.ui.screen.main.surveys
 
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
+import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.lib.common.DATE_FORMAT_SHORT_DISPLAY
 import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.data.lib.extension.subscribeOnClick
@@ -13,11 +14,8 @@ import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.common.listener.OnSwipeTouchListener
 import co.nimblehq.ui.screen.main.LoaderAnimatable
 import co.nimblehq.ui.screen.main.MainNavigator
-import co.nimblehq.ui.screen.main.surveys.adapter.SurveysPagerAdapter
-import co.nimblehq.ui.screen.main.surveys.adapter.SurveysPagerItemUiModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_surveys.*
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -25,8 +23,6 @@ import javax.inject.Inject
 class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     @Inject lateinit var navigator: MainNavigator
-
-    private lateinit var surveysPagerAdapter: SurveysPagerAdapter
 
     private val viewModel by viewModels<SurveysViewModel>()
 
@@ -37,7 +33,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     override val layoutRes = R.layout.fragment_surveys
 
     override fun initViewModel() {
-        viewModel.checkAndLoadInitialSurveysListIfNeeded()
+        viewModel.checkAndRefreshInitialSurveys()
     }
 
     override fun setupView() {
@@ -49,7 +45,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
             // TODO: Handle navigate to survey details screen
         }.bindForDisposable()
 
-        vSurveysItemTransparent.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+        clSurveys.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
 
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
@@ -70,7 +66,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun bindViewModel() {
         viewModel.error
-            .subscribe(::displayError)
+            .subscribe(::bindError)
             .bindForDisposable()
 
         viewModel.showLoading
@@ -81,13 +77,13 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
             .subscribe(::bindSelectedSurveyIndex)
             .bindForDisposable()
 
-        viewModel.selectedSurveyItem
-            .subscribe(::bindSelectedSurveyItem)
+        viewModel.surveyItemUiModels
+            .subscribe(::bindSurveyItemUiModels)
             .bindForDisposable()
+    }
 
-        viewModel.surveysPagerItemUiModels
-            .subscribe(::bindSurveysPagerItemUiModels)
-            .bindForDisposable()
+    private fun bindError(throwable: Throwable) {
+        if (throwable !is Ignored) displayError(throwable)
     }
 
     private fun bindLoading(isLoading: Boolean) {
@@ -96,23 +92,17 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     private fun bindSelectedSurveyIndex(index: Int) {
-        if (index != -1) {
+        val surveyUiModel = viewModel.getSelectedSurveyUiModel()
+        if (surveyUiModel != null) {
             ciSurveysIndicator.animatePageSelected(index)
+            tvSurveysItemHeader.switchTextWithFadeAnimation(surveyUiModel.header)
+            tvSurveysItemDescription.switchTextWithFadeAnimation(surveyUiModel.description)
+            ivSurveysItemBackground.loadImageWithFadeAnimation(surveyUiModel.imageUrl)
         }
     }
 
-    private fun bindSelectedSurveyItem(item: SurveysPagerItemUiModel?) {
-         item?.let {
-            tvSurveysItemHeader.switchTextWithFadeAnimation(it.header)
-            tvSurveysItemDescription.switchTextWithFadeAnimation(it.description)
-            ivSurveysItemBackground.loadImageWithFadeAnimation(it.imageUrl)
-        }
-    }
-
-    private fun bindSurveysPagerItemUiModels(uiModels: List<SurveysPagerItemUiModel>) {
-        if (uiModels.isNotEmpty()) {
-            ciSurveysIndicator.createIndicators(uiModels.size, viewModel.selectedSurveyIndexValue)
-        }
-
+    private fun bindSurveyItemUiModels(uiModels: List<SurveyItemUiModel>) {
+        if (uiModels.isEmpty()) return
+        ciSurveysIndicator.createIndicators(uiModels.size, viewModel.selectedSurveyIndexValue)
     }
 }

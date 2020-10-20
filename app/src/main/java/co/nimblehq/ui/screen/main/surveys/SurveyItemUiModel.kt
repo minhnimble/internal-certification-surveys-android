@@ -1,15 +1,15 @@
-package co.nimblehq.ui.screen.main.surveys.adapter
+package co.nimblehq.ui.screen.main.surveys
 
 import co.nimblehq.data.model.Survey
 
-data class SurveysPagerItemUiModel(
+data class SurveyItemUiModel(
     val id: String = "",
     val description: String = "",
     val header: String = "",
     val imageUrl: String = ""
 )
 
-fun Survey.toSurveysPagerItemUiModel() = SurveysPagerItemUiModel(
+fun Survey.toSurveyItemUiModel() = SurveyItemUiModel(
     id,
     description,
     title,

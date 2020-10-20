@@ -10,7 +10,7 @@ open class AppError(
 ) : Throwable(cause) {
 
     protected open val code: Int?
-        get() = (cause as? HttpException)?.code()
+        get() = (cause as? JsonApiException)?.response?.code()
 }
 
 class Ignored(cause: Throwable?) : AppError(cause, null, null)

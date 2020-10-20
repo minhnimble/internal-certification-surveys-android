@@ -1,6 +1,6 @@
 package co.nimblehq.usecase.survey
 
-import co.nimblehq.data.error.SurveyError.DeleteLocalSurveysListError
+import co.nimblehq.data.error.SurveyError.DeleteLocalSurveysError
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
 import co.nimblehq.data.storage.dao.SurveyDao
 import co.nimblehq.usecase.base.CompletableUseCase
@@ -10,15 +10,20 @@ import javax.inject.Inject
 class DeleteLocalSurveysCompletableUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val surveysDao: SurveyDao
-) : CompletableUseCase<Unit>(
+) : CompletableUseCase<DeleteLocalSurveysCompletableUseCase.Input>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
-    ::DeleteLocalSurveysListError
+    ::DeleteLocalSurveysError
 ) {
+    data class Input(
+        val excludedIds: List<String>
+    )
 
-    override fun create(input: Unit): Completable {
+    override fun create(input: Input): Completable {
         return Completable.fromAction {
-            surveysDao.deleteSurvey()
+            surveysDao.deleteSurveys(
+                excludedIds = input.excludedIds
+            )
         }
     }
 }

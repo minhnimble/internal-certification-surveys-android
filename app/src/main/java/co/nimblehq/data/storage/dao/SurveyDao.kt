@@ -13,11 +13,14 @@ interface SurveyDao : BaseDao<Survey> {
     fun getAllSurveys(): Single<List<Survey>>
 
     @Query("DELETE FROM survey")
-    fun deleteSurvey()
+    fun deleteSurveys()
+
+    @Query("DELETE FROM survey WHERE id NOT IN (:excludedIds)")
+    fun deleteSurveys(excludedIds: List<String>)
 
     @Transaction
     fun refresh(survey: Survey) {
-        deleteSurvey()
+        deleteSurveys()
         insert(survey)
     }
 }

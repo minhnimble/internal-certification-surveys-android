@@ -3,6 +3,7 @@ package co.nimblehq.ui.common.adapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
+// TODO: This class will be used in the up-coming features
 interface DiffUpdateAdapter {
 
     fun <T> RecyclerView.Adapter<*>.autoNotify(

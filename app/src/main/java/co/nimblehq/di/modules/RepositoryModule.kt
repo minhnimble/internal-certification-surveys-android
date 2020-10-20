@@ -7,6 +7,7 @@ import co.nimblehq.data.repository.AuthRepository
 import co.nimblehq.data.repository.AuthRepositoryImpl
 import co.nimblehq.data.repository.SurveyRepository
 import co.nimblehq.data.repository.SurveyRepositoryImpl
+import co.nimblehq.data.storage.AppPreferences
 import co.nimblehq.data.storage.dao.SurveyDao
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideSurveyRepository(surveyDao: SurveyDao, surveyService: SurveyService): SurveyRepository = SurveyRepositoryImpl(surveyDao, surveyService)
+    fun provideSurveyRepository(appPreferences: AppPreferences, surveyDao: SurveyDao, surveyService: SurveyService): SurveyRepository = SurveyRepositoryImpl(appPreferences, surveyDao, surveyService)
 
     @Provides
     fun provideTokenRefresher(authRepository: AuthRepository): TokenRefresher = authRepository

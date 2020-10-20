@@ -2,7 +2,8 @@ package co.nimblehq.ui.common
 
 import android.content.Context
 import android.widget.Toast
-import android.widget.Toast.*
+import android.widget.Toast.LENGTH_LONG
+import android.widget.Toast.makeText
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 

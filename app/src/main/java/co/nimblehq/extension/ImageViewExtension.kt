@@ -1,14 +1,11 @@
 package co.nimblehq.extension
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.graphics.drawable.ColorDrawable
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import co.nimblehq.R
-import co.nimblehq.data.lib.common.DEFAULT_DURATION
 import co.nimblehq.di.modules.GlideApp
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 /**
