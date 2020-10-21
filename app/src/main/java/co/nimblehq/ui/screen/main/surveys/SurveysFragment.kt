@@ -47,7 +47,9 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
 
     override fun bindViewEvents() {
         btSurveysItemNext.subscribeOnClick {
-            // TODO: Handle navigate to survey details screen
+            viewModel.getSelectedSurveyUiModel()?.let {
+                navigator.navigateToSurveyDetails(it)
+            }
         }.bindForDisposable()
 
         clSurveys.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {

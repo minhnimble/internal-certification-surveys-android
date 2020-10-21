@@ -8,11 +8,14 @@ import androidx.navigation.findNavController
 import co.nimblehq.R
 import co.nimblehq.ui.base.BaseNavigator
 import co.nimblehq.ui.base.BaseNavigatorImpl
+import co.nimblehq.ui.screen.main.surveys.SurveyItemUiModel
 import co.nimblehq.ui.screen.onboarding.OnboardingActivity
+import co.nimblehq.ui.screen.main.surveys.SurveysFragmentDirections.Companion.actionSurveysFragmentToSurveyDetailsFragment
 import javax.inject.Inject
 
 interface MainNavigator : BaseNavigator {
     fun navigateToOnboardingActivity()
+    fun navigateToSurveyDetails(surveyItemUiModel: SurveyItemUiModel)
 }
 
 class MainNavigatorImpl @Inject constructor(
@@ -34,5 +37,26 @@ class MainNavigatorImpl @Inject constructor(
             ), null, null, null
         )
         activity.finish()
+    }
+
+    override fun navigateToSurveyDetails(surveyItemUiModel: SurveyItemUiModel) {
+        val navController = findNavController()
+        when (navController.graph.id) {
+            R.id.main_nav_graph -> {
+                when (navController.currentDestination?.id) {
+                    R.id.surveysFragment -> {
+                        val action = actionSurveysFragmentToSurveyDetailsFragment(
+                            surveyItemUiModel.id,
+                            surveyItemUiModel.header,
+                            surveyItemUiModel.description,
+                            surveyItemUiModel.imageUrl
+                        )
+                        navController.navigate(action)
+                    }
+                    else -> unsupportedNavigation()
+                }
+            }
+            else -> unsupportedNavigation()
+        }
     }
 }

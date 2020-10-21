@@ -59,14 +59,12 @@
 
         <Button
             android:id="@+id/btSignInLogin"
+            style="@style/GeneralActionButtonTextStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_44sdp"
-            android:background="@drawable/bg_sign_in_login_button"
+            android:background="@drawable/bg_general_action_button"
             android:enabled="false"
             android:text="@string/sign_in_log_in_btn_title"
-            android:textAllCaps="false"
-            android:textSize="@dimen/_13ssp"
-            android:textStyle="bold"
             tools:alpha="1" />
 
     </LinearLayout>
