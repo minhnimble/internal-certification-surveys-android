@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clSurveys"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivSurveyDetailsBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/bg_surveys_sample_item" />
+
+    <View
+        android:id="@+id/vSurveyDetailsTransparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_20a"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivSurveyDetailsBack"
+        android:layout_width="@dimen/_31sdp"
+        android:layout_height="@dimen/_31sdp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_33sdp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_general_back_arrow_white" />
+
+    <TextView
+        android:id="@+id/tvSurveyDetailsHeader"
+        style="@style/Widget.Template.TextView.Header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_23sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ivSurveyDetailsBackground"
+        app:layout_constraintTop_toBottomOf="@+id/ivSurveyDetailsBack"
+        tools:text="@string/surveys_sample_item_header" />
+
+    <TextView
+        android:id="@+id/tvSurveyDetailsDescription"
+        style="@style/Widget.Template.TextView.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:ellipsize="end"
+        android:gravity="start|top"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="@+id/tvSurveyDetailsHeader"
+        app:layout_constraintStart_toStartOf="@+id/tvSurveyDetailsHeader"
+        app:layout_constraintTop_toBottomOf="@+id/tvSurveyDetailsHeader"
+        tools:text="@string/surveys_sample_item_description" />
+
+    <Button
+        android:id="@+id/btSurveyDetailsStartSurvey"
+        style="@style/GeneralActionButtonTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_42sdp"
+        android:background="@drawable/bg_general_action_button"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:text="@string/survey_details_start_survey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

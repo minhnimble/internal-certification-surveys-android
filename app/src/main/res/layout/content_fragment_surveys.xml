@@ -113,7 +113,7 @@
             android:id="@+id/ivSurveysUserAvatar"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginTop="@dimen/_77sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:contentDescription="@string/surveys_user_avatar"
             android:scaleType="centerCrop"

@@ -13,5 +13,6 @@
     <string name="sign_in_email_hint">Email</string>
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_forgot_button_title">Forgot?</string>
+    <string name="survey_details_start_survey">Start Survey</string>
     <string name="surveys_today">Today</string>
 </resources>

@@ -4,8 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/surveysFragment">
+
     <fragment
         android:id="@+id/surveysFragment"
         android:name="co.nimblehq.ui.screen.main.surveys.SurveysFragment"
-        android:label="SurveysFragment" />
+        android:label="SurveysFragment"
+        tools:layout="@layout/fragment_surveys">
+
+        <action
+            android:id="@+id/action_surveysFragment_to_surveyDetailsFragment"
+            app:destination="@id/surveyDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/surveyDetailsFragment"
+        android:name="co.nimblehq.ui.screen.main.surveydetails.SurveyDetailsFragment"
+        android:label="SurveyDetailsFragment"
+        tools:layout="@layout/fragment_survey_details">
+
+        <argument
+            android:name="surveyId"
+            app:argType="string" />
+        <argument
+            android:name="surveyHeader"
+            app:argType="string" />
+        <argument
+            android:name="surveyDescription"
+            app:argType="string" />
+        <argument
+            android:name="surveyImageUrl"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
