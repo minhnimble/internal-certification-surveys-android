@@ -118,42 +118,37 @@ class SurveysViewModelTest {
         // Arrange
         val sampleSurveysList = listOf(Survey(id = "1"), Survey(id = "2"))
         whenever(
-            mockDeleteLocalSurveysCompletableUseCase.execute(any())
+            mockDeleteLocalSurveysExcludeIdsCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
         whenever(
-            mockLoadMoreSurveysSingleUseCase.execute(any())
+            mockLoadSurveysSingleUseCase.execute(any())
         ) doReturn Single.just(sampleSurveysList)
+        whenever(
+            mockGetSurveysTotalPagesSingleUseCase.execute(any())
+        ) doReturn Single.just(1)
 
         // Act
-        val showLoadingObserver = surveysViewModel
-            .showLoading
+        val showRefreshingObserver = surveysViewModel
+            .showRefreshing
             .test()
         val surveysPagerItemUiModelsObserver = surveysViewModel
             .surveyItemUiModels
             .test()
-        val selectedSurveyDataObserver = surveysViewModel
-            .selectedSurveyData
+        val selectedSurveyIndexObserver = surveysViewModel
+            .selectedSurveyIndex
             .test()
         surveysViewModel.refreshSurveysList()
 
         // Assert
-        showLoadingObserver
+        showRefreshingObserver
             .assertNoErrors()
             .assertValueCount(2)
             .assertValues(true, false)
 
-        selectedSurveyDataObserver
+        selectedSurveyIndexObserver
             .assertNoErrors()
-            .assertValueCount(3)
-            .assertValueAt(0) {
-                it.first == DEFAULT_UNSELECTED_INDEX && it.second?.id == null // Initial
-            }
-            .assertValueAt(1) {
-                it.first == DEFAULT_UNSELECTED_INDEX && it.second?.id == null // Reset
-            }
-            .assertValueAt(2) {
-                it.first == 0 && it.second?.id == "1" // Assign
-            }
+            .assertValueCount(2)
+            .assertValues(DEFAULT_UNSELECTED_INDEX, 0) // Initial, reset, refresh
 
         surveysPagerItemUiModelsObserver
             .assertNoErrors()
@@ -165,15 +160,18 @@ class SurveysViewModelTest {
     fun `When refreshing surveys failed, it triggers showLoading as false, and returns GetSurveysError`() {
         // Arrange
         whenever(
-            mockDeleteLocalSurveysCompletableUseCase.execute(any())
+            mockDeleteLocalSurveysExcludeIdsCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
         whenever(
-            mockLoadMoreSurveysSingleUseCase.execute(any())
+            mockGetSurveysTotalPagesSingleUseCase.execute(any())
+        ) doReturn Single.just(1)
+        whenever(
+            mockLoadSurveysSingleUseCase.execute(any())
         ) doReturn Single.error(SurveyError.GetSurveysError(null))
 
         // Act
-        val showLoadingObserver = surveysViewModel
-            .showLoading
+        val showRefreshingObserver = surveysViewModel
+            .showRefreshing
             .test()
         val errorObserver = surveysViewModel
             .error
@@ -181,7 +179,7 @@ class SurveysViewModelTest {
         surveysViewModel.refreshSurveysList()
 
         // Assert
-        showLoadingObserver
+        showRefreshingObserver
             .assertNoErrors()
             .assertValueCount(2)
             .assertValues(true, false)
@@ -197,26 +195,29 @@ class SurveysViewModelTest {
         // Arrange
         val sampleSurveysList = listOf(Survey(id = "1"), Survey(id = "2"))
         whenever(
-            mockDeleteLocalSurveysCompletableUseCase.execute(any())
+            mockDeleteLocalSurveysExcludeIdsCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
         whenever(
-            mockLoadMoreSurveysSingleUseCase.execute(any())
+            mockLoadSurveysSingleUseCase.execute(any())
         ) doReturn Single.just(sampleSurveysList)
+        whenever(
+            mockGetSurveysTotalPagesSingleUseCase.execute(any())
+        ) doReturn Single.just(1)
         surveysViewModel.refreshSurveysList() // Fill the sample list
         surveysViewModel.nextIndex()
 
         // Act
-        val selectedSurveyDataObserver = surveysViewModel
-            .selectedSurveyData
+        val selectedSurveyIndexObserver = surveysViewModel
+            .selectedSurveyIndex
             .test()
         surveysViewModel.previousIndex()
 
         // Assert
-        selectedSurveyDataObserver
+        selectedSurveyIndexObserver
             .assertNoErrors()
             .assertValueCount(2)
             .assertValueAt(1) {
-                it.first == 0 && it.second?.id == "1"
+                it == 0
             }
     }
 
@@ -225,26 +226,27 @@ class SurveysViewModelTest {
         // Arrange
         val sampleSurveysList = listOf(Survey(id = "1"), Survey(id = "2"))
         whenever(
-            mockDeleteLocalSurveysCompletableUseCase.execute(any())
+            mockDeleteLocalSurveysExcludeIdsCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
         whenever(
-            mockLoadMoreSurveysSingleUseCase.execute(any())
+            mockLoadSurveysSingleUseCase.execute(any())
         ) doReturn Single.just(sampleSurveysList)
+        whenever(
+            mockGetSurveysTotalPagesSingleUseCase.execute(any())
+        ) doReturn Single.just(1)
         surveysViewModel.refreshSurveysList() // Fill the sample list
 
         // Act
-        val selectedSurveyDataObserver = surveysViewModel
-            .selectedSurveyData
+        val selectedSurveyIndexObserver = surveysViewModel
+            .selectedSurveyIndex
             .test()
         surveysViewModel.previousIndex()
 
         // Assert
-        selectedSurveyDataObserver
+        selectedSurveyIndexObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue {
-                it.first == 0 && it.second?.id == "1"
-            }
+            .assertValue { it == 0 }
     }
 
     @Test
@@ -252,53 +254,67 @@ class SurveysViewModelTest {
         // Arrange
         val sampleSurveysList = listOf(Survey(id = "1"), Survey(id = "2"))
         whenever(
-            mockDeleteLocalSurveysCompletableUseCase.execute(any())
+            mockDeleteLocalSurveysExcludeIdsCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
         whenever(
-            mockLoadMoreSurveysSingleUseCase.execute(any())
+            mockLoadSurveysSingleUseCase.execute(any())
         ) doReturn Single.just(sampleSurveysList)
+        whenever(
+            mockGetSurveysTotalPagesSingleUseCase.execute(any())
+        ) doReturn Single.just(1)
         surveysViewModel.refreshSurveysList() // Fill the sample list
 
         // Act
-        val selectedSurveyDataObserver = surveysViewModel
-            .selectedSurveyData
+        val selectedSurveyIndexObserver = surveysViewModel
+            .selectedSurveyIndex
             .test()
         surveysViewModel.nextIndex()
 
         // Assert
-        selectedSurveyDataObserver
+        selectedSurveyIndexObserver
             .assertNoErrors()
             .assertValueCount(2)
-            .assertValueAt(1) {
-                it.first == 1 && it.second?.id == "2"
-            }
+            .assertValueAt(1) { it == 1 }
     }
 
     @Test
-    fun `When user swipe to next page and the new value is invalid, it doesn't update anything`() {
+    fun `When user swipe to next page and the new value is invalid and there is no more item to load, it doesn't update anything and fires NoMoreSurveyError`() {
         // Arrange
         val sampleSurveysList = listOf(Survey(id = "1"), Survey(id = "2"))
         whenever(
-            mockDeleteLocalSurveysCompletableUseCase.execute(any())
+            mockDeleteLocalSurveysExcludeIdsCompletableUseCase.execute(any())
         ) doReturn Completable.complete()
         whenever(
-            mockLoadMoreSurveysSingleUseCase.execute(any())
+            mockLoadSurveysSingleUseCase.execute(any())
         ) doReturn Single.just(sampleSurveysList)
+        whenever(
+            mockGetSurveysCurrentPageSingleUseCase.execute(any())
+        ) doReturn Single.just(1)
+        whenever(
+            mockGetSurveysTotalPagesSingleUseCase.execute(any())
+        ) doReturn Single.just(1)
         surveysViewModel.refreshSurveysList() // Fill the sample list
         surveysViewModel.nextIndex() // Send the current index to last item
 
         // Act
-        val selectedSurveyDataObserver = surveysViewModel
-            .selectedSurveyData
+        val selectedSurveyIndexObserver = surveysViewModel
+            .selectedSurveyIndex
+            .test()
+        surveysViewModel.nextIndex()
+
+        val errorObserver = surveysViewModel
+            .error
             .test()
         surveysViewModel.nextIndex()
 
         // Assert
-        selectedSurveyDataObserver
+        selectedSurveyIndexObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue {
-                it.first == 1 && it.second?.id == "2"
-            }
+            .assertValue { it == 1 }
+
+        errorObserver
+            .assertValueCount(1)
+            .assertValue { it is SurveyError.NoMoreSurveysError }
     }
 }
