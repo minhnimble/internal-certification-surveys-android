@@ -38,6 +38,8 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun setupView() {
         tvSurveysDate.text = Date().toDisplayFormat(DATE_FORMAT_SHORT_DISPLAY).toUpperCase()
+
+        srlSurveys.setOnRefreshListener { viewModel.refreshSurveysList() }
     }
 
     override fun bindViewEvents() {
@@ -46,11 +48,6 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
         }.bindForDisposable()
 
         clSurveys.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
-
-            override fun onSwipeBottom() {
-                super.onSwipeBottom()
-                viewModel.refreshSurveysList()
-            }
 
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
@@ -73,6 +70,10 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
             .subscribe(::bindLoading)
             .bindForDisposable()
 
+        viewModel.showRefreshing
+            .subscribe(::bindRefreshing)
+            .bindForDisposable()
+
         viewModel.selectedSurveyIndex
             .subscribe(::bindSelectedSurveyIndex)
             .bindForDisposable()
@@ -89,6 +90,10 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     private fun bindLoading(isLoading: Boolean) {
         if (!isLoading) loaderAnimator?.toggleShimmerLoader(isLoading)
         toggleLoading(isLoading)
+    }
+
+    private fun bindRefreshing(isRefreshing: Boolean) {
+        srlSurveys.isRefreshing = isRefreshing
     }
 
     private fun bindSelectedSurveyIndex(index: Int) {

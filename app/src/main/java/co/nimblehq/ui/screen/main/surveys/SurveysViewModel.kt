@@ -33,6 +33,8 @@ class SurveysViewModel @ViewModelInject constructor(
 
     private val _showLoading = BehaviorSubject.create<Boolean>()
 
+    private val _showRefreshing = BehaviorSubject.create<Boolean>()
+
     private val _selectedSurveyIndex = BehaviorSubject.createDefault(DEFAULT_UNSELECTED_INDEX)
 
     private val _surveyItemUiModels = BehaviorSubject.create<List<SurveyItemUiModel>>()
@@ -42,6 +44,9 @@ class SurveysViewModel @ViewModelInject constructor(
 
     val showLoading: Observable<Boolean>
         get() = _showLoading
+
+    val showRefreshing: Observable<Boolean>
+        get() = _showRefreshing
 
     val selectedSurveyIndex: Observable<Int>
         get() = _selectedSurveyIndex
@@ -79,7 +84,7 @@ class SurveysViewModel @ViewModelInject constructor(
     fun refreshSurveysList() {
         loadSurveysSingleUseCase
             .execute(LoadSurveysSingleUseCase.Input(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, currentSurveysPageSize))
-            .doOnSubscribe { _showLoading.onNext(true) }
+            .doOnSubscribe { _showRefreshing.onNext(true) }
             .map { it.map { survey -> survey.toSurveyItemUiModel() } }
             .doOnSuccess {
                 bindOnSuccessLoadSurveys(it, shouldMerge = false)
@@ -87,7 +92,7 @@ class SurveysViewModel @ViewModelInject constructor(
             }
             .flatMapCompletable { deleteLocalSurveysCompletableUseCase.execute(DeleteLocalSurveysCompletableUseCase.Input(it.map { model -> model.id })) }
             .andThen(getSurveysTotalPagesSingleUseCase.execute(Unit))
-            .doFinally { _showLoading.onNext(false) }
+            .doFinally { _showRefreshing.onNext(false) }
             .subscribeBy(
                 onSuccess = { reachedLastSurveysPage = it in 1..currentSurveysPageNumber },
                 onError = { _error.onNext(it) }
