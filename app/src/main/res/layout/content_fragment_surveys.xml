@@ -1,0 +1,126 @@
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/srlSurveys"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clSurveys"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/nero1">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSurveysItemBackground"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/bg_surveys_sample_item" />
+
+        <View
+            android:id="@+id/vSurveysItemTransparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_20a"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvSurveysItemHeader"
+            style="@style/Widget.Template.TextView.Header"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_52sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="2"
+            app:layout_constraintBottom_toTopOf="@id/tvSurveysItemDescription"
+            app:layout_constraintEnd_toEndOf="@+id/tvSurveysItemDescription"
+            app:layout_constraintStart_toStartOf="@+id/ivSurveysItemBackground"
+            tools:text="@string/surveys_sample_item_header" />
+
+        <TextView
+            android:id="@+id/tvSurveysItemDescription"
+            style="@style/Widget.Template.TextView.Description"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_42sdp"
+            android:ellipsize="end"
+            android:gravity="start|top"
+            android:maxLines="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btSurveysItemNext"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/surveys_sample_item_description" />
+
+        <Button
+            android:id="@+id/btSurveysItemNext"
+            android:layout_width="@dimen/_44sdp"
+            android:layout_height="@dimen/_44sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_42sdp"
+            android:background="@drawable/bg_surveys_item_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/ciSurveysIndicator"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            app:ci_animator="@animator/ci_alpha"
+            app:ci_drawable="@drawable/ic_surveys_indicator_selected_circle"
+            app:ci_drawable_unselected="@drawable/ic_surveys_indicator_unselected_circle"
+            app:ci_height="@dimen/ci_size"
+            app:ci_width="@dimen/ci_size"
+            app:layout_constraintBottom_toTopOf="@+id/tvSurveysItemHeader"
+            app:layout_constraintStart_toStartOf="@+id/tvSurveysItemHeader" />
+
+        <TextView
+            android:id="@+id/tvSurveysDate"
+            style="@style/Widget.Template.TextView.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/tvSurveysToday"
+            app:layout_constraintEnd_toStartOf="@+id/ivSurveysUserAvatar"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/surveys_sample_date_desc" />
+
+        <TextView
+            android:id="@+id/tvSurveysToday"
+            style="@style/Widget.Template.TextView.Header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:text="@string/surveys_today"
+            app:layout_constraintEnd_toStartOf="@+id/ivSurveysUserAvatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivSurveysUserAvatar" />
+
+        <ImageView
+            android:id="@+id/ivSurveysUserAvatar"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:contentDescription="@string/surveys_user_avatar"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_general_default_user_avatar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

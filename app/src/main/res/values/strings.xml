@@ -8,6 +8,7 @@
     <string name="general_session_expired_error">Session expired</string>
     <string name="general_test_error">Test error</string>
     <string name="general_unknown_error">Unknown error</string>
+    <string name="menu_drawer_logout">Logout</string>
     <string name="sign_in_log_in_btn_title">Log in</string>
     <string name="sign_in_email_hint">Email</string>
     <string name="sign_in_password_hint">Password</string>

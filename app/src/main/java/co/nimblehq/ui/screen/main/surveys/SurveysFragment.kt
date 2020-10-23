@@ -1,10 +1,11 @@
 package co.nimblehq.ui.screen.main.surveys
 
+import android.view.MenuItem
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
 import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.lib.common.DATE_FORMAT_SHORT_DISPLAY
-import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.extension.loadImageWithFadeAnimation
 import co.nimblehq.extension.switchTextWithFadeAnimation
@@ -14,13 +15,15 @@ import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.common.listener.OnSwipeTouchListener
 import co.nimblehq.ui.screen.main.LoaderAnimatable
 import co.nimblehq.ui.screen.main.MainNavigator
+import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.content_fragment_surveys.*
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
+class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnNavigationItemSelectedListener {
 
     @Inject lateinit var navigator: MainNavigator
 
@@ -59,6 +62,12 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
                 viewModel.inputs.previousIndex()
             }
         })
+
+        ivSurveysUserAvatar.subscribeOnClick {
+            toggleDrawer(!dlSurveys.isDrawerOpen(GravityCompat.END))
+        }.bindForDisposable()
+
+        nvDrawerContainer.setNavigationItemSelectedListener(this)
     }
 
     override fun bindViewModel() {
@@ -81,6 +90,18 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
         viewModel.surveyItemUiModels
             .subscribe(::bindSurveyItemUiModels)
             .bindForDisposable()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        // Handle navigation view item clicks here.
+        when (item.itemId) {
+            R.id.nav_logout -> {
+                //TODO: Implement logout logic
+                displayError(Throwable("Logout pressed", null))
+            }
+        }
+        toggleDrawer(false)
+        return false
     }
 
     private fun bindError(throwable: Throwable) {
@@ -109,5 +130,9 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks {
     private fun bindSurveyItemUiModels(uiModels: List<SurveyItemUiModel>) {
         if (uiModels.isEmpty()) return
         ciSurveysIndicator.createIndicators(uiModels.size, viewModel.selectedSurveyIndexValue)
+    }
+
+    private fun toggleDrawer(shouldShow: Boolean) {
+        if (shouldShow) dlSurveys.openDrawer(GravityCompat.END) else dlSurveys.closeDrawer(GravityCompat.END)
     }
 }
