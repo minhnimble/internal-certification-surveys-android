@@ -8,7 +8,7 @@ import co.nimblehq.usecase.base.SingleUseCase
 import io.reactivex.Single
 import javax.inject.Inject
 
-class GetSurveysTotalPagesSingleUseCase @Inject constructor(
+class GetSurveysCurrentPageSingleUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val appPreferences: AppPreferences
 ) : SingleUseCase<Unit, Int>(
@@ -18,6 +18,6 @@ class GetSurveysTotalPagesSingleUseCase @Inject constructor(
 ) {
 
     override fun create(input: Unit): Single<Int> {
-        return Single.just(appPreferences.surveysTotalPages ?: DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER)
+        return Single.just(appPreferences.surveysCurrentPage ?: DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER)
     }
 }

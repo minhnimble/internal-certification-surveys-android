@@ -15,3 +15,5 @@ fun Survey.toSurveyItemUiModel() = SurveyItemUiModel(
     title,
     highResImageUrl
 )
+
+fun List<Survey>.toSurveyItemUiModels() = map { it.toSurveyItemUiModel() }

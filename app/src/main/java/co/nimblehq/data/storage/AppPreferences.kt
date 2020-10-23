@@ -7,10 +7,13 @@ import javax.inject.Inject
 
 interface AppPreferences {
 
+    var surveysCurrentPage: Int?
+
     var surveysTotalPages: Int?
 
     // TODO: Will use this function when implementing logout feature
     fun clearAll() = Completable.fromAction {
+        surveysCurrentPage = null
         surveysTotalPages = null
     }
 }
@@ -18,6 +21,10 @@ interface AppPreferences {
 class AppPreferencesImpl @Inject constructor(
     private val preferences: SharedPreferences
 ) : AppPreferences {
+
+    override var surveysCurrentPage: Int?
+        get() = getInt(KEY_SURVEYS_CURRENT_PAGE)
+        set(page) = setOrRemove(KEY_SURVEYS_CURRENT_PAGE, page)
 
     override var surveysTotalPages: Int?
         get() = getInt(KEY_SURVEYS_TOTAL_PAGES)
@@ -62,4 +69,5 @@ class AppPreferencesImpl @Inject constructor(
     }
 }
 
+private const val KEY_SURVEYS_CURRENT_PAGE = "surveys_current_page"
 private const val KEY_SURVEYS_TOTAL_PAGES = "surveys_total_pages"

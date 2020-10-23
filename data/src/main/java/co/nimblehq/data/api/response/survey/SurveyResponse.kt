@@ -10,6 +10,7 @@ data class SurveyResponse(
 )
 
 data class SurveysResponse(
+    @Json(name = "page") var page: Int = 0,
     @Json(name = "pages") var pages: Int = 0,
     @Json(name = "surveys") var surveys: List<SurveyResponse> = listOf(),
 )

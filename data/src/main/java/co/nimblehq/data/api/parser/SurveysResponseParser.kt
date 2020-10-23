@@ -41,6 +41,7 @@ class SurveysResponseParser: JsonAdapter<SurveysResponse>() {
                     "meta" -> {
                         reader.readObject {
                             when (reader.nextName()) {
+                                "page" -> surveysResponse.page = reader.nextInt()
                                 "pages" -> surveysResponse.pages = reader.nextInt()
                                 else -> reader.skipValue()
                             }

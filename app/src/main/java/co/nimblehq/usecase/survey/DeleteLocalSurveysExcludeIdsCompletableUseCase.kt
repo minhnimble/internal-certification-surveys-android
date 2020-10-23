@@ -7,10 +7,10 @@ import co.nimblehq.usecase.base.CompletableUseCase
 import io.reactivex.Completable
 import javax.inject.Inject
 
-class DeleteLocalSurveysCompletableUseCase @Inject constructor(
+class DeleteLocalSurveysExcludeIdsCompletableUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val surveysDao: SurveyDao
-) : CompletableUseCase<DeleteLocalSurveysCompletableUseCase.Input>(
+) : CompletableUseCase<DeleteLocalSurveysExcludeIdsCompletableUseCase.Input>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
     ::DeleteLocalSurveysError
