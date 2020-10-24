@@ -6,6 +6,27 @@ fun JsonReader.skipNameAndValue() {
     skipName()
     skipValue()
 }
+
+fun JsonReader.isNextNull(): Boolean = peek() == JsonReader.Token.NULL
+
+fun JsonReader.nextStringOrEmpty(): String {
+    return if (isNextNull()) {
+        nextNull<String>()
+        ""
+    } else {
+        nextString()
+    }
+}
+
+fun JsonReader.nextIntOrEmpty(): Int {
+    return if (isNextNull()) {
+        nextNull<Int>()
+        0
+    } else {
+        nextInt()
+    }
+}
+
 inline fun JsonReader.readObject(body: () -> Unit) {
     beginObject()
     while (hasNext()) {

@@ -20,5 +20,7 @@ sealed class SurveyError(
         cause, R.string.general_delete_local_surveys_error
     )
 
-    // TODO: Add new class for handling error when getting survey's details
+    class GetSurveyDetailsError(cause: Throwable?) : SurveyError(
+        cause, R.string.general_get_survey_details_error
+    )
 }
