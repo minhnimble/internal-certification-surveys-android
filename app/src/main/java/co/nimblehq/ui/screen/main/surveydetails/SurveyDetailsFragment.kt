@@ -36,8 +36,7 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun bindViewEvents() {
         btSurveyDetailsStartSurvey.subscribeOnClick {
-            // TODO: Start showing questions list logic
-            displayError(AppError(null, "Start Survey button clicked"))
+            viewModel.loadSurveyDetails(args.survey.id)
         }.bindForDisposable()
 
         ivSurveyDetailsBack.subscribeOnClick {
@@ -45,5 +44,31 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
         }.bindForDisposable()
     }
 
-    override fun bindViewModel() { }
+    override fun bindViewModel() {
+        viewModel.getSurveyDetailsError
+            .subscribe(::bindGetSurveyDetailsError)
+            .bindForDisposable()
+
+        viewModel.showLoading
+            .subscribe(::bindLoading)
+            .bindForDisposable()
+
+
+        viewModel.questionItemPagerUiModels
+            .subscribe(::bindQuestionItemPagerUiModels)
+            .bindForDisposable()
+    }
+
+    private fun bindGetSurveyDetailsError(throwable: Throwable) {
+        displayError(throwable)
+    }
+
+    private fun bindLoading(isLoading: Boolean) {
+        toggleLoading(isLoading)
+    }
+
+    private fun bindQuestionItemPagerUiModels(uiModels: List<QuestionItemPagerUiModel>) {
+        // TODO: Add logic to show questions list UI after get latest questions from start survey button
+        displayError(AppError(null,"Questions data is ready"))
+    }
 }

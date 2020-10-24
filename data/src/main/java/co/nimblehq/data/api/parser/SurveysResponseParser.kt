@@ -21,13 +21,13 @@ class SurveysResponseParser: JsonAdapter<SurveysResponse>() {
                             val surveyResponse = SurveyResponse()
                             reader.readObject {
                                 when (reader.nextName()) {
-                                    "id" -> surveyResponse.id = reader.nextString()
+                                    "id" -> surveyResponse.id = reader.nextStringOrEmpty()
                                     "attributes" -> {
                                         reader.readObject {
                                             when (reader.nextName()) {
-                                                "title" -> surveyResponse.title = reader.nextString()
-                                                "description" -> surveyResponse.description = reader.nextString()
-                                                "cover_image_url" -> surveyResponse.coverImageUrl = reader.nextString()
+                                                "title" -> surveyResponse.title = reader.nextStringOrEmpty()
+                                                "description" -> surveyResponse.description = reader.nextStringOrEmpty()
+                                                "cover_image_url" -> surveyResponse.coverImageUrl = reader.nextStringOrEmpty()
                                                 else -> reader.skipValue()
                                             }
                                         }
