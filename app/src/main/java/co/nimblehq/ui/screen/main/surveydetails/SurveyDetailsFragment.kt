@@ -27,17 +27,18 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
     override fun initViewModel() { }
 
     override fun setupView() {
-        tvSurveyDetailsHeader.text = args.surveyHeader
-        tvSurveyDetailsDescription.text = args.surveyDescription
-        ivSurveyDetailsBackground.loadImage(args.surveyImageUrl)
+        with(args.survey) {
+            tvSurveyDetailsHeader.text = header
+            tvSurveyDetailsDescription.text = description
+            ivSurveyDetailsBackground.loadImage(imageUrl)
+        }
     }
 
     override fun bindViewEvents() {
-
         btSurveyDetailsStartSurvey.subscribeOnClick {
             // TODO: Start showing questions list logic
             displayError(AppError(null, "Start Survey button clicked"))
-        }
+        }.bindForDisposable()
 
         ivSurveyDetailsBack.subscribeOnClick {
             navigator.navigateBack()

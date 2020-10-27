@@ -27,17 +27,8 @@
         tools:layout="@layout/fragment_survey_details">
 
         <argument
-            android:name="surveyId"
-            app:argType="string" />
-        <argument
-            android:name="surveyHeader"
-            app:argType="string" />
-        <argument
-            android:name="surveyDescription"
-            app:argType="string" />
-        <argument
-            android:name="surveyImageUrl"
-            app:argType="string" />
+            android:name="survey"
+            app:argType="co.nimblehq.ui.screen.main.surveys.SurveyItemUiModel" />
     </fragment>
 
 </navigation>
