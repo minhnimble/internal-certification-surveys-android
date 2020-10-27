@@ -23,7 +23,7 @@
       app:layout_constraintTop_toTopOf="@+id/cvDrawerUserAvatar"
       tools:text="Mai" />
 
-  <ImageView
+  <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/cvDrawerUserAvatar"
       android:layout_width="@dimen/_30sdp"
       android:layout_height="@dimen/_30sdp"
@@ -32,9 +32,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:srcCompat="@drawable/ic_general_default_user_avatar"
-      android:contentDescription="@string/menu_user_avatar"
-      android:scaleType="centerCrop">
-  </ImageView>
+      android:scaleType="centerCrop" />
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/clSeparatorLine"

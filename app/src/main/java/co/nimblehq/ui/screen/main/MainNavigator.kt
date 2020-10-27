@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 interface MainNavigator : BaseNavigator {
     fun navigateToOnboardingActivity()
+
     fun navigateToSurveyDetails(surveyItemUiModel: SurveyItemUiModel)
 }
 
@@ -45,12 +46,7 @@ class MainNavigatorImpl @Inject constructor(
             R.id.main_nav_graph -> {
                 when (navController.currentDestination?.id) {
                     R.id.surveysFragment -> {
-                        val action = actionSurveysFragmentToSurveyDetailsFragment(
-                            surveyItemUiModel.id,
-                            surveyItemUiModel.header,
-                            surveyItemUiModel.description,
-                            surveyItemUiModel.imageUrl
-                        )
+                        val action = actionSurveysFragmentToSurveyDetailsFragment(surveyItemUiModel)
                         navController.navigate(action)
                     }
                     else -> unsupportedNavigation()

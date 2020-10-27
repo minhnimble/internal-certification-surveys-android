@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivSurveyDetailsBack"
         android:layout_width="@dimen/_31sdp"
         android:layout_height="@dimen/_31sdp"
@@ -68,7 +68,6 @@
 
     <Button
         android:id="@+id/btSurveyDetailsStartSurvey"
-        style="@style/GeneralActionButtonTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_44sdp"
         android:layout_marginEnd="@dimen/_15sdp"
@@ -77,6 +76,7 @@
         android:paddingStart="@dimen/_15sdp"
         android:paddingEnd="@dimen/_15sdp"
         android:text="@string/survey_details_start_survey"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button.General"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
