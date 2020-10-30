@@ -34,7 +34,7 @@
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_general_back_arrow_white" />
+        app:srcCompat="@drawable/ic_general_white_back" />
 
     <TextView
         android:id="@+id/tvSurveyDetailsHeader"
@@ -79,5 +79,14 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Button.General"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <include
+        android:id="@+id/iclSurveyQuestions"
+        layout="@layout/content_survey_questions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

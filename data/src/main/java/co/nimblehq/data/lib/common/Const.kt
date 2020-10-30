@@ -31,5 +31,6 @@ const val DATE_FORMAT_SHORT_DISPLAY = "EEEE, MMMM dd"
 // General
 
 const val DEFAULT_UNSELECTED_INDEX = -1
+const val FIRST_INDEX = 0
 
 

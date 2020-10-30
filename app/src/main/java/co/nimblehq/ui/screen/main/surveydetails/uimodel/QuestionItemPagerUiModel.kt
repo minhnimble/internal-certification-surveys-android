@@ -1,4 +1,4 @@
-package co.nimblehq.ui.screen.main.surveydetails
+package co.nimblehq.ui.screen.main.surveydetails.uimodel
 
 import co.nimblehq.data.model.Question
 import co.nimblehq.data.model.QuestionDisplayType
@@ -24,4 +24,4 @@ fun Question.toQuestionItemPagerUiModel() =
 
 fun List<Question>.toQuestionItemPagerUiModels() = this.map { it.toQuestionItemPagerUiModel() }
 
-fun Survey.toQuestionItemPagerUiModels() = questions.toQuestionItemPagerUiModels()
+fun Survey.toQuestionItemPagerUiModels() = questions.sortedBy { it.displayOrder }.toQuestionItemPagerUiModels()

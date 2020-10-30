@@ -51,7 +51,7 @@ class ViewExtensionKtTest {
         val view = View(context)
 
         // Act
-        view.startFadeInAnimation(shouldAnimate = false)
+        view.startFadeInAnimation(0)
 
         // Assert
         view.post {

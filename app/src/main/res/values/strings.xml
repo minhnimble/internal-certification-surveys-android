@@ -6,6 +6,7 @@
     <string name="general_get_surveys_error">Getting surveys failed. Please try again</string>
     <string name="general_no_more_surveys_error">No more surveys to load</string>
     <string name="general_delete_local_surveys_error">Cleaning local surveys data failed. Please try again</string>
+    <string name="general_no_question_error">No question from server</string>
     <string name="general_session_expired_error">Session expired</string>
     <string name="general_test_error">Test error</string>
     <string name="general_unknown_error">Unknown error</string>
@@ -15,5 +16,9 @@
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_forgot_button_title">Forgot?</string>
     <string name="survey_details_start_survey">Start Survey</string>
+    <string name="survey_questions_submit">Submit</string>
+    <string name="survey_questions_text_area_hint">Hint</string>
+    <string name="survey_questions_text_field_hint">Hint</string>
     <string name="surveys_today">Today</string>
+    <string name="text">text</string>
 </resources>

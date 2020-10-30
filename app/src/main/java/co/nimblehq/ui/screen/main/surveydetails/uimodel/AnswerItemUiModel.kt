@@ -1,4 +1,4 @@
-package co.nimblehq.ui.screen.main.surveydetails
+package co.nimblehq.ui.screen.main.surveydetails.uimodel
 
 import co.nimblehq.data.model.Answer
 

@@ -40,7 +40,33 @@
 
     <style name="Widget.Template.TextView.MenuItem">
         <item name="android:textSize">@dimen/_15ssp</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <style name="Widget.Template.TextView.MenuItemBold">
+        <item name="android:textSize">@dimen/_15ssp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:fontFamily">@font/circularstd_bold</item>
+    </style>
+
+    <style name="heartRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rb_general_heart</item>
+        <item name="android:minHeight">@dimen/_36sdp</item>
+        <item name="android:maxHeight">@dimen/_37sdp</item>
+    </style>
+
+    <style name="smileyRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rb_general_smiley</item>
+        <item name="android:minHeight">@dimen/_36sdp</item>
+        <item name="android:maxHeight">@dimen/_37sdp</item>
+    </style>
+
+    <style name="starRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rb_general_star</item>
+        <item name="android:minHeight">@dimen/_36sdp</item>
+        <item name="android:maxHeight">@dimen/_37sdp</item>
     </style>
 
 </resources>

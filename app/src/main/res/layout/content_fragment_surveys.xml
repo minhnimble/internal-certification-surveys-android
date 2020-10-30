@@ -67,7 +67,7 @@
             android:layout_height="@dimen/_44sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_42sdp"
-            android:background="@drawable/bg_surveys_item_next"
+            android:background="@drawable/bg_general_item_next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

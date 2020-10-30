@@ -91,14 +91,14 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             }
             viewModel.inputs.initialized(false)
         } else {
-            ivSignInNimbleLogo.startFadeInAnimation(shouldAnimate = false)
+            ivSignInNimbleLogo.startFadeInAnimation(0)
             clSignIn.animateResource(
                 resId = R.id.ivSignInNimbleLogo,
                 toTopOfResId = R.id.llSignInInputContainer,
                 shouldAnimate = false
             )
-            btSignInForgotPassword.startFadeInAnimation(shouldAnimate = false)
-            llSignInInputContainer.startFadeInAnimation(shouldAnimate = false)
+            btSignInForgotPassword.startFadeInAnimation(0)
+            llSignInInputContainer.startFadeInAnimation(0)
         }
     }
 

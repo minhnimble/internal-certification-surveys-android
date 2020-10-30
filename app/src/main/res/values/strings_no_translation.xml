@@ -1,4 +1,5 @@
 <resources>
+    <string name="survey_details_sample_questions_count">1/5</string>
     <string name="surveys_sample_date_desc" translatable="false">MONDAY, JUNE 15</string>
     <string name="surveys_sample_item_description" translatable="false">We would like to know how you feel about our work from home</string>
     <string name="surveys_sample_item_header" translatable="false">Working from home Check-In</string>

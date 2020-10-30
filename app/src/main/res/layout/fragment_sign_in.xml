@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_sign_in_nimble_logo_white"
+        app:srcCompat="@drawable/ic_sign_in_white_nimble_logo"
         tools:alpha="1" />
 
     <LinearLayout

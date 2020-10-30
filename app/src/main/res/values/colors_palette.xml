@@ -3,6 +3,7 @@
     <!-- Declaring colors with their real name from the style guide we get -->
     <color name="black">#000000</color>
     <color name="black_20a">#20000000</color>
+    <color name="black_40a">#66000000</color>
     <color name="black_60a">#99000000</color>
 
     <color name="free_speech_blue">#3F51B5</color>
