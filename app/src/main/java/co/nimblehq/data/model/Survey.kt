@@ -20,11 +20,11 @@ data class Survey(
 }
 
 fun SurveyResponse.toSurvey() = Survey(
-    description = description,
+    description = description.orEmpty(),
     id = id,
-    imageUrl = coverImageUrl,
-    title = title,
-    questions = questions.toQuestions()
+    imageUrl = coverImageUrl.orEmpty(),
+    title = title.orEmpty(),
+    questions = questions?.toQuestions() ?: emptyList()
 )
 
 fun List<SurveyResponse>.toSurveys() = this.map { it.toSurvey() }

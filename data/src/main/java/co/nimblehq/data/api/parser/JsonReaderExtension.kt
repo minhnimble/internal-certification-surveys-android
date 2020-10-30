@@ -9,19 +9,17 @@ fun JsonReader.skipNameAndValue() {
 
 fun JsonReader.isNextNull(): Boolean = peek() == JsonReader.Token.NULL
 
-fun JsonReader.nextStringOrEmpty(): String {
+fun JsonReader.nextStringOrNull(): String? {
     return if (isNextNull()) {
         nextNull<String>()
-        ""
     } else {
         nextString()
     }
 }
 
-fun JsonReader.nextIntOrEmpty(): Int {
+fun JsonReader.nextIntOrNull(): Int? {
     return if (isNextNull()) {
         nextNull<Int>()
-        0
     } else {
         nextInt()
     }

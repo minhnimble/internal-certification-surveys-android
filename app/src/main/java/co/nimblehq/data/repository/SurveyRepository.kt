@@ -35,10 +35,10 @@ class SurveyRepositoryImpl @Inject constructor(
             .getSurveysList(pageNumber, pageSize)
             .firstOrError()
             .doOnSuccess {
-                appPreferences.surveysCurrentPage = it.page
-                appPreferences.surveysTotalPages = it.pages
+                appPreferences.surveysCurrentPage = it.page ?: 1
+                appPreferences.surveysTotalPages = it.pages ?: 1
             }
-            .map { it.surveys.toSurveys() }
+            .map { it.surveys?.toSurveys() ?: emptyList() }
             .doOnSuccess { surveyDao.insertAll(it) }
     }
 

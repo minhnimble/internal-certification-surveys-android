@@ -2,7 +2,6 @@ package co.nimblehq.ui.screen.main.surveys
 
 import android.os.Parcelable
 import co.nimblehq.data.model.Survey
-import co.nimblehq.ui.screen.main.surveydetails.toQuestionItemPagerUiModels
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -19,7 +18,5 @@ fun Survey.toSurveyItemUiModel() = SurveyItemUiModel(
     title,
     highResImageUrl
 )
-
-fun Survey.toQuestionItemPagerUiModels() = questions.toQuestionItemPagerUiModels()
 
 fun List<Survey>.toSurveyItemUiModels() = map { it.toSurveyItemUiModel() }

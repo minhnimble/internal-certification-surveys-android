@@ -6,6 +6,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 
+// TODO: Improve this parser with `Banana` for properly parsing `json api` instead of manual parsing like now
 class SurveysResponseParser: JsonAdapter<SurveysResponse>() {
 
     override fun fromJson(reader: JsonReader): SurveysResponse {
@@ -21,13 +22,13 @@ class SurveysResponseParser: JsonAdapter<SurveysResponse>() {
                             val surveyResponse = SurveyResponse()
                             reader.readObject {
                                 when (reader.nextName()) {
-                                    "id" -> surveyResponse.id = reader.nextStringOrEmpty()
+                                    "id" -> surveyResponse.id = reader.nextString()
                                     "attributes" -> {
                                         reader.readObject {
                                             when (reader.nextName()) {
-                                                "title" -> surveyResponse.title = reader.nextStringOrEmpty()
-                                                "description" -> surveyResponse.description = reader.nextStringOrEmpty()
-                                                "cover_image_url" -> surveyResponse.coverImageUrl = reader.nextStringOrEmpty()
+                                                "title" -> surveyResponse.title = reader.nextStringOrNull()
+                                                "description" -> surveyResponse.description = reader.nextStringOrNull()
+                                                "cover_image_url" -> surveyResponse.coverImageUrl = reader.nextStringOrNull()
                                                 else -> reader.skipValue()
                                             }
                                         }
@@ -41,8 +42,8 @@ class SurveysResponseParser: JsonAdapter<SurveysResponse>() {
                     "meta" -> {
                         reader.readObject {
                             when (reader.nextName()) {
-                                "page" -> surveysResponse.page = reader.nextInt()
-                                "pages" -> surveysResponse.pages = reader.nextInt()
+                                "page" -> surveysResponse.page = reader.nextIntOrNull()
+                                "pages" -> surveysResponse.pages = reader.nextIntOrNull()
                                 else -> reader.skipValue()
                             }
                         }
