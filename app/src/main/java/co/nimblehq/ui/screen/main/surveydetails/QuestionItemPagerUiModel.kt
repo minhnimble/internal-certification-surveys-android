@@ -3,6 +3,7 @@ package co.nimblehq.ui.screen.main.surveydetails
 import co.nimblehq.data.api.response.survey.QuestionDisplayType
 import co.nimblehq.data.api.response.survey.QuestionPickValue
 import co.nimblehq.data.model.Question
+import co.nimblehq.data.model.Survey
 
 data class QuestionItemPagerUiModel(
     val id: String = "",
@@ -22,3 +23,5 @@ fun Question.toQuestionItemPagerUiModel() =
     )
 
 fun List<Question>.toQuestionItemPagerUiModels() = this.map { it.toQuestionItemPagerUiModel() }
+
+fun Survey.toQuestionItemPagerUiModels() = questions.toQuestionItemPagerUiModels()

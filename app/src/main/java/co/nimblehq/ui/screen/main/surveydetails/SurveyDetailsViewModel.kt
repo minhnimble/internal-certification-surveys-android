@@ -2,7 +2,6 @@ package co.nimblehq.ui.screen.main.surveydetails
 
 import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
-import co.nimblehq.ui.screen.main.surveys.toQuestionItemPagerUiModels
 import co.nimblehq.usecase.survey.LoadSurveyDetailsSingleUseCase
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
@@ -21,7 +20,7 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
 
     private val _questionItemPagerUiModels = BehaviorSubject.create<List<QuestionItemPagerUiModel>>()
 
-    val getSurveyDetailsError: Observable<Throwable>
+    val showError: Observable<Throwable>
         get() = _getSurveyDetailsError
 
     val showLoading: Observable<Boolean>
@@ -34,7 +33,7 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
 
     fun loadSurveyDetails(surveyId: String) {
         loadSurveyDetailsSingleUseCase
-            .execute(LoadSurveyDetailsSingleUseCase.Input(surveyId))
+            .execute(surveyId)
             .doOnSubscribe { _showLoading.onNext(true) }
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy (

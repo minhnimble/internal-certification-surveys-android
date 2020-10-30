@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 
+// TODO: Improve this parser with `Banana` for properly parsing `json api` instead of manual parsing like now
 class SurveyResponseParser: JsonAdapter<SurveyResponse>() {
 
     override fun fromJson(reader: JsonReader): SurveyResponse {
@@ -16,7 +17,7 @@ class SurveyResponseParser: JsonAdapter<SurveyResponse>() {
         return try {
             reader.readObject {
                 when (reader.nextName()) {
-                    "id" -> surveyResponse.id = reader.nextStringOrEmpty()
+                    "id" -> surveyResponse.id = reader.nextString()
                     "included" -> {
                         reader.readArray {
                             var id = ""
@@ -24,17 +25,17 @@ class SurveyResponseParser: JsonAdapter<SurveyResponse>() {
                             val questionResponse = QuestionResponse()
                             reader.readObject {
                                 when (reader.nextName()) {
-                                    "id" -> id = reader.nextStringOrEmpty()
-                                    "type" -> type = reader.nextStringOrEmpty()
+                                    "id" -> id = reader.nextString()
+                                    "type" -> reader.nextStringOrNull()?.let { type = it }
                                     "attributes" -> {
                                         if (type == "question") {
                                             questionResponse.id = id
                                             reader.readObject {
                                                 when (reader.nextName()) {
-                                                    "text" -> questionResponse.text = reader.nextStringOrEmpty()
-                                                    "display_order" -> questionResponse.displayOrder = reader.nextIntOrEmpty()
-                                                    "display_type" -> questionResponse.displayType = QuestionDisplayType.from(reader.nextStringOrEmpty())
-                                                    "pick" -> questionResponse.pick = QuestionPickValue.from(reader.nextStringOrEmpty())
+                                                    "text" -> questionResponse.text = reader.nextStringOrNull()
+                                                    "display_order" -> questionResponse.displayOrder = reader.nextIntOrNull()
+                                                    "display_type" -> questionResponse.displayType = QuestionDisplayType.from(reader.nextStringOrNull())
+                                                    "pick" -> questionResponse.pick = QuestionPickValue.from(reader.nextStringOrNull())
                                                     else -> reader.skipValue()
                                                 }
                                             }
@@ -44,8 +45,8 @@ class SurveyResponseParser: JsonAdapter<SurveyResponse>() {
                                             answerResponse.id = id
                                             reader.readObject {
                                                 when (reader.nextName()) {
-                                                    "text" -> answerResponse.text = reader.nextStringOrEmpty()
-                                                    "display_order" -> answerResponse.displayOrder = reader.nextIntOrEmpty()
+                                                    "text" -> answerResponse.text = reader.nextStringOrNull()
+                                                    "display_order" -> answerResponse.displayOrder = reader.nextIntOrNull()
                                                     else -> reader.skipValue()
                                                 }
                                             }
@@ -63,7 +64,7 @@ class SurveyResponseParser: JsonAdapter<SurveyResponse>() {
                                                                     val answerResponse = AnswerResponse()
                                                                     reader.readObject {
                                                                         when (reader.nextName()) {
-                                                                            "id" -> answerResponse.id = reader.nextStringOrEmpty()
+                                                                            "id" -> answerResponse.id = reader.nextString()
                                                                             else -> reader.skipValue()
                                                                         }
                                                                     }
@@ -98,9 +99,12 @@ class SurveyResponseParser: JsonAdapter<SurveyResponse>() {
             // Update question's answers list with full answer response
             allQuestionsResponse.forEach {
                 val newAnswers = mutableListOf<AnswerResponse>()
-                for (answerId in it.answers.map { answer -> answer.id }) {
-                    allAnswersResponse.firstOrNull { answer -> answer.id == answerId }?.let { answer ->
-                        newAnswers.add(answer)
+                val answerIds = it.answers?.map { answer -> answer.id }
+                if (answerIds != null) {
+                    for (answerId in answerIds) {
+                        allAnswersResponse.firstOrNull { answer -> answer.id == answerId }?.let { answer ->
+                            newAnswers.add(answer)
+                        }
                     }
                 }
                 if (newAnswers.isNotEmpty()) it.answers = newAnswers

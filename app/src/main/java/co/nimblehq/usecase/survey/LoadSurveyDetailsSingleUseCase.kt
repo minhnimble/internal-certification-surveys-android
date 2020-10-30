@@ -11,21 +11,13 @@ import javax.inject.Inject
 class LoadSurveyDetailsSingleUseCase @Inject constructor(
     rxSchedulerProvider: RxSchedulerProvider,
     private val surveyRepository: SurveyRepository
-) : SingleUseCase<LoadSurveyDetailsSingleUseCase.Input, Survey>(
+) : SingleUseCase<String, Survey>(
     rxSchedulerProvider.io(),
     rxSchedulerProvider.main(),
     ::GetSurveyDetailsError
 ) {
 
-    data class Input(
-        val surveyId: String
-    )
-
-    override fun create(input: Input): Single<Survey> {
-        return with(input) {
-            surveyRepository.loadSurveyDetails(
-                surveyId
-            )
-        }
+    override fun create(input: String): Single<Survey> {
+        return surveyRepository.loadSurveyDetails(input)
     }
 }
