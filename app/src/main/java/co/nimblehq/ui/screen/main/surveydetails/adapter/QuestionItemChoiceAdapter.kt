@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import co.nimblehq.R
+import co.nimblehq.data.model.QuestionPickValue
 import co.nimblehq.ui.common.adapter.DiffUpdateAdapter
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.AnswerItemUiModel
 import kotlinx.android.extensions.LayoutContainer
@@ -28,6 +29,8 @@ internal class QuestionItemChoiceAdapter :
         )
     }
 
+    var pickValue: QuestionPickValue = QuestionPickValue.NONE
+
     private val selectedIds: MutableList<String> = mutableListOf()
 
     override fun getItemCount() = uiModels.size
@@ -43,11 +46,20 @@ internal class QuestionItemChoiceAdapter :
 
     override fun onTap(position: Int) {
         val answer = uiModels[position]
-        if (selectedIds.contains(answer.id)) {
-            selectedIds.remove(answer.id)
-        } else {
-            selectedIds.add(answer.id)
+        when (pickValue) {
+            QuestionPickValue.ANY -> {
+                if (selectedIds.contains(answer.id)) {
+                    selectedIds.remove(answer.id)
+                } else {
+                    selectedIds.add(answer.id)
+                }
+            }
+            QuestionPickValue.ONE -> {
+                selectedIds.clear()
+                selectedIds.add(answer.id)
+            }
         }
+
         notifyDataSetChanged()
     }
 

@@ -4,17 +4,23 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import co.nimblehq.R
 import co.nimblehq.data.model.QuestionDisplayType
 import co.nimblehq.ui.common.adapter.DiffUpdateAdapter
 import co.nimblehq.ui.screen.main.surveydetails.decoration.SurveyQuestionNpsItemDecoration
+import co.nimblehq.ui.screen.main.surveydetails.decoration.SurveyQuestionSliderItemDecoration
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.QuestionItemPagerUiModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_survey_questions_choice.*
 import kotlinx.android.synthetic.main.item_survey_questions_default.tvQuestionItemText
+import kotlinx.android.synthetic.main.item_survey_questions_dropdown.*
 import kotlinx.android.synthetic.main.item_survey_questions_heart.*
+import kotlinx.android.synthetic.main.item_survey_questions_money.*
 import kotlinx.android.synthetic.main.item_survey_questions_nps.*
+import kotlinx.android.synthetic.main.item_survey_questions_slider.*
 import kotlinx.android.synthetic.main.item_survey_questions_smiley.*
 import kotlinx.android.synthetic.main.item_survey_questions_star.*
 import kotlinx.android.synthetic.main.item_survey_questions_text_area.etQuestionItemTextArea
@@ -37,11 +43,14 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         return when (uiModels[position].displayType) {
             QuestionDisplayType.CHOICE -> R.layout.item_survey_questions_choice
             QuestionDisplayType.HEART -> R.layout.item_survey_questions_heart
+            QuestionDisplayType.DROPDOWN -> R.layout.item_survey_questions_dropdown
+            QuestionDisplayType.MONEY -> R.layout.item_survey_questions_money
             QuestionDisplayType.NPS -> R.layout.item_survey_questions_nps
             QuestionDisplayType.SMILEY -> R.layout.item_survey_questions_smiley
             QuestionDisplayType.STAR -> R.layout.item_survey_questions_star
             QuestionDisplayType.TEXTAREA -> R.layout.item_survey_questions_text_area
             QuestionDisplayType.TEXTFIELD -> R.layout.item_survey_questions_text_field
+            QuestionDisplayType.SLIDER -> R.layout.item_survey_questions_slider
             else -> R.layout.item_survey_questions_default
         }
     }
@@ -50,8 +59,11 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         return when (viewType) {
             R.layout.item_survey_questions_choice -> ChoiceQuestionViewHolder(view, choiceAnswersAdapter = QuestionItemChoiceAdapter())
+            R.layout.item_survey_questions_dropdown -> DropdownQuestionViewHolder(view, ArrayAdapter<String>(parent.context, R.layout.item_survey_questions_dropdown_answer_selected, R.id.tvDropdownQuestionItemAnswerTitle))
             R.layout.item_survey_questions_heart -> HeartQuestionViewHolder(view)
+            R.layout.item_survey_questions_money -> MoneyQuestionViewHolder(view)
             R.layout.item_survey_questions_nps -> NpsQuestionViewHolder(view, context = parent.context, npsAnswersAdapter = QuestionItemNpsAdapter())
+            R.layout.item_survey_questions_slider -> SliderQuestionViewHolder(view, context = parent.context, sliderAnswersAdapter = QuestionItemSliderAdapter())
             R.layout.item_survey_questions_smiley -> SmileyQuestionViewHolder(view)
             R.layout.item_survey_questions_star -> StarQuestionViewHolder(view)
             R.layout.item_survey_questions_text_area -> TextAreaQuestionViewHolder(view)
@@ -63,8 +75,12 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
         val question = uiModels[position]
         holder.bind(question)
+        (holder as? ChoiceQuestionViewHolder)?.let {
+            it.choiceAnswersAdapter.pickValue = question.pick
+        }
     }
 
+    // ================= View Holders ========================= \\
     internal open inner class QuestionViewHolder(itemView: View):
         RecyclerView.ViewHolder(itemView),
         LayoutContainer {
@@ -88,11 +104,43 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         }
     }
 
+    internal inner class DropdownQuestionViewHolder(
+        itemView: View,
+        val dropdownAdapter: ArrayAdapter<String>
+    ): QuestionViewHolder(itemView), AdapterView.OnItemSelectedListener {
+
+        override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
+
+        }
+
+        override fun onNothingSelected(arg0: AdapterView<*>) {
+
+        }
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            dropdownAdapter.setDropDownViewResource(R.layout.item_survey_questions_dropdown_answer)
+            dropdownAdapter.clear()
+            dropdownAdapter.addAll(uiModel.answers.map { answer -> answer.text })
+            dropdownAdapter.notifyDataSetChanged()
+            sDropdownQuestionAnswers.adapter = dropdownAdapter
+            sDropdownQuestionAnswers.onItemSelectedListener = this
+        }
+    }
+
     internal inner class HeartQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
 
         override fun bind(uiModel: QuestionItemPagerUiModel) {
             super.bind(uiModel)
             rbQuestionItemHeart.numStars = uiModel.answers.size
+        }
+    }
+
+    internal inner class MoneyQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            rbQuestionItemMoney.numStars = uiModel.answers.size
         }
     }
 
@@ -110,6 +158,23 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
             super.bind(uiModel)
             npsAnswersAdapter.uiModels = uiModel.answers
             rvNpsQuestionAnswers.adapter = npsAnswersAdapter
+        }
+    }
+
+    internal inner class SliderQuestionViewHolder(
+        itemView: View,
+        context: Context,
+        val sliderAnswersAdapter: QuestionItemSliderAdapter
+    ): QuestionViewHolder(itemView) {
+
+        init {
+            rvSliderQuestionAnswers.addItemDecoration(SurveyQuestionSliderItemDecoration(context))
+        }
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            sliderAnswersAdapter.uiModels = uiModel.answers
+            rvSliderQuestionAnswers.adapter = sliderAnswersAdapter
         }
     }
 

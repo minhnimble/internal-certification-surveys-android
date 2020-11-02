@@ -4,10 +4,13 @@ import co.nimblehq.data.api.response.survey.QuestionResponse
 
 enum class QuestionDisplayType {
     INTRO,
+    DROPDOWN,
     STAR,
+    SLIDER,
     HEART,
     SMILEY,
     CHOICE,
+    MONEY,
     NPS,
     TEXTAREA,
     TEXTFIELD,

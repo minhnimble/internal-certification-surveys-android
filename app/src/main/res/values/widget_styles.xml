@@ -80,6 +80,10 @@
         <item name="android:progressDrawable">@drawable/rb_general_heart</item>
     </style>
 
+    <style name="DefaultRatingBarStyle.Money">
+        <item name="android:progressDrawable">@drawable/rb_general_money</item>
+    </style>
+
     <style name="DefaultRatingBarStyle.Smiley">
         <item name="android:progressDrawable">@drawable/rb_general_smiley</item>
     </style>
