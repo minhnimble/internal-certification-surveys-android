@@ -1,6 +1,8 @@
 package co.nimblehq.ui.screen.main.surveydetails.adapter
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +19,7 @@ import co.nimblehq.extension.refreshWithData
 import co.nimblehq.ui.common.adapter.DiffUpdateAdapter
 import co.nimblehq.ui.screen.main.surveydetails.decoration.SurveyQuestionNpsItemDecoration
 import co.nimblehq.ui.screen.main.surveydetails.decoration.SurveyQuestionSliderItemDecoration
+import co.nimblehq.ui.screen.main.surveydetails.uimodel.AnswerItemUiModel
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.QuestionItemPagerUiModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_survey_questions_choice.*
@@ -34,7 +37,14 @@ import kotlin.properties.Delegates
 
 internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.QuestionViewHolder>(), DiffUpdateAdapter {
 
-    var uiModels: List<QuestionItemPagerUiModel> by Delegates.observable(emptyList()) { _, old, new ->
+    val answeredQuestions: MutableList<QuestionRequest> = mutableListOf()
+
+    var uiModels: List<QuestionItemPagerUiModel> by Delegates.observable(emptyList()) { _, _, new ->
+        answeredQuestions.clear()
+        updateQuestionsContent(new)
+    }
+
+    private var currentQuestionUiModels: List<QuestionItemPagerUiModel> by Delegates.observable(emptyList()) { _, old, new ->
         autoNotify(
             old,
             new,
@@ -44,7 +54,7 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
 
     var questionRequests: List<QuestionRequest> = listOf()
 
-    override fun getItemCount() = uiModels.size
+    override fun getItemCount() = currentQuestionUiModels.size
 
     override fun getItemViewType(position: Int): Int {
         return when (uiModels[position].displayType) {
@@ -80,15 +90,29 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
     }
 
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
-        val question = uiModels[position]
+        val question = currentQuestionUiModels[position]
         holder.bind(question) { questionId, newAnswers: List<AnswerRequest> ->
-            questionRequests.firstOrNull { it.id == questionId }?.let {
+            answeredQuestions.firstOrNull { it.id == questionId }?.let {
                 it.answers = newAnswers
+            } ?: run {
+                answeredQuestions.add(QuestionRequest(questionId, newAnswers))
+                updateQuestionsContent(uiModels)
             }
         }
         (holder as? ChoiceQuestionViewHolder)?.let {
             it.choiceAnswersAdapter.pickValue = question.pick
         }
+    }
+
+    private fun updateQuestionsContent(totalQuestionUiModels: List<QuestionItemPagerUiModel>) {
+        val questionsContent = mutableListOf<QuestionItemPagerUiModel>()
+        for (question in totalQuestionUiModels) {
+            questionsContent.add(question)
+            if (question.shouldAnswer && answeredQuestions.firstOrNull {it.id == question.id } == null) {
+                break
+            }
+        }
+        currentQuestionUiModels = questionsContent
     }
 
     // ================= View Holders ========================= \\
@@ -105,7 +129,11 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
             tvQuestionItemText.text = questionUiModel.text.trim()
         }
 
-        internal fun handleRating(rating: Float, questionUiModel: QuestionItemPagerUiModel, onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit) {
+        internal fun handleRating(
+            rating: Float,
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
             val selectedIndex = rating.toInt() - 1
             if (questionUiModel.answers.isValidIndex(selectedIndex)) {
                 val answer = questionUiModel.answers[selectedIndex]
@@ -113,11 +141,29 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
             }
         }
 
-        internal fun handleDropdown(position: Int, questionUiModel: QuestionItemPagerUiModel, onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit) {
+        internal fun handleDropdown(
+            position: Int,
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
             if (questionUiModel.answers.isValidIndex(position)) {
                 val answer = questionUiModel.answers[position]
                 onItemSelected(questionUiModel.id, listOf(AnswerRequest(answer.id)))
             }
+        }
+
+        internal fun handleAdapter(
+            questionId: String,
+            selectedAnswerUiModels: List<AnswerItemUiModel>,
+            shouldAddText: Boolean,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            onItemSelected(
+                questionId,
+                selectedAnswerUiModels.map {
+                    AnswerRequest(it.id, if (shouldAddText) it.text else null)
+                }
+            )
         }
     }
 
@@ -132,6 +178,9 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         ) {
             super.bind(questionUiModel, onItemSelected)
             choiceAnswersAdapter.uiModels = questionUiModel.answers
+            choiceAnswersAdapter.onItemsSelected = { selectedAnswers ->
+                handleAdapter(questionUiModel.id, selectedAnswers,false, onItemSelected)
+            }
             rvChoiceQuestionAnswers.adapter = choiceAnswersAdapter
         }
     }
@@ -206,6 +255,9 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         ) {
             super.bind(questionUiModel, onItemSelected)
             npsAnswersAdapter.uiModels = questionUiModel.answers
+            npsAnswersAdapter.onItemsSelected = { selectedAnswers ->
+                handleAdapter(questionUiModel.id, selectedAnswers,false, onItemSelected)
+            }
             rvNpsQuestionAnswers.adapter = npsAnswersAdapter
         }
     }
@@ -226,6 +278,9 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         ) {
             super.bind(questionUiModel, onItemSelected)
             sliderAnswersAdapter.uiModels = questionUiModel.answers
+            sliderAnswersAdapter.onItemsSelected = { selectedAnswers ->
+                handleAdapter(questionUiModel.id, selectedAnswers,false, onItemSelected)
+            }
             rvSliderQuestionAnswers.adapter = sliderAnswersAdapter
         }
     }
@@ -266,6 +321,18 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         ) {
             super.bind(questionUiModel, onItemSelected)
             etQuestionItemTextArea.hint = questionUiModel.text
+            etQuestionItemTextArea.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    questionUiModel.answers.firstOrNull()?.let {
+                        val newAnswer = AnswerItemUiModel(it.id, s?.toString() ?: "")
+                        handleAdapter(questionUiModel.id, listOf(newAnswer), true, onItemSelected)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+            })
         }
     }
 
@@ -280,6 +347,9 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         ) {
             super.bind(questionUiModel, onItemSelected)
             textFieldAnswersAdapter.uiModels = questionUiModel.answers
+            textFieldAnswersAdapter.onItemsTextChanged = { selectedAnswers ->
+                handleAdapter(questionUiModel.id, selectedAnswers,true, onItemSelected)
+            }
             rvTextFieldQuestionAnswers.adapter = textFieldAnswersAdapter
         }
     }

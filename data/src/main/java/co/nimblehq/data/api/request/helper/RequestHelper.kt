@@ -41,24 +41,4 @@ object RequestHelper {
             questions
         )
     }
-
-    fun surveyQuestion(
-        questionId: String,
-        answers: List<AnswerRequest>
-    ): QuestionRequest {
-        return QuestionRequest(
-            questionId,
-            answers
-        )
-    }
-
-    fun surveyAnswer(
-        answerId: String,
-        answer: String?
-    ): AnswerRequest {
-        return AnswerRequest(
-            answerId,
-            answer
-        )
-    }
 }

@@ -4,7 +4,7 @@ import co.nimblehq.data.model.Answer
 
 data class AnswerItemUiModel(
     val id: String,
-    val text: String
+    var text: String
 )
 
 fun Answer.toAnswerItemUiModel() = AnswerItemUiModel(

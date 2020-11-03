@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import co.nimblehq.R
+import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.ui.common.adapter.DiffUpdateAdapter
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.AnswerItemUiModel
 import kotlinx.android.extensions.LayoutContainer
@@ -26,7 +27,9 @@ internal class QuestionItemNpsAdapter :
         )
     }
 
-    private var selectedIndex: Int = 0
+    var onItemsSelected: ((answerUiModels: List<AnswerItemUiModel>) -> Unit)? = null
+
+    private var selectedIndex: Int = DEFAULT_UNSELECTED_INDEX
 
     override fun getItemCount() = uiModels.size
 
@@ -43,6 +46,7 @@ internal class QuestionItemNpsAdapter :
         if (selectedIndex != position) {
             selectedIndex = position
             notifyDataSetChanged()
+            onItemsSelected?.invoke(listOf(uiModels[selectedIndex]))
         }
     }
 

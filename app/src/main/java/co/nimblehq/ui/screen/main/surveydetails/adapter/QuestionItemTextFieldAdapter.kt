@@ -1,10 +1,13 @@
 package co.nimblehq.ui.screen.main.surveydetails.adapter
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import co.nimblehq.R
+import co.nimblehq.data.api.request.QuestionRequest
 import co.nimblehq.ui.common.adapter.DiffUpdateAdapter
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.AnswerItemUiModel
 import kotlinx.android.extensions.LayoutContainer
@@ -23,6 +26,10 @@ internal class QuestionItemTextFieldAdapter :
             { oldItem, newItem -> oldItem.id == newItem.id }
         )
     }
+
+    var onItemsTextChanged: ((answerUiModels: List<AnswerItemUiModel>) -> Unit)? = null
+
+    private val answers: MutableList<AnswerItemUiModel> = mutableListOf()
 
     override fun getItemCount() = uiModels.size
 
@@ -50,10 +57,22 @@ internal class QuestionItemTextFieldAdapter :
             get() = itemView
 
         fun bind(uiModel: AnswerItemUiModel) {
-            with(uiModel) {
-                etTextFieldQuestionItemAnswer.hint = text
+            etTextFieldQuestionItemAnswer.hint = uiModel.text
+            etTextFieldQuestionItemAnswer.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    val newAnswerText = s?.toString() ?: ""
+                    answers.firstOrNull { it.id == uiModel.id }?.let {
+                        it.text = newAnswerText
+                    } ?: run {
+                        answers.add(AnswerItemUiModel(uiModel.id, newAnswerText))
+                    }
+                    onItemsTextChanged?.invoke(answers)
+                }
 
-            }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+            })
         }
     }
 }

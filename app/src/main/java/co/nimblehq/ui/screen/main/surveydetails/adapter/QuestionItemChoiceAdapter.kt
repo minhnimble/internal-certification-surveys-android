@@ -10,6 +10,7 @@ import co.nimblehq.ui.common.adapter.DiffUpdateAdapter
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.AnswerItemUiModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_survey_questions_choice_answer.*
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 interface ViewHolderClickListener {
@@ -28,6 +29,8 @@ internal class QuestionItemChoiceAdapter :
             { oldItem, newItem -> oldItem.id == newItem.id }
         )
     }
+
+    var onItemsSelected: ((answerUiModels: List<AnswerItemUiModel>) -> Unit)? = null
 
     var pickValue: QuestionPickValue = QuestionPickValue.NONE
 
@@ -58,8 +61,11 @@ internal class QuestionItemChoiceAdapter :
                 selectedIds.clear()
                 selectedIds.add(answer.id)
             }
+            else -> {
+                Timber.d("Not handled Question's pick value")
+            }
         }
-
+        onItemsSelected?.invoke(uiModels.filter { selectedIds.contains(it.id) })
         notifyDataSetChanged()
     }
 

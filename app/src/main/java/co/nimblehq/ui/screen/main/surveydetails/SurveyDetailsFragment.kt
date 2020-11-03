@@ -61,7 +61,6 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
         }.bindForDisposable()
 
         btSurveyQuestionsItemNext.subscribeOnClick {
-            // TODO: Handle check to show next page or not
             viewModel.inputs.triggerNextQuestion()
         }.bindForDisposable()
 

@@ -25,6 +25,8 @@ internal class QuestionItemSliderAdapter :
         )
     }
 
+    var onItemsSelected: ((answerUiModels: List<AnswerItemUiModel>) -> Unit)? = null
+
     private var selectedId: String = ""
 
     override fun getItemCount() = uiModels.size
@@ -40,12 +42,11 @@ internal class QuestionItemSliderAdapter :
 
     override fun onTap(position: Int) {
         val answer = uiModels[position]
-        selectedId = if (selectedId == answer.id) {
-            ""
-        } else {
-            answer.id
+         if (selectedId != answer.id) {
+             selectedId = answer.id
+             notifyDataSetChanged()
+             onItemsSelected?.invoke(listOf(answer))
         }
-        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: QuestionSliderAnswerViewHolder, position: Int) {
