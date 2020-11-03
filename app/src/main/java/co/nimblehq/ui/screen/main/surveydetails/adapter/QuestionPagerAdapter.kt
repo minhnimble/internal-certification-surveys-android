@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.RatingBar
 import androidx.recyclerview.widget.RecyclerView
 import co.nimblehq.R
+import co.nimblehq.data.api.request.AnswerRequest
+import co.nimblehq.data.api.request.QuestionRequest
 import co.nimblehq.data.model.QuestionDisplayType
+import co.nimblehq.extension.isValidIndex
+import co.nimblehq.extension.refreshWithData
 import co.nimblehq.ui.common.adapter.DiffUpdateAdapter
 import co.nimblehq.ui.screen.main.surveydetails.decoration.SurveyQuestionNpsItemDecoration
 import co.nimblehq.ui.screen.main.surveydetails.decoration.SurveyQuestionSliderItemDecoration
@@ -36,6 +41,8 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
             { oldItem, newItem -> oldItem.id == newItem.id }
         )
     }
+
+    var questionRequests: List<QuestionRequest> = listOf()
 
     override fun getItemCount() = uiModels.size
 
@@ -74,7 +81,11 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
 
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
         val question = uiModels[position]
-        holder.bind(question)
+        holder.bind(question) { questionId, newAnswers: List<AnswerRequest> ->
+            questionRequests.firstOrNull { it.id == questionId }?.let {
+                it.answers = newAnswers
+            }
+        }
         (holder as? ChoiceQuestionViewHolder)?.let {
             it.choiceAnswersAdapter.pickValue = question.pick
         }
@@ -87,8 +98,26 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         override val containerView: View
             get() = itemView
 
-        open fun bind(uiModel: QuestionItemPagerUiModel) {
-            tvQuestionItemText.text = uiModel.text.trim()
+        open fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            tvQuestionItemText.text = questionUiModel.text.trim()
+        }
+
+        internal fun handleRating(rating: Float, questionUiModel: QuestionItemPagerUiModel, onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit) {
+            val selectedIndex = rating.toInt() - 1
+            if (questionUiModel.answers.isValidIndex(selectedIndex)) {
+                val answer = questionUiModel.answers[selectedIndex]
+                onItemSelected(questionUiModel.id, listOf(AnswerRequest(answer.id)))
+            }
+        }
+
+        internal fun handleDropdown(position: Int, questionUiModel: QuestionItemPagerUiModel, onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit) {
+            if (questionUiModel.answers.isValidIndex(position)) {
+                val answer = questionUiModel.answers[position]
+                onItemSelected(questionUiModel.id, listOf(AnswerRequest(answer.id)))
+            }
         }
     }
 
@@ -97,48 +126,67 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         val choiceAnswersAdapter: QuestionItemChoiceAdapter
     ): QuestionViewHolder(itemView) {
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            choiceAnswersAdapter.uiModels = uiModel.answers
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            choiceAnswersAdapter.uiModels = questionUiModel.answers
             rvChoiceQuestionAnswers.adapter = choiceAnswersAdapter
         }
     }
 
     internal inner class DropdownQuestionViewHolder(
         itemView: View,
-        val dropdownAdapter: ArrayAdapter<String>
-    ): QuestionViewHolder(itemView), AdapterView.OnItemSelectedListener {
+        private val dropdownAdapter: ArrayAdapter<String>
+    ): QuestionViewHolder(itemView) {
 
-        override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) { }
-
-        override fun onNothingSelected(arg0: AdapterView<*>) { }
-
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
             with(dropdownAdapter) {
                 setDropDownViewResource(R.layout.item_survey_questions_dropdown_answer)
-                clear()
-                addAll(uiModel.answers.map { answer -> answer.text })
-                notifyDataSetChanged()
+                refreshWithData(questionUiModel.answers.map { answer -> answer.text })
             }
             sDropdownQuestionAnswers.adapter = dropdownAdapter
-            sDropdownQuestionAnswers.onItemSelectedListener = this
+            sDropdownQuestionAnswers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+                override fun onNothingSelected(parent: AdapterView<*>?) { }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    handleDropdown(position, questionUiModel, onItemSelected)
+                }
+            }
         }
     }
 
     internal inner class HeartQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            rbQuestionItemHeart.numStars = uiModel.answers.size
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            rbQuestionItemHeart.numStars = questionUiModel.answers.size
+            rbQuestionItemHeart.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, rating, _ ->
+                handleRating(rating, questionUiModel, onItemSelected)
+            }
         }
     }
 
     internal inner class MoneyQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            rbQuestionItemMoney.numStars = uiModel.answers.size
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            rbQuestionItemMoney.numStars = questionUiModel.answers.size
+            rbQuestionItemMoney.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, rating, _ ->
+                handleRating(rating, questionUiModel, onItemSelected)
+            }
         }
     }
 
@@ -152,9 +200,12 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
             rvNpsQuestionAnswers.addItemDecoration(SurveyQuestionNpsItemDecoration(context))
         }
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            npsAnswersAdapter.uiModels = uiModel.answers
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            npsAnswersAdapter.uiModels = questionUiModel.answers
             rvNpsQuestionAnswers.adapter = npsAnswersAdapter
         }
     }
@@ -169,34 +220,52 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
             rvSliderQuestionAnswers.addItemDecoration(SurveyQuestionSliderItemDecoration(context))
         }
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            sliderAnswersAdapter.uiModels = uiModel.answers
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            sliderAnswersAdapter.uiModels = questionUiModel.answers
             rvSliderQuestionAnswers.adapter = sliderAnswersAdapter
         }
     }
 
     internal inner class SmileyQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            rbQuestionItemSmiley.numStars = uiModel.answers.size
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            rbQuestionItemSmiley.numStars = questionUiModel.answers.size
+            rbQuestionItemSmiley.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, rating, _ ->
+                handleRating(rating, questionUiModel, onItemSelected)
+            }
         }
     }
 
     internal inner class StarQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            rbQuestionItemStar.numStars = uiModel.answers.size
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            rbQuestionItemStar.numStars = questionUiModel.answers.size
+            rbQuestionItemStar.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, rating, _ ->
+                handleRating(rating, questionUiModel, onItemSelected)
+            }
         }
     }
 
     internal inner class TextAreaQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            etQuestionItemTextArea.hint = uiModel.text
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            etQuestionItemTextArea.hint = questionUiModel.text
         }
     }
 
@@ -205,9 +274,12 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         val textFieldAnswersAdapter: QuestionItemTextFieldAdapter
     ): QuestionViewHolder(itemView) {
 
-        override fun bind(uiModel: QuestionItemPagerUiModel) {
-            super.bind(uiModel)
-            textFieldAnswersAdapter.uiModels = uiModel.answers
+        override fun bind(
+            questionUiModel: QuestionItemPagerUiModel,
+            onItemSelected: (questionId: String, answers: List<AnswerRequest>) -> Unit
+        ) {
+            super.bind(questionUiModel, onItemSelected)
+            textFieldAnswersAdapter.uiModels = questionUiModel.answers
             rvTextFieldQuestionAnswers.adapter = textFieldAnswersAdapter
         }
     }

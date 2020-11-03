@@ -13,6 +13,21 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="FadeInOutDialogAnimStyle">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/FadeInOutDialogAnimStyle</item>
+    </style>
+
     <style name="NavigationViewStyle">
         <item name="android:textSize">@dimen/_15ssp</item> <!-- menu item text size-->
         <item name="android:listPreferredItemHeightSmall">@dimen/_35sdp</item><!-- menu item height-->

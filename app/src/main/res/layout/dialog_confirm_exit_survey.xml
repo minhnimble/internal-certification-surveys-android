@@ -1,0 +1,94 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clConfirmExitSurveyDialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_60a">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clConfirmExitSurveyDialogContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_confirm_exit_survey_dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8">
+
+        <TextView
+            android:id="@+id/tvConfirmExitSurveyTitle"
+            style="@style/Widget.Template.TextView.Header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:gravity="center"
+            android:text="@string/confirm_exit_survey_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvConfirmExitSurveyMessage"
+            style="@style/Widget.Template.TextView.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:gravity="center"
+            android:text="@string/confirm_exit_survey_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvConfirmExitSurveyTitle" />
+
+        <View
+            android:id="@+id/vConfirmExitSurveyHorizontalDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@color/nero1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvConfirmExitSurveyMessage" />
+
+        <View
+            android:id="@+id/vConfirmExitSurveyVerticalDivider"
+            android:layout_width="@dimen/divider_width"
+            android:layout_height="@dimen/_34sdp"
+            android:background="@color/nero1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vConfirmExitSurveyHorizontalDivider" />
+
+        <TextView
+            android:id="@+id/tvConfirmExitSurveyYes"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/confirm_exit_survey_yes"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/vConfirmExitSurveyVerticalDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vConfirmExitSurveyHorizontalDivider" />
+
+        <TextView
+            android:id="@+id/tvConfirmExitSurveyCancel"
+            style="@style/Widget.Template.TextView.Bold"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/confirm_exit_survey_cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvConfirmExitSurveyYes"
+            app:layout_constraintTop_toBottomOf="@+id/vConfirmExitSurveyHorizontalDivider" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

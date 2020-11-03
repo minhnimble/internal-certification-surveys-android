@@ -13,6 +13,7 @@ import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.extension.*
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
+import co.nimblehq.ui.common.dialog.ConfirmExitSurveyDialog
 import co.nimblehq.ui.screen.main.MainNavigator
 import co.nimblehq.ui.screen.main.surveydetails.adapter.QuestionPagerAdapter
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.QuestionItemPagerUiModel
@@ -54,8 +55,9 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
         }.bindForDisposable()
 
         btSurveyQuestionsClose.subscribeOnClick {
-            // TODO: Show confirm close survey questions popup
-            navigator.navigateBack()
+            ConfirmExitSurveyDialog {
+                navigator.navigateBack()
+            }.show(childFragmentManager, "confirm_exit_survey")
         }.bindForDisposable()
 
         btSurveyQuestionsItemNext.subscribeOnClick {
