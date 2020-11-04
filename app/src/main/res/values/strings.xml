@@ -10,8 +10,11 @@
     <string name="general_get_survey_details_error">Getting survey details failed. Please try again</string>
     <string name="general_get_surveys_error">Getting surveys failed. Please try again</string>
     <string name="general_no_more_surveys_error">No more surveys to load</string>
-    <string name="general_delete_local_surveys_error">Cleaning local surveys data failed. Please try again</string>
     <string name="general_no_question_error">No question from server</string>
+    <string name="general_delete_local_surveys_error">Cleaning local surveys data failed. Please try again</string>
+    <string name="general_login_error">Login failed. Please try again</string>
+    <string name="general_logout_error">Logout failed. Please try again</string>
+    <string name="general_refresh_token_error">Refreshing token failed. Please try again</string>
     <string name="general_session_expired_error">Session expired</string>
     <string name="general_submit_survey_responses_error">Submit survey responses failed. Please try again</string>
     <string name="general_test_error">Test error</string>

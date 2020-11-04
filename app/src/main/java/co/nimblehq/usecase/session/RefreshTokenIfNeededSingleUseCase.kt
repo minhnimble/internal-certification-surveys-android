@@ -1,7 +1,7 @@
 package co.nimblehq.usecase.session
 
 import co.nimblehq.data.authenticator.TokenRefresher
-import co.nimblehq.data.error.RefreshTokenError
+import co.nimblehq.data.error.SessionError.RefreshTokenError
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.usecase.base.SingleUseCase

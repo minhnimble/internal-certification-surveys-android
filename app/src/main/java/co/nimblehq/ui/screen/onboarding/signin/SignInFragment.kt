@@ -14,6 +14,7 @@ import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.screen.onboarding.OnboardingNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_sign_in.*
+import timber.log.Timber
 import javax.inject.Inject
 
 interface BlurAnimatable {
@@ -66,11 +67,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             .bindForDisposable()
 
         viewModel.output.navigator
-            .subscribe {
-                when (it) {
-                    is NavigationEvent.SignIn.Main -> showMainActivity()
-                }
-            }
+            .subscribe(::bindNavigator)
             .bindForDisposable()
     }
 
@@ -109,6 +106,13 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
 
     private fun bindLoading(isLoading: Boolean) {
         toggleLoading(isLoading)
+    }
+
+    private fun bindNavigator(event: NavigationEvent) {
+        when (event) {
+            is NavigationEvent.SignIn.Main -> showMainActivity()
+            else -> Timber.d("Not handled")
+        }
     }
 
     private fun showMainActivity() {

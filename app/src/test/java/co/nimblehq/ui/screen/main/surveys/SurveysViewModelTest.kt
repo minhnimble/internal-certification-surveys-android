@@ -3,6 +3,9 @@ package co.nimblehq.ui.screen.main.surveys
 import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.data.model.Survey
+import co.nimblehq.usecase.session.ClearLocalTokenCompletableUseCase
+import co.nimblehq.usecase.session.GetLocalUserTokenSingleUseCase
+import co.nimblehq.usecase.session.LogoutCompletableUseCase
 import co.nimblehq.usecase.survey.*
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
@@ -16,27 +19,36 @@ import org.junit.Test
 @Suppress("IllegalIdentifier")
 class SurveysViewModelTest {
 
+    private lateinit var mockClearLocalTokenCompletableUseCase: ClearLocalTokenCompletableUseCase
     private lateinit var mockDeleteLocalSurveysExcludeIdsCompletableUseCase: DeleteLocalSurveysExcludeIdsCompletableUseCase
     private lateinit var mockGetLocalSurveysSingleUseCase: GetLocalSurveysSingleUseCase
+    private lateinit var mockGetLocalTokenCompletableUseCase: GetLocalUserTokenSingleUseCase
     private lateinit var mockGetSurveysCurrentPageSingleUseCase: GetSurveysCurrentPageSingleUseCase
     private lateinit var mockGetSurveysTotalPagesSingleUseCase: GetSurveysTotalPagesSingleUseCase
     private lateinit var mockLoadSurveysSingleUseCase: LoadSurveysSingleUseCase
+    private lateinit var mockLogoutCompletableUseCase: LogoutCompletableUseCase
 
     private lateinit var surveysViewModel: SurveysViewModel
 
     @Before
     fun setUp() {
+        mockClearLocalTokenCompletableUseCase = mock()
         mockDeleteLocalSurveysExcludeIdsCompletableUseCase = mock()
         mockGetLocalSurveysSingleUseCase = mock()
+        mockGetLocalTokenCompletableUseCase = mock()
         mockGetSurveysCurrentPageSingleUseCase = mock()
         mockGetSurveysTotalPagesSingleUseCase = mock()
         mockLoadSurveysSingleUseCase = mock()
+        mockLogoutCompletableUseCase = mock()
         surveysViewModel = SurveysViewModel(
+            mockClearLocalTokenCompletableUseCase,
             mockDeleteLocalSurveysExcludeIdsCompletableUseCase,
             mockGetLocalSurveysSingleUseCase,
+            mockGetLocalTokenCompletableUseCase,
             mockGetSurveysCurrentPageSingleUseCase,
             mockGetSurveysTotalPagesSingleUseCase,
-            mockLoadSurveysSingleUseCase
+            mockLoadSurveysSingleUseCase,
+            mockLogoutCompletableUseCase
         )
     }
 

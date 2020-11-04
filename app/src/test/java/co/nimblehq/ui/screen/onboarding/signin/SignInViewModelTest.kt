@@ -1,6 +1,6 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
-import co.nimblehq.data.error.LoginError
+import co.nimblehq.data.error.SessionError
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
@@ -33,7 +33,7 @@ class SignInViewModelTest {
         // Arrange
         whenever(
             mockLoginByPasswordSingleUseCase.execute(any())
-        ) doReturn Single.error(LoginError(null))
+        ) doReturn Single.error(SessionError.LoginError(null))
 
         // Act
         val showLoadingObserver = signingViewModel
@@ -51,7 +51,7 @@ class SignInViewModelTest {
         // Assert
         signInErrorObserver
             .assertNoErrors()
-            .assertValue { it is LoginError }
+            .assertValue { it is SessionError.LoginError }
 
         showLoadingObserver
             .assertNoErrors()

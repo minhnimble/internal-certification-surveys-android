@@ -1,6 +1,6 @@
 package co.nimblehq.usecase.session
 
-import co.nimblehq.data.error.LoginError
+import co.nimblehq.data.error.SessionError
 import co.nimblehq.data.lib.schedulers.TestRxSchedulerProviderImpl
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.data.repository.AuthRepository
@@ -54,7 +54,7 @@ class LoginByPasswordSingleUseCaseTest {
         // Arrange
         whenever(
             mockRepository.loginByPasswordWithEmail(any(), any())
-        ) doReturn  Single.error(LoginError(null))
+        ) doReturn  Single.error(SessionError.LoginError(null))
 
         // Act
         val negativeTestSubscriber = useCase
@@ -68,6 +68,6 @@ class LoginByPasswordSingleUseCaseTest {
 
         // Assert
         negativeTestSubscriber
-            .assertError { it is LoginError }
+            .assertError { it is SessionError.LoginError }
     }
 }

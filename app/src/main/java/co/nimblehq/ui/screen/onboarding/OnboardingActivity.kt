@@ -3,8 +3,7 @@ package co.nimblehq.ui.screen.onboarding
 import android.os.Bundle
 import androidx.activity.viewModels
 import co.nimblehq.R
-import co.nimblehq.data.error.RefreshTokenError
-import co.nimblehq.data.error.TokenExpiredError
+import co.nimblehq.data.error.SessionError
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.extension.blurView
 import co.nimblehq.ui.base.BaseActivity
@@ -12,6 +11,7 @@ import co.nimblehq.ui.screen.onboarding.signin.BlurAnimatable
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.activity_onboarding.*
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -45,7 +45,7 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
         viewModel.output.error
             .subscribeBy {
                 when (it) {
-                    is RefreshTokenError -> displayError(TokenExpiredError(null))
+                    is SessionError.RefreshTokenError -> displayError(SessionError.TokenExpiredError(null))
                 }
             }
             .bindForDisposable()
@@ -54,6 +54,7 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
             .subscribeBy {
                 when (it) {
                     is NavigationEvent.Onboarding.Main -> showMainActivity()
+                    else -> Timber.d("Not handled")
                 }
             }
             .bindForDisposable()

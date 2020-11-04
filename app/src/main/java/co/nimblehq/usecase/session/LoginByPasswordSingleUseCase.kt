@@ -1,6 +1,6 @@
 package co.nimblehq.usecase.session
 
-import co.nimblehq.data.error.LoginError
+import co.nimblehq.data.error.SessionError.LoginError
 import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.data.repository.AuthRepository

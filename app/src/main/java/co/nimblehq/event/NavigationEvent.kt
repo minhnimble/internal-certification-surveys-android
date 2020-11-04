@@ -9,4 +9,8 @@ sealed class NavigationEvent {
     sealed class SignIn : NavigationEvent() {
         object Main : SignIn()
     }
+
+    sealed class Surveys : NavigationEvent() {
+        object Onboarding : Surveys()
+    }
 }
