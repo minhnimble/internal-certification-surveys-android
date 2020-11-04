@@ -9,6 +9,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
@@ -81,5 +82,53 @@ class SurveyDetailsViewModelTest {
             .assertValue {
                 it == questions.toQuestionItemPagerUiModels()
             }
+    }
+
+    @Test
+    fun `When submitting survey responses failed, it triggers a SubmitSurveyResponsesError`() {
+        // Arrange
+        whenever(
+            mockSubmitSurveyResponsesCompletableUseCase.execute(any())
+        ) doReturn Completable.error(SurveyError.SubmitSurveyResponsesError(null))
+
+        // Act
+        val errorObserver = surveyDetailsViewModel
+            .showError
+            .test()
+        surveyDetailsViewModel.submitSurveyResponses("Survey Id", listOf())
+
+        // Assert
+        errorObserver
+            .assertNoErrors()
+            .assertValueCount(1)
+            .assertValue { it is SurveyError.SubmitSurveyResponsesError }
+    }
+
+    @Test
+    fun `When submitting survey responses successfully, it triggers showLoading as false and showingSuccessOverlay as true`() {
+        // Arrange
+        whenever(
+            mockSubmitSurveyResponsesCompletableUseCase.execute(any())
+        ) doReturn Completable.complete()
+
+        // Act
+        val showLoadingObserver = surveyDetailsViewModel
+            .showLoading
+            .test()
+        val showSuccessOverlayObserver = surveyDetailsViewModel
+            .showSuccessOverlay
+            .test()
+        surveyDetailsViewModel.submitSurveyResponses("Survey Id", listOf())
+
+        // Assert
+        showLoadingObserver
+            .assertNoErrors()
+            .assertValueCount(2)
+            .assertValues(true, false)
+
+        showSuccessOverlayObserver
+            .assertNoErrors()
+            .assertValueCount(1)
+            .assertValue { it }
     }
 }
