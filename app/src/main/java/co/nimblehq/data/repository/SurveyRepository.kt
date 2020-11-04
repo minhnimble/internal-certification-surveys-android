@@ -1,6 +1,8 @@
 package co.nimblehq.data.repository
 
 import co.nimblehq.data.api.operators.Operators
+import co.nimblehq.data.api.request.QuestionResponsesRequest
+import co.nimblehq.data.api.request.helper.RequestHelper
 import co.nimblehq.data.api.response.survey.meta
 import co.nimblehq.data.api.service.survey.SurveyService
 import co.nimblehq.data.model.Question
@@ -9,6 +11,7 @@ import co.nimblehq.data.model.toQuestions
 import co.nimblehq.data.model.toSurveys
 import co.nimblehq.data.storage.AppPreferences
 import co.nimblehq.data.storage.dao.SurveyDao
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -22,6 +25,11 @@ interface SurveyRepository {
         pageNumber: Int,
         pageSize: Int
     ): Single<List<Survey>>
+
+    fun submitSurveyResponses(
+        surveyId: String,
+        questionResponse: List<QuestionResponsesRequest>
+    ): Completable
 }
 
 class SurveyRepositoryImpl @Inject constructor(
@@ -29,6 +37,16 @@ class SurveyRepositoryImpl @Inject constructor(
     private val surveyDao: SurveyDao,
     private val surveyService: SurveyService
 ) : SurveyRepository {
+
+    override fun loadSurveyDetails(
+        surveyId: String
+    ): Single<List<Question>> {
+        return surveyService
+            .getSurveyDetails(surveyId)
+            .lift(Operators.apiError())
+            .firstOrError()
+            .map { it.getQuestionResponses()?.toQuestions() ?: emptyList() }
+    }
 
     override fun loadSurveys(
         pageNumber: Int,
@@ -46,13 +64,11 @@ class SurveyRepositoryImpl @Inject constructor(
             .doOnSuccess { surveyDao.insertAll(it) }
     }
 
-    override fun loadSurveyDetails(
-        surveyId: String
-    ): Single<List<Question>> {
+    override fun submitSurveyResponses(
+        surveyId: String,
+        questionResponse: List<QuestionResponsesRequest>
+    ): Completable {
         return surveyService
-            .getSurveyDetails(surveyId)
-            .lift(Operators.apiError())
-            .firstOrError()
-            .map { it.getQuestionResponses()?.toQuestions() ?: emptyList() }
+            .submitSurveyResponses(RequestHelper.submitSurveyResponses(surveyId, questionResponse))
     }
 }

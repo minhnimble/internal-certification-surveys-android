@@ -12,6 +12,7 @@
     <string name="general_delete_local_surveys_error">Cleaning local surveys data failed. Please try again</string>
     <string name="general_no_question_error">No question from server</string>
     <string name="general_session_expired_error">Session expired</string>
+    <string name="general_submit_survey_responses_error">Submit survey responses failed. Please try again</string>
     <string name="general_test_error">Test error</string>
     <string name="general_unknown_error">Unknown error</string>
     <string name="menu_drawer_logout">Logout</string>

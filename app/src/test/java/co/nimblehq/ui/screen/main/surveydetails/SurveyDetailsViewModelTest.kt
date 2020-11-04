@@ -4,6 +4,7 @@ import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.model.Question
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.toQuestionItemPagerUiModels
 import co.nimblehq.usecase.survey.LoadSurveyDetailsSingleUseCase
+import co.nimblehq.usecase.survey.SubmitSurveyResponsesCompletableUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -16,14 +17,17 @@ import org.junit.Test
 class SurveyDetailsViewModelTest {
 
     private lateinit var mockLoadSurveyDetailsSingleUseCase: LoadSurveyDetailsSingleUseCase
+    private lateinit var mockSubmitSurveyResponsesCompletableUseCase: SubmitSurveyResponsesCompletableUseCase
 
     private lateinit var surveyDetailsViewModel: SurveyDetailsViewModel
 
     @Before
     fun setUp() {
         mockLoadSurveyDetailsSingleUseCase = mock()
+        mockSubmitSurveyResponsesCompletableUseCase = mock()
         surveyDetailsViewModel = SurveyDetailsViewModel(
-            mockLoadSurveyDetailsSingleUseCase
+            mockLoadSurveyDetailsSingleUseCase,
+            mockSubmitSurveyResponsesCompletableUseCase
         )
     }
 

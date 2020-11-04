@@ -65,8 +65,7 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
         }.bindForDisposable()
 
         btSurveyQuestionsSubmit.subscribeOnClick {
-            // TODO: Handle logic to submit answers to server
-            displayError(AppError(null, "Submit button clicked"))
+            viewModel.submitSurveyResponses(args.survey.id, questionPagerAdapter.answeredQuestions)
         }.bindForDisposable()
 
         ivSurveyDetailsBack.subscribeOnClick {
@@ -104,7 +103,11 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
             .bindForDisposable()
 
         viewModel.showLoading
-            .subscribe(::bindLoading)
+            .subscribe(::bindShowLoading)
+            .bindForDisposable()
+
+        viewModel.showSuccessOverlay
+            .subscribe(::bindShowSuccessOverlay)
             .bindForDisposable()
     }
 
@@ -112,8 +115,17 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
         if (vpSurveyQuestions.currentItem != index) vpSurveyQuestions.setCurrentItem(index, true)
     }
 
-    private fun bindLoading(isLoading: Boolean) {
-        toggleLoading(isLoading)
+    private fun bindShowLoading(shouldShow: Boolean) {
+        toggleLoading(shouldShow)
+    }
+
+    private fun bindShowSuccessOverlay(shouldShow: Boolean) {
+        if (shouldShow) {
+            // TODO: Handle show success lottie overlay
+            displayError(AppError(null, "Submit survey responses successfully."))
+        } else {
+            navigator.navigateBack()
+        }
     }
 
     private fun bindQuestionIndicator(questionIndicator: String) {
