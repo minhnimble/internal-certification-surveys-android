@@ -1,3 +1,3 @@
 package co.nimblehq.lib
 
-typealias IsLoading = Boolean
+typealias EmptyCallback = () -> Unit

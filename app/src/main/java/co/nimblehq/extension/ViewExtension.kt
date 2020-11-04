@@ -4,8 +4,9 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.View
 import co.nimblehq.data.lib.common.DEFAULT_DURATION
+import co.nimblehq.lib.EmptyCallback
 
-fun View.startFadeInAnimation(duration: Long = DEFAULT_DURATION, executeOnAnimationEnd: (() -> Unit)? = null) {
+fun View.startFadeInAnimation(duration: Long = DEFAULT_DURATION, executeOnAnimationEnd: EmptyCallback? = null) {
     alpha = 0f
     visibility = View.VISIBLE
     animate()
@@ -18,7 +19,7 @@ fun View.startFadeInAnimation(duration: Long = DEFAULT_DURATION, executeOnAnimat
         })
 }
 
-fun View.startFadeOutAnimation(duration: Long = DEFAULT_DURATION, executeOnAnimationEnd: (() -> Unit)? = null) {
+fun View.startFadeOutAnimation(duration: Long = DEFAULT_DURATION, executeOnAnimationEnd: EmptyCallback? = null) {
     alpha = 1f
     visibility = View.VISIBLE
     animate()

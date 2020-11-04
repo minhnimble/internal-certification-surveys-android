@@ -14,7 +14,6 @@ import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 
 interface Inputs {
     fun currentQuestionIndex(index: Int)
@@ -104,12 +103,9 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
             .execute(SubmitSurveyResponsesCompletableUseCase.Input(surveyId, responses))
             .doOnSubscribe { _showLoading.onNext(true) }
             .doFinally { _showLoading.onNext(false) }
-            // TODO: Update this flow to use lottie animation instead of delaying 3 seconds like now
-            .doOnComplete { _showSuccessOverlay.onNext(true) }
-            .doOnError { _showError.onNext(it) }
-            .delay(3, TimeUnit.SECONDS)
             .subscribeBy (
-                onComplete = { _showSuccessOverlay.onNext(false) }
+                onComplete = { _showSuccessOverlay.onNext(true) },
+                onError = { _showError.onNext(it) }
             )
             .bindForDisposable()
     }

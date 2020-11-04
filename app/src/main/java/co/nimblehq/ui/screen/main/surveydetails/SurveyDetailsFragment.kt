@@ -14,6 +14,7 @@ import co.nimblehq.extension.*
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.common.dialog.ConfirmExitSurveyDialog
+import co.nimblehq.ui.common.dialog.SubmitSurveyResponsesSuccessDialog
 import co.nimblehq.ui.screen.main.MainNavigator
 import co.nimblehq.ui.screen.main.surveydetails.adapter.QuestionPagerAdapter
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.QuestionItemPagerUiModel
@@ -121,10 +122,9 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
 
     private fun bindShowSuccessOverlay(shouldShow: Boolean) {
         if (shouldShow) {
-            // TODO: Handle show success lottie overlay
-            displayError(AppError(null, "Submit survey responses successfully."))
-        } else {
-            navigator.navigateBack()
+            SubmitSurveyResponsesSuccessDialog {
+                navigator.navigateBack()
+            }.show(childFragmentManager, "success_animation")
         }
     }
 

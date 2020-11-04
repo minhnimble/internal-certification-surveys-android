@@ -20,6 +20,7 @@
     <string name="sign_in_email_hint">Email</string>
     <string name="sign_in_password_hint">Password</string>
     <string name="sign_in_forgot_button_title">Forgot?</string>
+    <string name="submit_survey_responses_success_message">Thanks for taking the survey.</string>
     <string name="survey_details_start_survey">Start Survey</string>
     <string name="survey_questions_submit">Submit</string>
     <string name="survey_questions_text_area_hint">Hint</string>

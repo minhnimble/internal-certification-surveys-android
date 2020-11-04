@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import co.nimblehq.R
+import co.nimblehq.lib.EmptyCallback
 import kotlinx.android.synthetic.main.dialog_confirm_exit_survey.view.*
 
-class ConfirmExitSurveyDialog(private val confirmCallback: () -> Unit): DialogFragment() {
+class ConfirmExitSurveyDialog(private val confirmCallback: EmptyCallback): DialogFragment() {
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

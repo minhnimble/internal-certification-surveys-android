@@ -182,7 +182,8 @@ dependencies {
         "com.facebook.shimmer:shimmer:$shimmer_version",
         "org.permissionsdispatcher:permissionsdispatcher:$permission_dispatcher_version",
         "jp.wasabeef:blurry:$blurry_version",
-        "me.relex:circleindicator:$circle_indicator_version"
+        "me.relex:circleindicator:$circle_indicator_version",
+        "com.airbnb.android:lottie:$lottie_version"
     )
 
     testImplementation(
