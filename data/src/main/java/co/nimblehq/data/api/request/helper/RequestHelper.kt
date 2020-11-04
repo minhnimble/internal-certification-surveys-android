@@ -1,8 +1,7 @@
 package co.nimblehq.data.api.request.helper
 
 import co.nimblehq.data.api.common.secrets.Secrets
-import co.nimblehq.data.api.request.OAuthRequest.LoginByPasswordWithEmail
-import co.nimblehq.data.api.request.OAuthRequest.RefreshToken
+import co.nimblehq.data.api.request.OAuthRequest.*
 import co.nimblehq.data.api.request.QuestionResponsesRequest
 import co.nimblehq.data.api.request.SubmitSurveyResponsesRequest
 import co.nimblehq.data.lib.common.OAUTH_GRANT_TYPE_PASSWORD
@@ -18,6 +17,14 @@ object RequestHelper {
             OAUTH_GRANT_TYPE_PASSWORD,
             email,
             password,
+            Secrets.clientId,
+            Secrets.clientSecret
+        )
+    }
+
+    fun logout(token: String): Logout {
+        return Logout(
+            token,
             Secrets.clientId,
             Secrets.clientSecret
         )

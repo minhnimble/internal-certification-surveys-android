@@ -10,6 +10,7 @@ import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.lib.common.DATE_FORMAT_SHORT_DISPLAY
 import co.nimblehq.data.lib.extension.subscribeOnClick
 import co.nimblehq.data.model.User
+import co.nimblehq.event.NavigationEvent
 import co.nimblehq.extension.loadImage
 import co.nimblehq.extension.loadImageWithFadeAnimation
 import co.nimblehq.extension.switchTextWithFadeAnimation
@@ -25,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_fragment_surveys.*
 import kotlinx.android.synthetic.main.fragment_surveys.*
 import kotlinx.android.synthetic.main.navigation_drawer_header_surveys.*
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -86,6 +88,10 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
             .subscribe(::bindError)
             .bindForDisposable()
 
+        surveysViewModel.output.navigator
+            .subscribe(::bindNavigator)
+            .bindForDisposable()
+
         surveysViewModel.output.showLoading
             .subscribe(::bindLoading)
             .bindForDisposable()
@@ -111,8 +117,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_logout -> {
-                //TODO: Implement logout logic
-                displayError(Throwable("Logout pressed", null))
+                surveysViewModel.logout()
             }
         }
         toggleDrawer(false)
@@ -128,6 +133,13 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
 
     private fun bindError(throwable: Throwable) {
         if (throwable !is Ignored) displayError(throwable)
+    }
+
+    private fun bindNavigator(event: NavigationEvent) {
+        when (event) {
+            is NavigationEvent.Surveys.Onboarding -> navigator.navigateToOnboardingActivity()
+            else -> Timber.d("Not handled")
+        }
     }
 
     private fun bindLoading(isLoading: Boolean) {

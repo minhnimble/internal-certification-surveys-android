@@ -12,6 +12,12 @@ sealed class OAuthRequest {
         @Json(name = "client_secret") val clientSecret: String
 	) : OAuthRequest()
 
+    data class Logout(
+        @Json(name = "token") val token: String,
+        @Json(name = "client_id") val clientId: String,
+        @Json(name = "client_secret") val clientSecret: String
+    ) : OAuthRequest()
+
 	data class RefreshToken(
 		@Json(name = "grant_type") val grantType: String,
 		@Json(name = "refresh_token") val refreshToken: String,

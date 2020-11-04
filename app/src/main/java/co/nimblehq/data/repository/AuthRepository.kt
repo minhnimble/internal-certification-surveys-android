@@ -5,6 +5,7 @@ import co.nimblehq.data.api.service.auth.AuthService
 import co.nimblehq.data.authenticator.TokenRefresher
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.data.model.toAuthData
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -14,6 +15,8 @@ interface AuthRepository : TokenRefresher {
         email: String,
         password: String
     ): Single<AuthData>
+
+    fun logout(token: String): Completable
 }
 
 class AuthRepositoryImpl @Inject constructor(
@@ -30,9 +33,12 @@ class AuthRepositoryImpl @Inject constructor(
             .map { it.toAuthData() }
     }
 
-    override fun refreshToken(
-        token: String
-    ): Single<AuthData> {
+    override fun logout(token: String): Completable {
+        return authService
+            .logout(RequestHelper.logout(token))
+    }
+
+    override fun refreshToken(token: String): Single<AuthData> {
         return authService
             .refreshToken(RequestHelper.refreshToken(token))
             .firstOrError()

@@ -1,7 +1,7 @@
 package co.nimblehq.usecase.session
 
 import co.nimblehq.data.authenticator.TokenRefresher
-import co.nimblehq.data.error.RefreshTokenError
+import co.nimblehq.data.error.SessionError
 import co.nimblehq.data.lib.schedulers.TestRxSchedulerProviderImpl
 import co.nimblehq.data.model.AuthData
 import com.nhaarman.mockitokotlin2.doReturn
@@ -65,14 +65,14 @@ class RefreshTokenIfNeededSingleUseCaseTest {
         ) doReturn true
         whenever(
             mockTokenRefresher.refreshToken(mockAuthData.refreshToken)
-        ) doReturn Single.error(RefreshTokenError())
+        ) doReturn Single.error(SessionError.RefreshTokenError())
 
         // Act
         val negativeTestSubscriber = useCase.execute(mockAuthData).test()
 
         // Assert
         negativeTestSubscriber
-            .assertError { it is RefreshTokenError }
+            .assertError { it is SessionError.RefreshTokenError }
     }
 
     @Test

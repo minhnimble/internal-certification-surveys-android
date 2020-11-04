@@ -5,8 +5,12 @@ import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.lib.common.DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER
 import co.nimblehq.data.lib.common.DEFAULT_SURVEYS_PAGE_SIZE
 import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
+import co.nimblehq.event.NavigationEvent
 import co.nimblehq.extension.isValidIndex
 import co.nimblehq.ui.base.BaseViewModel
+import co.nimblehq.usecase.session.ClearLocalTokenCompletableUseCase
+import co.nimblehq.usecase.session.GetLocalUserTokenSingleUseCase
+import co.nimblehq.usecase.session.LogoutCompletableUseCase
 import co.nimblehq.usecase.survey.*
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -25,6 +29,8 @@ interface Output {
 
     val error: Observable<Throwable>
 
+    val navigator: Observable<NavigationEvent>
+
     val showLoading: Observable<Boolean>
 
     val showRefreshing: Observable<Boolean>
@@ -39,11 +45,14 @@ interface Output {
 }
 
 class SurveysViewModel @ViewModelInject constructor(
+    private val clearLocalTokenCompletableUseCase: ClearLocalTokenCompletableUseCase,
     private val deleteLocalSurveysExcludeIdsCompletableUseCase: DeleteLocalSurveysExcludeIdsCompletableUseCase,
     private val getLocalSurveysSingleUseCase: GetLocalSurveysSingleUseCase,
+    private val getLocalTokenSingleUseCase: GetLocalUserTokenSingleUseCase,
     private val getSurveysCurrentPageSingleUseCase: GetSurveysCurrentPageSingleUseCase,
     private val getSurveysTotalPagesSingleUseCase: GetSurveysTotalPagesSingleUseCase,
-    private val loadSurveysSingleUseCase: LoadSurveysSingleUseCase
+    private val loadSurveysSingleUseCase: LoadSurveysSingleUseCase,
+    private val logoutCompletableUseCase: LogoutCompletableUseCase
 ) : BaseViewModel(), Input, Output {
 
     val input = this
@@ -53,6 +62,10 @@ class SurveysViewModel @ViewModelInject constructor(
     private val _error = PublishSubject.create<Throwable>()
     override val error: Observable<Throwable>
         get() = _error
+
+    private val _navigator = PublishSubject.create<NavigationEvent>()
+    override val navigator: Observable<NavigationEvent>
+        get() = _navigator
 
     private val _showLoading = BehaviorSubject.create<Boolean>()
     override val showLoading: Observable<Boolean>
@@ -98,24 +111,6 @@ class SurveysViewModel @ViewModelInject constructor(
         updateSurveyIndex(selectedSurveyIndexValue - 1)
     }
 
-    fun refreshSurveysList() {
-        loadSurveysSingleUseCase
-            .execute(LoadSurveysSingleUseCase.Input(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, currentSurveysPageSize))
-            .doOnSubscribe { _showRefreshing.onNext(true) }
-            .map { it.toSurveyItemUiModels() }
-            .doOnSuccess { bindOnSuccessLoadSurveys(it, shouldMerge = false) }
-            .flatMap { getLocalPagingAttributes() }
-            .flatMapCompletable {
-                deleteLocalSurveysExcludeIdsCompletableUseCase
-                    .execute(DeleteLocalSurveysExcludeIdsCompletableUseCase.Input(currentSurveyItemUiModels.map { model -> model.id }))
-            }
-            .doFinally { _showRefreshing.onNext(false) }
-            .subscribeBy(
-                onError = { _error.onNext(it) }
-            )
-            .bindForDisposable()
-    }
-
     fun checkAndRefreshInitialSurveys() {
         getLocalSurveysSingleUseCase
             .execute(Unit)
@@ -131,6 +126,38 @@ class SurveysViewModel @ViewModelInject constructor(
                     .execute(DeleteLocalSurveysExcludeIdsCompletableUseCase.Input(currentSurveyItemUiModels.map { model -> model.id }))
             }
             .doFinally { _showLoading.onNext(false) }
+            .subscribeBy(
+                onError = { _error.onNext(it) }
+            )
+            .bindForDisposable()
+    }
+
+    fun logout() {
+        getLocalTokenSingleUseCase
+            .execute(Unit)
+            .doOnSubscribe { _showLoading.onNext(true) }
+            .flatMapCompletable { logoutCompletableUseCase.execute(it.accessToken) }
+            .andThen(clearLocalTokenCompletableUseCase.execute(Unit))
+            .doFinally { _showLoading.onNext(false) }
+            .subscribeBy(
+                onComplete = { _navigator.onNext(NavigationEvent.Surveys.Onboarding) },
+                onError = { _error.onNext(it) }
+            )
+            .bindForDisposable()
+    }
+
+    fun refreshSurveysList() {
+        loadSurveysSingleUseCase
+            .execute(LoadSurveysSingleUseCase.Input(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, currentSurveysPageSize))
+            .doOnSubscribe { _showRefreshing.onNext(true) }
+            .map { it.toSurveyItemUiModels() }
+            .doOnSuccess { bindOnSuccessLoadSurveys(it, shouldMerge = false) }
+            .flatMap { getLocalPagingAttributes() }
+            .flatMapCompletable {
+                deleteLocalSurveysExcludeIdsCompletableUseCase
+                    .execute(DeleteLocalSurveysExcludeIdsCompletableUseCase.Input(currentSurveyItemUiModels.map { model -> model.id }))
+            }
+            .doFinally { _showRefreshing.onNext(false) }
             .subscribeBy(
                 onError = { _error.onNext(it) }
             )

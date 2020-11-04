@@ -1,6 +1,7 @@
 package co.nimblehq.ui.screen.onboarding
 
-import co.nimblehq.data.error.RefreshTokenError
+import co.nimblehq.data.error.Ignored
+import co.nimblehq.data.error.SessionError
 import co.nimblehq.data.model.AuthData
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.usecase.session.GetLocalUserTokenSingleUseCase
@@ -52,7 +53,7 @@ class OnboardingViewModelTest {
         )
         whenever(
             mockRefreshTokenIfNeededSingleUseCase.execute(any())
-        ) doReturn Single.error(RefreshTokenError())
+        ) doReturn Single.error(SessionError.RefreshTokenError())
 
         // Act
         val errorObserver = onboardingViewModel
@@ -64,7 +65,7 @@ class OnboardingViewModelTest {
         errorObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue { it is RefreshTokenError }
+            .assertValue { it is SessionError.RefreshTokenError }
     }
 
     @Test
@@ -72,7 +73,7 @@ class OnboardingViewModelTest {
         // Arrange
         whenever(
             mockGetLocalUserTokenSingleUseCase.execute(any())
-        ) doReturn Maybe.empty<AuthData>().toSingle()
+        ) doReturn Single.error(Ignored(null))
 
         // Act
         val errorObserver = onboardingViewModel
@@ -84,7 +85,7 @@ class OnboardingViewModelTest {
         errorObserver
             .assertNoErrors()
             .assertValueCount(1)
-            .assertValue { it is Throwable }
+            .assertValue { it is Ignored }
     }
 
     @Test
