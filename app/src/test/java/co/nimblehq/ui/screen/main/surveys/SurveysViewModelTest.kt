@@ -1,8 +1,10 @@
 package co.nimblehq.ui.screen.main.surveys
 
+import co.nimblehq.data.error.SessionError
 import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.data.model.Survey
+import co.nimblehq.event.NavigationEvent
 import co.nimblehq.usecase.session.FullLogoutCompletableUseCase
 import co.nimblehq.usecase.survey.*
 import com.nhaarman.mockitokotlin2.any
@@ -321,5 +323,45 @@ class SurveysViewModelTest {
         errorObserver
             .assertValueCount(1)
             .assertValue { it is SurveyError.NoMoreSurveysError }
+    }
+
+    @Test
+    fun `When logging out from server failed, it triggers a LogoutError`() {
+        // Arrange
+        whenever(
+            mockFullLogoutCompletableUseCase.execute(any())
+        ) doReturn Completable.error(SessionError.LogoutError())
+
+        // Act
+        val errorObserver = surveysViewModel
+            .error
+            .test()
+        surveysViewModel.logout()
+
+        // Assert
+        errorObserver
+            .assertNoErrors()
+            .assertValueCount(1)
+            .assertValue { it is SessionError.LogoutError }
+    }
+
+    @Test
+    fun `When logging out from server successfully, it triggers to navigate to Onboarding screen`() {
+        // Arrange
+        whenever(
+            mockFullLogoutCompletableUseCase.execute(any())
+        ) doReturn Completable.complete()
+
+        // Act
+        val navigatorObserver = surveysViewModel
+            .navigator
+            .test()
+        surveysViewModel.logout()
+
+        // Assert
+        navigatorObserver
+            .assertNoErrors()
+            .assertValueCount(1)
+            .assertValue { it is NavigationEvent.Surveys.Onboarding }
     }
 }
