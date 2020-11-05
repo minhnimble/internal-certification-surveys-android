@@ -61,9 +61,7 @@ internal class QuestionItemChoiceAdapter :
                 selectedIds.clear()
                 selectedIds.add(answer.id)
             }
-            else -> {
-                Timber.d("Not handled Question's pick value")
-            }
+            else -> Timber.d("No need to handle for this case")
         }
         onItemsSelected?.invoke(uiModels.filter { selectedIds.contains(it.id) })
         notifyDataSetChanged()

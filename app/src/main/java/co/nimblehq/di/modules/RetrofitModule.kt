@@ -5,6 +5,7 @@ import co.nimblehq.data.api.providers.ConverterFactoryProvider
 import co.nimblehq.data.api.providers.RetrofitProvider
 import co.nimblehq.data.api.service.auth.AuthService
 import co.nimblehq.data.api.service.survey.SurveyService
+import co.nimblehq.data.api.service.user.UserService
 import co.nimblehq.di.qualifier.*
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -61,4 +62,8 @@ class RetrofitModule {
     @Provides
     @Singleton
     fun provideSurveyService(@AppRetrofit retrofit: Retrofit): SurveyService = ApiServiceProvider.getSurveyService(retrofit)
+
+    @Provides
+    @Singleton
+    fun provideUserService(@AppRetrofit retrofit: Retrofit): UserService = ApiServiceProvider.getUserService(retrofit)
 }

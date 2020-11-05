@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import co.nimblehq.R
+import co.nimblehq.data.error.RefreshTokenError
+import co.nimblehq.data.error.TokenExpiredError
 import co.nimblehq.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.shimmer_loading_indicator_main.*
 import javax.inject.Inject
 
@@ -23,12 +26,26 @@ class MainActivity : BaseActivity(), LoaderAnimatable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         toggleShimmerLoader(true)
+        bindViewModel()
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+
+        viewModel.loadCurrentUserInfo()
     }
 
     override fun toggleShimmerLoader(shouldShow: Boolean) {
         clMainShimmerContainer.visibility = if (shouldShow) View.VISIBLE else View.GONE
         if (shouldShow) sflMainContainer.startShimmer() else sflMainContainer.stopShimmer()
+    }
+
+    private fun bindViewModel() {
+        viewModel.error
+            .subscribe(::displayError)
+            .bindForDisposable()
     }
 }
