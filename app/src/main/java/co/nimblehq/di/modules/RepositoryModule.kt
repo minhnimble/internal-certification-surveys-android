@@ -2,11 +2,9 @@ package co.nimblehq.di.modules
 
 import co.nimblehq.data.api.service.auth.AuthService
 import co.nimblehq.data.api.service.survey.SurveyService
+import co.nimblehq.data.api.service.user.UserService
 import co.nimblehq.data.authenticator.TokenRefresher
-import co.nimblehq.data.repository.AuthRepository
-import co.nimblehq.data.repository.AuthRepositoryImpl
-import co.nimblehq.data.repository.SurveyRepository
-import co.nimblehq.data.repository.SurveyRepositoryImpl
+import co.nimblehq.data.repository.*
 import co.nimblehq.data.storage.AppPreferences
 import co.nimblehq.data.storage.dao.SurveyDao
 import dagger.Module
@@ -29,5 +27,9 @@ class RepositoryModule {
 
     @Provides
     fun provideTokenRefresher(authRepository: AuthRepository): TokenRefresher = authRepository
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(userService: UserService): UserRepository = UserRepositoryImpl(userService)
 }
 

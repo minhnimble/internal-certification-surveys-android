@@ -7,6 +7,9 @@ import co.nimblehq.R
 import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.lib.common.DATE_FORMAT_SHORT_DISPLAY
 import co.nimblehq.data.lib.extension.subscribeOnClick
+import co.nimblehq.data.lib.rxjava.RxBus
+import co.nimblehq.data.model.User
+import co.nimblehq.extension.loadImage
 import co.nimblehq.extension.loadImageWithFadeAnimation
 import co.nimblehq.extension.switchTextWithFadeAnimation
 import co.nimblehq.extension.toDisplayFormat
@@ -19,6 +22,7 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_fragment_surveys.*
 import kotlinx.android.synthetic.main.fragment_surveys.*
+import kotlinx.android.synthetic.main.navigation_drawer_header_surveys.*
 import java.util.*
 import javax.inject.Inject
 
@@ -52,6 +56,10 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
                 navigator.navigateToSurveyDetails(it)
             }
         }.bindForDisposable()
+
+        RxBus.listen(User::class.java)
+            .subscribe { bindCurrentUserInfo(it) }
+            .bindForDisposable()
 
         clSurveys.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
 
@@ -105,6 +113,13 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
         }
         toggleDrawer(false)
         return false
+    }
+
+    private fun bindCurrentUserInfo(user: User) {
+        tvMenuDrawerUserName.text = user.email
+        val defaultAvatar = requireContext().resources.getDrawable(R.drawable.ic_general_default_user_avatar, requireContext().theme)
+        ivMenuDrawerUserAvatar.loadImage(user.avatarUrl, defaultAvatar)
+        ivSurveysUserAvatar.loadImage(user.avatarUrl, defaultAvatar)
     }
 
     private fun bindError(throwable: Throwable) {
