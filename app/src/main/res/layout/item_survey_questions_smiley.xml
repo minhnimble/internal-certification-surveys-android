@@ -23,7 +23,7 @@
 
     <RatingBar
         android:id="@+id/rbQuestionItemSmiley"
-        style="@style/smileyRatingBar"
+        style="@style/DefaultRatingBarStyle.Smiley"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"

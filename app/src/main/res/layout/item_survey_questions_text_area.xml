@@ -28,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/survey_questions_text_area_hint"

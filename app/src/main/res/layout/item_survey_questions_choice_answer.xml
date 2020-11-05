@@ -12,10 +12,10 @@
         android:layout_marginTop="@dimen/_6sdp"
         android:layout_marginEnd="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_6sdp"
-        android:src="@drawable/bg_survey_questions_choice_answer_checked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_survey_questions_choice_answer_checked" />
 
     <TextView
         android:id="@+id/tvChoiceQuestionItemAnswerTitle"
@@ -27,7 +27,6 @@
         android:layout_marginEnd="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="@+id/ivChoiceQuestionItemAnswerState"
         app:layout_constraintEnd_toStartOf="@+id/ivChoiceQuestionItemAnswerState"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ivChoiceQuestionItemAnswerState" />
 

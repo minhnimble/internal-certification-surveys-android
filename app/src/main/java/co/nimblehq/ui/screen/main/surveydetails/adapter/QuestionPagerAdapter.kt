@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_survey_questions_heart.*
 import kotlinx.android.synthetic.main.item_survey_questions_nps.*
 import kotlinx.android.synthetic.main.item_survey_questions_smiley.*
 import kotlinx.android.synthetic.main.item_survey_questions_star.*
-import kotlinx.android.synthetic.main.item_survey_questions_text_area.*
+import kotlinx.android.synthetic.main.item_survey_questions_text_area.etQuestionItemTextArea
 import kotlinx.android.synthetic.main.item_survey_questions_text_field.*
 import kotlin.properties.Delegates
 
@@ -31,19 +31,15 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         )
     }
 
-    private var choiceAnswersAdapters: MutableMap<String, QuestionItemChoiceAdapter> = mutableMapOf()
-    private var npsAnswersAdapters: MutableMap<String, QuestionItemNpsAdapter> = mutableMapOf()
-    private var textFieldAdapters: MutableMap<String, QuestionItemTextFieldAdapter> = mutableMapOf()
-
     override fun getItemCount() = uiModels.size
 
     override fun getItemViewType(position: Int): Int {
         return when (uiModels[position].displayType) {
-            QuestionDisplayType.STAR -> R.layout.item_survey_questions_star
-            QuestionDisplayType.HEART -> R.layout.item_survey_questions_heart
-            QuestionDisplayType.SMILEY -> R.layout.item_survey_questions_smiley
             QuestionDisplayType.CHOICE -> R.layout.item_survey_questions_choice
+            QuestionDisplayType.HEART -> R.layout.item_survey_questions_heart
             QuestionDisplayType.NPS -> R.layout.item_survey_questions_nps
+            QuestionDisplayType.SMILEY -> R.layout.item_survey_questions_smiley
+            QuestionDisplayType.STAR -> R.layout.item_survey_questions_star
             QuestionDisplayType.TEXTAREA -> R.layout.item_survey_questions_text_area
             QuestionDisplayType.TEXTFIELD -> R.layout.item_survey_questions_text_field
             else -> R.layout.item_survey_questions_default
@@ -53,9 +49,13 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         return when (viewType) {
-            R.layout.item_survey_questions_choice -> QuestionViewHolder(view, choiceAnswersAdapter = QuestionItemChoiceAdapter())
-            R.layout.item_survey_questions_nps -> QuestionViewHolder(view, context = parent.context, npsAnswersAdapter = QuestionItemNpsAdapter())
-            R.layout.item_survey_questions_text_field -> QuestionViewHolder(view, textFieldAnswersAdapter = QuestionItemTextFieldAdapter())
+            R.layout.item_survey_questions_choice -> ChoiceQuestionViewHolder(view, choiceAnswersAdapter = QuestionItemChoiceAdapter())
+            R.layout.item_survey_questions_heart -> HeartQuestionViewHolder(view)
+            R.layout.item_survey_questions_nps -> NpsQuestionViewHolder(view, context = parent.context, npsAnswersAdapter = QuestionItemNpsAdapter())
+            R.layout.item_survey_questions_smiley -> SmileyQuestionViewHolder(view)
+            R.layout.item_survey_questions_star -> StarQuestionViewHolder(view)
+            R.layout.item_survey_questions_text_area -> TextAreaQuestionViewHolder(view)
+            R.layout.item_survey_questions_text_field -> TextFieldQuestionViewHolder(view, textFieldAnswersAdapter = QuestionItemTextFieldAdapter())
             else -> QuestionViewHolder(view)
         }
     }
@@ -63,74 +63,89 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
         val question = uiModels[position]
         holder.bind(question)
-        holder.choiceAnswersAdapter?.let {
-            choiceAnswersAdapters[question.id] = it
-        }
-        holder.npsAnswersAdapter?.let {
-            npsAnswersAdapters[question.id] = it
-        }
-        holder.textFieldAnswersAdapter?.let {
-            textFieldAdapters[question.id] = it
-        }
     }
 
-    internal inner class QuestionViewHolder(
-        itemView: View,
-        context: Context? = null,
-        val choiceAnswersAdapter: QuestionItemChoiceAdapter? = null,
-        val npsAnswersAdapter: QuestionItemNpsAdapter? = null,
-        val textFieldAnswersAdapter: QuestionItemTextFieldAdapter? = null,
-    ) :
+    internal open inner class QuestionViewHolder(itemView: View):
         RecyclerView.ViewHolder(itemView),
-        LayoutContainer
-    {
-
+        LayoutContainer {
         override val containerView: View
             get() = itemView
 
+        open fun bind(uiModel: QuestionItemPagerUiModel) {
+            tvQuestionItemText.text = uiModel.text.trim()
+        }
+    }
+
+    internal inner class ChoiceQuestionViewHolder(
+        itemView: View,
+        val choiceAnswersAdapter: QuestionItemChoiceAdapter
+    ): QuestionViewHolder(itemView) {
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            choiceAnswersAdapter.uiModels = uiModel.answers
+            rvChoiceQuestionAnswers.adapter = choiceAnswersAdapter
+        }
+    }
+
+    internal inner class HeartQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            rbQuestionItemHeart.numStars = uiModel.answers.size
+        }
+    }
+
+    internal inner class NpsQuestionViewHolder(
+        itemView: View,
+        context: Context,
+        val npsAnswersAdapter: QuestionItemNpsAdapter
+    ): QuestionViewHolder(itemView) {
+
         init {
-            if (npsAnswersAdapter != null && context != null) {
-                rvNpsQuestionAnswers.addItemDecoration(SurveyQuestionNpsItemDecoration(context))
-            }
+            rvNpsQuestionAnswers.addItemDecoration(SurveyQuestionNpsItemDecoration(context))
         }
 
-        fun bind(uiModel: QuestionItemPagerUiModel) {
-            with(uiModel) {
-                tvQuestionItemText.text = text.trim()
-                when (displayType) {
-                    QuestionDisplayType.STAR -> {
-                        rbQuestionItemStar.numStars = answers.size
-                    }
-                    QuestionDisplayType.HEART -> {
-                        rbQuestionItemHeart.numStars = answers.size
-                    }
-                    QuestionDisplayType.SMILEY -> {
-                        rbQuestionItemSmiley.numStars = answers.size
-                    }
-                    QuestionDisplayType.CHOICE -> {
-                        choiceAnswersAdapter?.let {
-                            it.uiModels = answers
-                            rvChoiceQuestionAnswers.adapter = it
-                        }
-                    }
-                    QuestionDisplayType.NPS -> {
-                        npsAnswersAdapter?.let {
-                            it.uiModels = answers
-                            rvNpsQuestionAnswers.adapter = it
-                        }
-                    }
-                    QuestionDisplayType.TEXTAREA -> {
-                        etQuestionItemTextArea.hint = text
-                    }
-                    QuestionDisplayType.TEXTFIELD -> {
-                        textFieldAnswersAdapter?.let {
-                            it.uiModels = answers
-                            rvTextFieldQuestionAnswers.adapter = it
-                        }
-                    }
-                    else -> { }
-                }
-            }
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            npsAnswersAdapter.uiModels = uiModel.answers
+            rvNpsQuestionAnswers.adapter = npsAnswersAdapter
+        }
+    }
+
+    internal inner class SmileyQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            rbQuestionItemSmiley.numStars = uiModel.answers.size
+        }
+    }
+
+    internal inner class StarQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            rbQuestionItemStar.numStars = uiModel.answers.size
+        }
+    }
+
+    internal inner class TextAreaQuestionViewHolder(itemView: View): QuestionViewHolder(itemView) {
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            etQuestionItemTextArea.hint = uiModel.text
+        }
+    }
+
+    internal inner class TextFieldQuestionViewHolder(
+        itemView: View,
+        val textFieldAnswersAdapter: QuestionItemTextFieldAdapter
+    ): QuestionViewHolder(itemView) {
+
+        override fun bind(uiModel: QuestionItemPagerUiModel) {
+            super.bind(uiModel)
+            textFieldAnswersAdapter.uiModels = uiModel.answers
+            rvTextFieldQuestionAnswers.adapter = textFieldAnswersAdapter
         }
     }
 }

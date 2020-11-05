@@ -23,7 +23,7 @@
 
     <RatingBar
         android:id="@+id/rbQuestionItemStar"
-        style="@style/starRatingBar"
+        style="@style/DefaultRatingBarStyle.Star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"

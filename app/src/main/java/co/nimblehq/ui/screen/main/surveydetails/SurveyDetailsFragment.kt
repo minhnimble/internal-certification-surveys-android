@@ -22,11 +22,11 @@ import kotlinx.android.synthetic.main.fragment_survey_details.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
+class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
 
     @Inject lateinit var navigator: MainNavigator
 
-    private lateinit var questionsPagerAdapter: QuestionPagerAdapter
+    private lateinit var questionPagerAdapter: QuestionPagerAdapter
 
     private val args: SurveyDetailsFragmentArgs by navArgs()
 
@@ -34,7 +34,7 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override val layoutRes = R.layout.fragment_survey_details
 
-    override fun initViewModel() { }
+    override fun initViewModel() {}
 
     override fun setupView() {
         with(args.survey) {
@@ -44,29 +44,29 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
         }
 
         vpSurveyQuestions.adapter = QuestionPagerAdapter().also {
-            questionsPagerAdapter = it
+            questionPagerAdapter = it
         }
     }
 
     override fun bindViewEvents() {
         btSurveyDetailsStartSurvey.subscribeOnClick {
             viewModel.loadSurveyDetails(args.survey.id)
-        }
+        }.bindForDisposable()
 
         btSurveyQuestionsClose.subscribeOnClick {
             // TODO: Show confirm close survey questions popup
             navigator.navigateBack()
-        }
+        }.bindForDisposable()
 
         btSurveyQuestionsItemNext.subscribeOnClick {
             // TODO: Handle check to show next page or not
             viewModel.inputs.triggerNextQuestion()
-        }
+        }.bindForDisposable()
 
         btSurveyQuestionsSubmit.subscribeOnClick {
             // TODO: Handle logic to submit answers to server
-            displayError(AppError(null, "Submit button clicked",))
-        }
+            displayError(AppError(null, "Submit button clicked"))
+        }.bindForDisposable()
 
         ivSurveyDetailsBack.subscribeOnClick {
             navigator.navigateBack()
@@ -123,7 +123,7 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
         if (uiModels.isNotEmpty()) {
             hideSurveyDetailsUI()
             showSurveyQuestionsPagerUI()
-            questionsPagerAdapter.uiModels = uiModels
+            questionPagerAdapter.uiModels = uiModels
             viewModel.inputs.currentQuestionIndex(FIRST_INDEX)
         } else {
             displayError(AppError(null, null, R.string.general_no_question_error))
@@ -132,11 +132,10 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
 
     private fun bindReachedLastQuestion(isReachedLastQuestion: Boolean) {
         val animatingDuration = DEFAULT_DURATION / 4
-        if(isReachedLastQuestion) {
+        if (isReachedLastQuestion) {
             if (btSurveyQuestionsItemNext.isShowing()) btSurveyQuestionsItemNext.startFadeOutAnimation(animatingDuration)
             if (btSurveyQuestionsSubmit.isNotShowing()) btSurveyQuestionsSubmit.startFadeInAnimation(animatingDuration)
-        }
-        else {
+        } else {
             if (btSurveyQuestionsItemNext.isNotShowing()) btSurveyQuestionsItemNext.startFadeInAnimation(animatingDuration)
             if (btSurveyQuestionsSubmit.isShowing()) btSurveyQuestionsSubmit.startFadeOutAnimation(animatingDuration)
         }

@@ -2,6 +2,7 @@ package co.nimblehq.ui.screen.main.surveydetails
 
 import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.model.Question
+import co.nimblehq.ui.screen.main.surveydetails.uimodel.toQuestionItemPagerUiModels
 import co.nimblehq.usecase.survey.LoadSurveyDetailsSingleUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn

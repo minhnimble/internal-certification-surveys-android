@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clTextFieldQuestionItemPager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/black">
 
     <TextView
         android:id="@+id/tvQuestionItemText"
@@ -34,6 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvQuestionItemText"
         tools:itemCount="1"
-        tools:listitem="@layout/item_survey_questions_text_field_answer"/>
+        tools:listitem="@layout/item_survey_questions_text_field_answer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,7 +56,7 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
             _currentQuestionIndex,
             _questionItemPagerUiModels
         ) { selectedIndex, questions ->
-            "${(selectedIndex ?: DEFAULT_UNSELECTED_INDEX) + 1}/${questions.size}"
+            "${selectedIndex + 1}/${questions.size}"
         }
 
     val currentQuestionIndex: Observable<Int>

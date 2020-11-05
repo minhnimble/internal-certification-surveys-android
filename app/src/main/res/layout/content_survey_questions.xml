@@ -19,7 +19,7 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vpSurveyQuestions"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_6sdp"
         app:layout_constraintBottom_toTopOf="@+id/btSurveyQuestionsItemNext"
