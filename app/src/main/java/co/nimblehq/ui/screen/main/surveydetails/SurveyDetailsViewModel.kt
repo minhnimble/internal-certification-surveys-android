@@ -14,14 +14,14 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
     private val loadSurveyDetailsSingleUseCase: LoadSurveyDetailsSingleUseCase
 ) : BaseViewModel(), Inputs {
 
-    private val _getSurveyDetailsError = PublishSubject.create<Throwable>()
+    private val _showError = PublishSubject.create<Throwable>()
 
     private val _showLoading = BehaviorSubject.create<Boolean>()
 
     private val _questionItemPagerUiModels = BehaviorSubject.create<List<QuestionItemPagerUiModel>>()
 
     val showError: Observable<Throwable>
-        get() = _getSurveyDetailsError
+        get() = _showError
 
     val showLoading: Observable<Boolean>
         get() = _showLoading
@@ -36,9 +36,9 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
             .execute(surveyId)
             .doOnSubscribe { _showLoading.onNext(true) }
             .doFinally { _showLoading.onNext(false) }
-            .subscribeBy (
+            .subscribeBy(
                 onSuccess = { _questionItemPagerUiModels.onNext(it.toQuestionItemPagerUiModels()) },
-                onError = { _getSurveyDetailsError.onNext(it) }
+                onError = { _showError.onNext(it) }
             )
             .bindForDisposable()
     }

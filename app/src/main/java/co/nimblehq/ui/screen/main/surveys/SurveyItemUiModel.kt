@@ -6,10 +6,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SurveyItemUiModel(
-    val id: String = "",
-    val description: String = "",
-    val header: String = "",
-    val imageUrl: String = ""
+    val id: String,
+    val description: String,
+    val header: String,
+    val imageUrl: String
 ): Parcelable
 
 fun Survey.toSurveyItemUiModel() = SurveyItemUiModel(

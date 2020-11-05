@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import co.nimblehq.data.api.response.survey.SurveyResponse
+import co.nimblehq.data.api.response.survey.SurveyBasicResponse
 
 @Entity(tableName = "survey")
 data class Survey(
@@ -19,12 +19,11 @@ data class Survey(
         get() = imageUrl + "l"
 }
 
-fun SurveyResponse.toSurvey() = Survey(
+fun SurveyBasicResponse.toSurvey() = Survey(
     description = description.orEmpty(),
-    id = id,
+    id = id.orEmpty(),
     imageUrl = coverImageUrl.orEmpty(),
-    title = title.orEmpty(),
-    questions = questions?.toQuestions() ?: emptyList()
+    title = title.orEmpty()
 )
 
-fun List<SurveyResponse>.toSurveys() = this.map { it.toSurvey() }
+fun List<SurveyBasicResponse>.toSurveys() = this.map { it.toSurvey() }

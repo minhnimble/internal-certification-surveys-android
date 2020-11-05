@@ -20,13 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Crashlytics
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
--keepattributes *Annotation*
--keep public class * extends java.lang.Exception
--keepattributes SourceFile,LineNumberTable
-
 # Dagger
 -dontwarn com.google.errorprone.annotations.**
 
@@ -45,3 +38,7 @@
 -keepattributes Signature
 -keepattributes Exceptions
 -dontwarn okio.**
+
+# JsonApi
+-keepattributes Signature
+-keep class moe.banana.jsonapi2.** { *; }

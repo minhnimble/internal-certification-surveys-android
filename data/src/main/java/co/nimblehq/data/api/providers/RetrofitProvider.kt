@@ -9,13 +9,14 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 object RetrofitProvider {
 
     fun getRetrofitBuilder(
-        converterFactory: Converter.Factory,
+        converterFactories: List<Converter.Factory>,
         okHttpClient: OkHttpClient
     ) : Retrofit.Builder {
-        return Retrofit.Builder()
+        val retrofitBuilder = Retrofit.Builder()
             .baseUrl(Secrets.apiEndpointUrl)
-            .addConverterFactory(converterFactory)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(okHttpClient)
+        converterFactories.forEach { retrofitBuilder.addConverterFactory(it) }
+        return retrofitBuilder
     }
 }

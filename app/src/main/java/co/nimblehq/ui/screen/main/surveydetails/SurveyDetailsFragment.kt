@@ -46,7 +46,7 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
 
     override fun bindViewModel() {
         viewModel.showError
-            .subscribe(::bindGetSurveyDetailsError)
+            .subscribe(::bindShowError)
             .bindForDisposable()
 
         viewModel.showLoading
@@ -59,7 +59,7 @@ class SurveyDetailsFragment: BaseFragment(), BaseFragmentCallbacks {
             .bindForDisposable()
     }
 
-    private fun bindGetSurveyDetailsError(throwable: Throwable) {
+    private fun bindShowError(throwable: Throwable) {
         displayError(throwable)
     }
 
