@@ -1,8 +1,47 @@
 package co.nimblehq.data.model
 
-import co.nimblehq.data.api.response.survey.QuestionDisplayType
-import co.nimblehq.data.api.response.survey.QuestionPickValue
 import co.nimblehq.data.api.response.survey.QuestionResponse
+
+enum class QuestionDisplayType {
+    INTRO,
+    STAR,
+    HEART,
+    SMILEY,
+    CHOICE,
+    NPS,
+    TEXTAREA,
+    TEXTFIELD,
+    OUTRO,
+    DEFAULT;
+
+    companion object {
+        fun from(value: String?): QuestionDisplayType {
+            value ?: return DEFAULT
+            return try {
+                valueOf(value.toUpperCase())
+            } catch (ex: Exception) {
+                DEFAULT
+            }
+        }
+    }
+}
+
+enum class QuestionPickValue {
+    ONE,
+    ANY,
+    NONE;
+
+    companion object {
+        fun from(value: String?): QuestionPickValue {
+            value ?: return NONE
+            return try {
+                valueOf(value.toUpperCase())
+            } catch (ex: Exception) {
+                NONE
+            }
+        }
+    }
+}
 
 data class Question(
     var id: String = "",
@@ -14,12 +53,12 @@ data class Question(
 )
 
 fun QuestionResponse.toQuestion() = Question(
-    id = id,
+    id = id.orEmpty(),
     text = text.orEmpty(),
     displayOrder = displayOrder ?: -1,
-    displayType = displayType ?: QuestionDisplayType.DEFAULT,
-    pick = pick ?: QuestionPickValue.NONE,
-    answers = answers?.toAnswers() ?: emptyList()
+    displayType = QuestionDisplayType.from(displayType),
+    pick = QuestionPickValue.from(pick),
+    answers = getAnswerResponses()?.toAnswers() ?: emptyList()
 )
 
 fun List<QuestionResponse>.toQuestions() = this.map { it.toQuestion() }

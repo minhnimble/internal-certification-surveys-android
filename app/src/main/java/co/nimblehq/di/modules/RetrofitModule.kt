@@ -5,10 +5,7 @@ import co.nimblehq.data.api.providers.ConverterFactoryProvider
 import co.nimblehq.data.api.providers.RetrofitProvider
 import co.nimblehq.data.api.service.auth.AuthService
 import co.nimblehq.data.api.service.survey.SurveyService
-import co.nimblehq.di.qualifier.AppOkHttpClient
-import co.nimblehq.di.qualifier.AppRetrofit
-import co.nimblehq.di.qualifier.AuthOkHttpClient
-import co.nimblehq.di.qualifier.AuthRetrofit
+import co.nimblehq.di.qualifier.*
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -28,10 +25,11 @@ class RetrofitModule {
     @AppRetrofit
     fun provideAppRetrofit(
         @AppOkHttpClient okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory
+        @JsonApiConverterFactory jsonApiConverterFactory: Converter.Factory,
+        @MoshiConverterFactory moshiConverterFactory: Converter.Factory
     ): Retrofit {
         return RetrofitProvider
-            .getRetrofitBuilder(converterFactory, okHttpClient)
+            .getRetrofitBuilder(listOf(jsonApiConverterFactory, moshiConverterFactory), okHttpClient)
             .build()
     }
 
@@ -40,15 +38,21 @@ class RetrofitModule {
     @AuthRetrofit
     fun provideAuthRetrofit(
         @AuthOkHttpClient okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory
-    ): Retrofit {
+        @JsonApiConverterFactory jsonApiConverterFactory: Converter.Factory,
+        @MoshiConverterFactory moshiConverterFactory: Converter.Factory
+        ): Retrofit {
         return RetrofitProvider
-            .getRetrofitBuilder(converterFactory, okHttpClient)
+            .getRetrofitBuilder(listOf(jsonApiConverterFactory, moshiConverterFactory), okHttpClient)
             .build()
     }
 
     @Provides
-    fun provideConverterFactory(moshi: Moshi): Converter.Factory = ConverterFactoryProvider.getMoshiConverterFactory(moshi)
+    @MoshiConverterFactory
+    fun provideMoshiConverterFactory(moshi: Moshi): Converter.Factory = ConverterFactoryProvider.getMoshiConverterFactory(moshi)
+
+    @Provides
+    @JsonApiConverterFactory
+    fun provideJsonApiConverterFactory(moshi: Moshi): Converter.Factory = ConverterFactoryProvider.getJsonApiConverterFactory(moshi)
 
     @Provides
     @Singleton

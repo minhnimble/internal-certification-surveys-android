@@ -7,3 +7,9 @@ annotation class AppRetrofit
 
 @Qualifier
 annotation class AuthRetrofit
+
+@Qualifier
+annotation class MoshiConverterFactory
+
+@Qualifier
+annotation class JsonApiConverterFactory

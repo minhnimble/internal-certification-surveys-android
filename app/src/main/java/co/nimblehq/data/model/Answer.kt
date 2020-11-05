@@ -9,7 +9,7 @@ data class Answer(
 )
 
 fun AnswerResponse.toAnswer() = Answer(
-    id = id,
+    id = id.orEmpty(),
     text = text.orEmpty(),
     displayOrder = displayOrder ?: -1
 )
