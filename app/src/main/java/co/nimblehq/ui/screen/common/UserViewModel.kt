@@ -32,7 +32,7 @@ class UserViewModel @ViewModelInject constructor(
         loadCurrentUserInfo()
     }
 
-    private fun loadCurrentUserInfo() {
+    fun loadCurrentUserInfo() {
         loadCurrentUserInfoSingleUseCase
             .execute(Unit)
             .subscribeBy(
