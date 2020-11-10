@@ -109,20 +109,18 @@ internal class QuestionPagerAdapter : RecyclerView.Adapter<QuestionPagerAdapter.
         val dropdownAdapter: ArrayAdapter<String>
     ): QuestionViewHolder(itemView), AdapterView.OnItemSelectedListener {
 
-        override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
+        override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) { }
 
-        }
-
-        override fun onNothingSelected(arg0: AdapterView<*>) {
-
-        }
+        override fun onNothingSelected(arg0: AdapterView<*>) { }
 
         override fun bind(uiModel: QuestionItemPagerUiModel) {
             super.bind(uiModel)
-            dropdownAdapter.setDropDownViewResource(R.layout.item_survey_questions_dropdown_answer)
-            dropdownAdapter.clear()
-            dropdownAdapter.addAll(uiModel.answers.map { answer -> answer.text })
-            dropdownAdapter.notifyDataSetChanged()
+            with(dropdownAdapter) {
+                setDropDownViewResource(R.layout.item_survey_questions_dropdown_answer)
+                clear()
+                addAll(uiModel.answers.map { answer -> answer.text })
+                notifyDataSetChanged()
+            }
             sDropdownQuestionAnswers.adapter = dropdownAdapter
             sDropdownQuestionAnswers.onItemSelectedListener = this
         }
