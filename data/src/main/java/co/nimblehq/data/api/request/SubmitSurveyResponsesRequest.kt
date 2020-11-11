@@ -2,12 +2,12 @@ package co.nimblehq.data.api.request
 
 import com.squareup.moshi.Json
 
-data class SubmitSurveyRequest(
+data class SubmitSurveyResponsesRequest(
     @Json(name = "survey_id") val surveyId: String,
-    @Json(name = "questions") var questions: List<QuestionRequest>
+    @Json(name = "questions") var questions: List<QuestionResponsesRequest>
 )
 
-data class QuestionRequest(
+data class QuestionResponsesRequest(
     @Json(name = "id") val id: String,
     @Json(name = "answers") var answers: List<AnswerRequest>
 )

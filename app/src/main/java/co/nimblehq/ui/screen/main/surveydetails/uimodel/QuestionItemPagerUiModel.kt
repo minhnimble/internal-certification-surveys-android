@@ -13,9 +13,12 @@ data class QuestionItemPagerUiModel(
     val answers: List<AnswerItemUiModel>
 ) {
     val shouldAnswer: Boolean
-    get() {
-        return displayType != QuestionDisplayType.INTRO && displayType != QuestionDisplayType.OUTRO && displayType != QuestionDisplayType.DEFAULT && answers.isNotEmpty()
-    }
+        get() {
+            return displayType != QuestionDisplayType.INTRO &&
+                displayType != QuestionDisplayType.OUTRO &&
+                displayType != QuestionDisplayType.DEFAULT &&
+                answers.isNotEmpty()
+        }
 }
 
 fun Question.toQuestionItemPagerUiModel() =

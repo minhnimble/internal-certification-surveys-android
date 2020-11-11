@@ -42,10 +42,10 @@ internal class QuestionItemSliderAdapter :
 
     override fun onTap(position: Int) {
         val answer = uiModels[position]
-         if (selectedId != answer.id) {
-             selectedId = answer.id
-             notifyDataSetChanged()
-             onItemsSelected?.invoke(listOf(answer))
+        if (selectedId != answer.id) {
+            selectedId = answer.id
+            notifyDataSetChanged()
+            onItemsSelected?.invoke(listOf(answer))
         }
     }
 
