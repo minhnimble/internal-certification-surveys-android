@@ -74,5 +74,24 @@ If everything works out, you should see an output like this:
 fastlane.tools finished successfully 🎉
 ```
 
+## Releasing Firebase
+
+#### Staging & Production Builds ####
+
+To release Staging and Production builds to **Firebase Distribution**, we create a release branch, named in the format of `release_[env_lowercase]_firebase/[version_number]`.
+
+##### Releasing steps #####
+
+1. Create a release branch from `master` in this format `release_[env_lowercase]_firebase/[version_number]`, and don't push the branch to `origin` yet
+
+2. Commit the `version_number` change if needed in this branch
+
+2. Now, push the branch to `origin`, so that Bitrise can hook and proceed
+> ⚠️ **Warning** - Please note that every commit pushed to `origin` on `release_[env_lowercase]_firebase/[version_number]` will get hooked by Bitrise, which will trigger the release process again, so please make sure all the needed changes is ready in `local` git first before pushing to `origin`. Once the branch is pushed, no more commits should be allowed
+
+3. Wait for the workflow to finish
+
+4. Review and merge `release_[env_lowercase]_firebase/[version_number]` to `master` PR
+
 ## Final Note
 If you still have issues setting up your environment, contact me for help over Slack. My name is Mikey on Slack ^^
