@@ -23,7 +23,8 @@ interface BlurAnimatable {
 @AndroidEntryPoint
 class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
 
-    @Inject lateinit var navigator: OnboardingNavigator
+    @Inject
+    lateinit var navigator: OnboardingNavigator
 
     private val viewModel by viewModels<SignInViewModel>()
 
@@ -39,11 +40,11 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
             .bindForDisposable()
 
         etSignInEmail.addTextChangedListener {
-            viewModel.inputs.email(it.toString())
+            viewModel.input.email(it.toString())
         }
 
         etSignInPassword.addTextChangedListener {
-            viewModel.inputs.password(it.toString())
+            viewModel.input.password(it.toString())
         }
 
         RxBus.listen(PostSessionCheckEvent::class.java)
@@ -52,19 +53,19 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     override fun bindViewModel() {
-        viewModel.enableLoginButton
+        viewModel.output.enableLoginButton
             .subscribe(::bindEnableLoginButton)
             .bindForDisposable()
 
-        viewModel.signInError
+        viewModel.output.signInError
             .subscribe(::displayError)
             .bindForDisposable()
 
-        viewModel.showLoading
+        viewModel.output.showLoading
             .subscribe(::bindLoading)
             .bindForDisposable()
 
-        viewModel.navigator
+        viewModel.output.navigator
             .subscribe {
                 when (it) {
                     is NavigationEvent.SignIn.Main -> showMainActivity()
@@ -74,7 +75,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
     }
 
     private fun executePostSessionCheck() {
-        if (viewModel.firstInitialized) {
+        if (viewModel.output.firstInitialized) {
             ivSignInNimbleLogo.startFadeInAnimation {
                 // Animate to show blur image on background of the current fragment's activity if it conforms BlurAnimatable
                 (activity as? BlurAnimatable)?.animateBlurBackground()
@@ -89,7 +90,7 @@ class SignInFragment: BaseFragment(), BaseFragmentCallbacks {
                 btSignInForgotPassword.startFadeInAnimation()
                 llSignInInputContainer.startFadeInAnimation()
             }
-            viewModel.inputs.initialized(false)
+            viewModel.input.initialized(false)
         } else {
             ivSignInNimbleLogo.startFadeInAnimation(0)
             clSignIn.animateResource(

@@ -12,7 +12,8 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
-interface Inputs {
+interface Input {
+
     fun email(input: String)
 
     fun password(input: String)
@@ -20,26 +21,31 @@ interface Inputs {
     fun initialized(input: Boolean)
 }
 
+interface Output {
+
+    val signInError: Observable<Throwable>
+
+    val showLoading: Observable<Boolean>
+
+    val navigator: Observable<NavigationEvent>
+
+    val firstInitialized: Boolean
+
+    val enableLoginButton: Observable<Boolean>
+}
+
 class SignInViewModel @ViewModelInject constructor(
     private val loginByPasswordSingleUseCase: LoginByPasswordSingleUseCase,
     private val updateLocalUserTokenCompletableUseCase: UpdateLocalUserTokenCompletableUseCase
-) : BaseViewModel(), Inputs {
+) : BaseViewModel(), Input, Output {
+
+    val input = this
+
+    val output = this
 
     private val _email = BehaviorSubject.create<String>()
-
     private val _password = BehaviorSubject.create<String>()
-
-    private val _signInError = PublishSubject.create<Throwable>()
-
-    private val _showLoading = BehaviorSubject.create<Boolean>()
-
-    private val _navigator = PublishSubject.create<NavigationEvent>()
-
-    private var _firstInitialized = true
-
-    val inputs: Inputs = this
-
-    val enableLoginButton: Observable<Boolean>
+    override val enableLoginButton: Observable<Boolean>
         get() = Observables.combineLatest(
             _email,
             _password
@@ -47,16 +53,20 @@ class SignInViewModel @ViewModelInject constructor(
             password.isNotEmpty() && email.isEmail()
         }
 
-    val signInError: Observable<Throwable>
+    private val _signInError = PublishSubject.create<Throwable>()
+    override val signInError: Observable<Throwable>
         get() = _signInError
 
-    val showLoading: Observable<Boolean>
+    private val _showLoading = BehaviorSubject.create<Boolean>()
+    override val showLoading: Observable<Boolean>
         get() = _showLoading
 
-    val navigator: Observable<NavigationEvent>
+    private val _navigator = PublishSubject.create<NavigationEvent>()
+    override val navigator: Observable<NavigationEvent>
         get() = _navigator
 
-    val firstInitialized: Boolean
+    private var _firstInitialized = true
+    override val firstInitialized: Boolean
         get() = _firstInitialized
 
     fun login() {

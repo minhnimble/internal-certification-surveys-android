@@ -12,20 +12,27 @@ import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 
+interface Output {
+
+    val error: Observable<Throwable>
+
+    val navigator: Observable<NavigationEvent>
+}
+
 class OnboardingViewModel @ViewModelInject constructor(
     private val getLocalTokenSingleUseCase: GetLocalUserTokenSingleUseCase,
     private val refreshTokenIfNeededSingleUseCase: RefreshTokenIfNeededSingleUseCase,
     private val updateLocalUserTokenCompletableUseCase: UpdateLocalUserTokenCompletableUseCase
-) : BaseViewModel() {
+) : BaseViewModel(), Output {
+
+    val output = this
 
     private val _error = PublishSubject.create<Throwable>()
-
-    private val _navigator = PublishSubject.create<NavigationEvent>()
-
-    val error: Observable<Throwable>
+    override val error: Observable<Throwable>
         get() = _error
 
-    val navigator: Observable<NavigationEvent>
+    private val _navigator = PublishSubject.create<NavigationEvent>()
+    override val navigator: Observable<NavigationEvent>
         get() = _navigator
 
     fun checkSession() {

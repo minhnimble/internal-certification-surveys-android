@@ -44,8 +44,8 @@ class SignInViewModelTest {
             .signInError
             .test()
 
-        signingViewModel.inputs.email("invalid@nimblehq.co")
-        signingViewModel.inputs.password("12345678")
+        signingViewModel.input.email("invalid@nimblehq.co")
+        signingViewModel.input.password("12345678")
         signingViewModel.login()
 
         // Assert
@@ -78,8 +78,8 @@ class SignInViewModelTest {
             .navigator
             .test()
 
-        signingViewModel.inputs.email("valid@nimblehq.co")
-        signingViewModel.inputs.password("12345678")
+        signingViewModel.input.email("valid@nimblehq.co")
+        signingViewModel.input.password("12345678")
         signingViewModel.login()
 
         // Assert
@@ -97,8 +97,8 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.inputs.email("acbd")
-        signingViewModel.inputs.password("12345678")
+        signingViewModel.input.email("acbd")
+        signingViewModel.input.password("12345678")
 
         // Assert
         enableLoginButtonObserver
@@ -115,8 +115,8 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.inputs.email("test@nimblehq.co")
-        signingViewModel.inputs.password("")
+        signingViewModel.input.email("test@nimblehq.co")
+        signingViewModel.input.password("")
 
         // Assert
         enableLoginButtonObserver
@@ -133,8 +133,8 @@ class SignInViewModelTest {
             .test()
 
         // Act
-        signingViewModel.inputs.email("test@nimblehq.co")
-        signingViewModel.inputs.password("12345678")
+        signingViewModel.input.email("test@nimblehq.co")
+        signingViewModel.input.password("12345678")
 
         // Assert
         enableLoginButtonObserver

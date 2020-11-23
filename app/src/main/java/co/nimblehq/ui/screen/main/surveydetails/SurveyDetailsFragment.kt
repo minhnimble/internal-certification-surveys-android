@@ -26,7 +26,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
 
-    @Inject lateinit var navigator: MainNavigator
+    @Inject
+    lateinit var navigator: MainNavigator
 
     private lateinit var questionPagerAdapter: QuestionPagerAdapter
 
@@ -62,7 +63,7 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
         }.bindForDisposable()
 
         btSurveyQuestionsItemNext.subscribeOnClick {
-            viewModel.inputs.triggerNextQuestion()
+            viewModel.input.triggerNextQuestion()
         }.bindForDisposable()
 
         btSurveyQuestionsSubmit.subscribeOnClick {
@@ -77,37 +78,37 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                viewModel.inputs.currentQuestionIndex(position)
+                viewModel.input.currentQuestionIndex(position)
             }
         })
     }
 
     override fun bindViewModel() {
-        viewModel.currentQuestionIndex
+        viewModel.output.currentQuestionIndex
             .subscribe(::bindCurrentQuestionIndex)
             .bindForDisposable()
 
-        viewModel.showError
+        viewModel.output.showError
             .subscribe(::displayError)
             .bindForDisposable()
 
-        viewModel.questionIndicator
+        viewModel.output.questionIndicator
             .subscribe(::bindQuestionIndicator)
             .bindForDisposable()
 
-        viewModel.questionItemPagerUiModels
+        viewModel.output.questionItemPagerUiModels
             .subscribe(::bindQuestionItemPagerUiModels)
             .bindForDisposable()
 
-        viewModel.reachedLastQuestion
+        viewModel.output.reachedLastQuestion
             .subscribe(::bindReachedLastQuestion)
             .bindForDisposable()
 
-        viewModel.showLoading
+        viewModel.output.showLoading
             .subscribe(::bindShowLoading)
             .bindForDisposable()
 
-        viewModel.showSuccessOverlay
+        viewModel.output.showSuccessOverlay
             .subscribe(::bindShowSuccessOverlay)
             .bindForDisposable()
     }
@@ -137,7 +138,7 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
             hideSurveyDetailsUI()
             showSurveyQuestionsPagerUI()
             questionPagerAdapter.uiModels = uiModels
-            viewModel.inputs.currentQuestionIndex(FIRST_INDEX)
+            viewModel.input.currentQuestionIndex(FIRST_INDEX)
         } else {
             displayError(AppError(null, null, R.string.general_no_question_error))
         }

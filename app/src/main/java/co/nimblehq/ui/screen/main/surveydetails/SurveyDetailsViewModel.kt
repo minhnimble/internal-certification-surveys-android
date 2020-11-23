@@ -15,43 +15,60 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
-interface Inputs {
+interface Input {
+
     fun currentQuestionIndex(index: Int)
 
     fun triggerNextQuestion()
 }
 
+interface Output {
+
+    val showError: Observable<Throwable>
+
+    val showLoading: Observable<Boolean>
+
+    val showSuccessOverlay: Observable<Boolean>
+
+    val currentQuestionIndex: Observable<Int>
+
+    val questionItemPagerUiModels: Observable<List<QuestionItemPagerUiModel>>
+
+    val reachedLastQuestion: Observable<Boolean>
+
+    val questionIndicator: Observable<String>
+}
+
 class SurveyDetailsViewModel @ViewModelInject constructor(
     private val loadSurveyDetailsSingleUseCase: LoadSurveyDetailsSingleUseCase,
     private val submitSurveyResponsesCompletableUseCase: SubmitSurveyResponsesCompletableUseCase
-) : BaseViewModel(), Inputs {
+) : BaseViewModel(), Input, Output {
+
+    val input = this
+
+    val output = this
 
     private val _showError = PublishSubject.create<Throwable>()
-
-    private val _showLoading = BehaviorSubject.create<Boolean>()
-
-    private val _showSuccessOverlay = PublishSubject.create<Boolean>()
-
-    private val _currentQuestionIndex = BehaviorSubject.create<Int>()
-
-    private val _questionItemPagerUiModels = BehaviorSubject.create<List<QuestionItemPagerUiModel>>()
-
-    private val currentQuestionIndexValue: Int
-        get() = _currentQuestionIndex.value ?: DEFAULT_UNSELECTED_INDEX
-
-    private val currentQuestionItemPagerUiModels: List<QuestionItemPagerUiModel>
-        get() = _questionItemPagerUiModels.value.orEmpty()
-
-    val showError: Observable<Throwable>
+    override val showError: Observable<Throwable>
         get() = _showError
 
-    val showLoading: Observable<Boolean>
+    private val _showLoading = BehaviorSubject.create<Boolean>()
+    override val showLoading: Observable<Boolean>
         get() = _showLoading
 
-    val showSuccessOverlay: Observable<Boolean>
+    private val _showSuccessOverlay = PublishSubject.create<Boolean>()
+    override val showSuccessOverlay: Observable<Boolean>
         get() = _showSuccessOverlay
 
-    val reachedLastQuestion: Observable<Boolean>
+    private val _currentQuestionIndex = BehaviorSubject.create<Int>()
+    override val currentQuestionIndex: Observable<Int>
+        get() = _currentQuestionIndex
+
+    private val _questionItemPagerUiModels = BehaviorSubject.create<List<QuestionItemPagerUiModel>>()
+    override val questionItemPagerUiModels: Observable<List<QuestionItemPagerUiModel>>
+        get() = _questionItemPagerUiModels
+
+    override val reachedLastQuestion: Observable<Boolean>
         get() = Observables.combineLatest(
             _currentQuestionIndex,
             _questionItemPagerUiModels
@@ -59,7 +76,7 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
             selectedIndex == questions.size - 1
         }
 
-    val questionIndicator: Observable<String>
+    override val questionIndicator: Observable<String>
         get() = Observables.combineLatest(
             _currentQuestionIndex,
             _questionItemPagerUiModels
@@ -67,13 +84,11 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
             "${selectedIndex + 1}/${questions.size}"
         }
 
-    val currentQuestionIndex: Observable<Int>
-        get() = _currentQuestionIndex
+    private val currentQuestionIndexValue: Int
+        get() = _currentQuestionIndex.value ?: DEFAULT_UNSELECTED_INDEX
 
-    val questionItemPagerUiModels: Observable<List<QuestionItemPagerUiModel>>
-        get() = _questionItemPagerUiModels
-
-    val inputs: Inputs = this
+    private val currentQuestionItemPagerUiModels: List<QuestionItemPagerUiModel>
+        get() = _questionItemPagerUiModels.value.orEmpty()
 
     override fun currentQuestionIndex(index: Int) {
         _currentQuestionIndex.onNext(index)

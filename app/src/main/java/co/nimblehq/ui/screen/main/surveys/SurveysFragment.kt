@@ -25,7 +25,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnNavigationItemSelectedListener {
 
-    @Inject lateinit var navigator: MainNavigator
+    @Inject
+    lateinit var navigator: MainNavigator
 
     private val viewModel by viewModels<SurveysViewModel>()
 
@@ -40,14 +41,14 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     }
 
     override fun setupView() {
-        tvSurveysDate.text = Date().toDisplayFormat(DATE_FORMAT_SHORT_DISPLAY).toUpperCase()
+        tvSurveysDate.text = Date().toDisplayFormat(DATE_FORMAT_SHORT_DISPLAY).toUpperCase(Locale.ROOT)
 
         srlSurveys.setOnRefreshListener { viewModel.refreshSurveysList() }
     }
 
     override fun bindViewEvents() {
         btSurveysItemNext.subscribeOnClick {
-            viewModel.getSelectedSurveyUiModel()?.let {
+            viewModel.output.selectedSurveyUiModel?.let {
                 navigator.navigateToSurveyDetails(it)
             }
         }.bindForDisposable()
@@ -56,12 +57,12 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
 
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                viewModel.inputs.nextIndex()
+                viewModel.input.nextIndex()
             }
 
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                viewModel.inputs.previousIndex()
+                viewModel.input.previousIndex()
             }
         })
 
@@ -73,23 +74,23 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     }
 
     override fun bindViewModel() {
-        viewModel.error
+        viewModel.output.error
             .subscribe(::bindError)
             .bindForDisposable()
 
-        viewModel.showLoading
+        viewModel.output.showLoading
             .subscribe(::bindLoading)
             .bindForDisposable()
 
-        viewModel.showRefreshing
+        viewModel.output.showRefreshing
             .subscribe(::bindRefreshing)
             .bindForDisposable()
 
-        viewModel.selectedSurveyIndex
+        viewModel.output.selectedSurveyIndex
             .subscribe(::bindSelectedSurveyIndex)
             .bindForDisposable()
 
-        viewModel.surveyItemUiModels
+        viewModel.output.surveyItemUiModels
             .subscribe(::bindSurveyItemUiModels)
             .bindForDisposable()
     }
@@ -120,18 +121,17 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     }
 
     private fun bindSelectedSurveyIndex(index: Int) {
-        val surveyUiModel = viewModel.getSelectedSurveyUiModel()
-        if (surveyUiModel != null) {
+        viewModel.output.selectedSurveyUiModel?.let {
             ciSurveysIndicator.animatePageSelected(index)
-            tvSurveysItemHeader.switchTextWithFadeAnimation(surveyUiModel.header)
-            tvSurveysItemDescription.switchTextWithFadeAnimation(surveyUiModel.description)
-            ivSurveysItemBackground.loadImageWithFadeAnimation(surveyUiModel.imageUrl)
+            tvSurveysItemHeader.switchTextWithFadeAnimation(it.header)
+            tvSurveysItemDescription.switchTextWithFadeAnimation(it.description)
+            ivSurveysItemBackground.loadImageWithFadeAnimation(it.imageUrl)
         }
     }
 
     private fun bindSurveyItemUiModels(uiModels: List<SurveyItemUiModel>) {
         if (uiModels.isEmpty()) return
-        ciSurveysIndicator.createIndicators(uiModels.size, viewModel.selectedSurveyIndexValue)
+        ciSurveysIndicator.createIndicators(uiModels.size, viewModel.output.selectedSurveyIndexValue)
     }
 
     private fun toggleDrawer(shouldShow: Boolean) {

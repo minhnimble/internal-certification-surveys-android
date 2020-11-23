@@ -1,6 +1,7 @@
 package co.nimblehq.data.model
 
 import co.nimblehq.data.api.response.survey.QuestionResponse
+import java.util.*
 
 enum class QuestionDisplayType {
     INTRO,
@@ -21,7 +22,7 @@ enum class QuestionDisplayType {
         fun from(value: String?): QuestionDisplayType {
             value ?: return DEFAULT
             return try {
-                valueOf(value.toUpperCase())
+                valueOf(value.toUpperCase(Locale.ROOT))
             } catch (ex: Exception) {
                 DEFAULT
             }
@@ -38,7 +39,7 @@ enum class QuestionPickValue {
         fun from(value: String?): QuestionPickValue {
             value ?: return NONE
             return try {
-                valueOf(value.toUpperCase())
+                valueOf(value.toUpperCase(Locale.ROOT))
             } catch (ex: Exception) {
                 NONE
             }

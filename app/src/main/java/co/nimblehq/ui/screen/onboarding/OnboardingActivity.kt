@@ -17,7 +17,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class OnboardingActivity : BaseActivity(), BlurAnimatable {
 
-    @Inject lateinit var navigator: OnboardingNavigator
+    @Inject
+    lateinit var navigator: OnboardingNavigator
 
     private val viewModel by viewModels<OnboardingViewModel>()
 
@@ -41,7 +42,7 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
     }
 
     private fun bindViewModel() {
-        viewModel.error
+        viewModel.output.error
             .subscribeBy {
                 when (it) {
                     is RefreshTokenError -> displayError(TokenExpiredError(null))
@@ -49,7 +50,7 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
             }
             .bindForDisposable()
 
-        viewModel.navigator
+        viewModel.output.navigator
             .subscribeBy {
                 when (it) {
                     is NavigationEvent.Onboarding.Main -> showMainActivity()

@@ -16,7 +16,8 @@ interface LoaderAnimatable {
 @AndroidEntryPoint
 class MainActivity : BaseActivity(), LoaderAnimatable {
 
-    @Inject lateinit var navigator: MainNavigator
+    @Inject
+    lateinit var navigator: MainNavigator
 
     private val viewModel by viewModels<MainViewModel>()
 

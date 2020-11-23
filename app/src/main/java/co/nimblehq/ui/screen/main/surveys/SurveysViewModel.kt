@@ -14,11 +14,28 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
-interface Inputs {
+interface Input {
 
     fun nextIndex()
 
     fun previousIndex()
+}
+
+interface Output {
+
+    val error: Observable<Throwable>
+
+    val showLoading: Observable<Boolean>
+
+    val showRefreshing: Observable<Boolean>
+
+    val selectedSurveyIndex: Observable<Int>
+
+    val surveyItemUiModels: Observable<List<SurveyItemUiModel>>
+
+    val selectedSurveyIndexValue: Int
+
+    val selectedSurveyUiModel: SurveyItemUiModel?
 }
 
 class SurveysViewModel @ViewModelInject constructor(
@@ -27,37 +44,37 @@ class SurveysViewModel @ViewModelInject constructor(
     private val getSurveysCurrentPageSingleUseCase: GetSurveysCurrentPageSingleUseCase,
     private val getSurveysTotalPagesSingleUseCase: GetSurveysTotalPagesSingleUseCase,
     private val loadSurveysSingleUseCase: LoadSurveysSingleUseCase
-) : BaseViewModel(), Inputs {
+) : BaseViewModel(), Input, Output {
+
+    val input = this
+
+    val output = this
 
     private val _error = PublishSubject.create<Throwable>()
-
-    private val _showLoading = BehaviorSubject.create<Boolean>()
-
-    private val _showRefreshing = BehaviorSubject.create<Boolean>()
-
-    private val _selectedSurveyIndex = BehaviorSubject.createDefault(DEFAULT_UNSELECTED_INDEX)
-
-    private val _surveyItemUiModels = BehaviorSubject.create<List<SurveyItemUiModel>>()
-
-    val error: Observable<Throwable>
+    override val error: Observable<Throwable>
         get() = _error
 
-    val showLoading: Observable<Boolean>
+    private val _showLoading = BehaviorSubject.create<Boolean>()
+    override val showLoading: Observable<Boolean>
         get() = _showLoading
 
-    val showRefreshing: Observable<Boolean>
+    private val _showRefreshing = BehaviorSubject.create<Boolean>()
+    override val showRefreshing: Observable<Boolean>
         get() = _showRefreshing
 
-    val selectedSurveyIndex: Observable<Int>
+    private val _selectedSurveyIndex = BehaviorSubject.createDefault(DEFAULT_UNSELECTED_INDEX)
+    override val selectedSurveyIndex: Observable<Int>
         get() = _selectedSurveyIndex
 
-    val surveyItemUiModels: Observable<List<SurveyItemUiModel>>
+    private val _surveyItemUiModels = BehaviorSubject.create<List<SurveyItemUiModel>>()
+    override val surveyItemUiModels: Observable<List<SurveyItemUiModel>>
         get() = _surveyItemUiModels
 
-    val inputs: Inputs = this
-
-    val selectedSurveyIndexValue: Int
+    override val selectedSurveyIndexValue: Int
         get() = _selectedSurveyIndex.value ?: DEFAULT_UNSELECTED_INDEX
+
+    override val selectedSurveyUiModel: SurveyItemUiModel?
+        get() = currentSurveyItemUiModels.elementAtOrNull(selectedSurveyIndexValue)
 
     private val currentSurveyItemUiModels: List<SurveyItemUiModel>
         get() = _surveyItemUiModels.value.orEmpty()
@@ -118,12 +135,6 @@ class SurveysViewModel @ViewModelInject constructor(
                 onError = { _error.onNext(it) }
             )
             .bindForDisposable()
-    }
-
-    fun getSelectedSurveyUiModel(): SurveyItemUiModel? {
-        val models = currentSurveyItemUiModels
-        val selectedIndex = selectedSurveyIndexValue
-        return models.elementAtOrNull(selectedIndex)
     }
 
     private fun bindOnSuccessLoadSurveys(
