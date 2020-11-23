@@ -24,7 +24,6 @@ class OnboardingActivity : BaseActivity(), BlurAnimatable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_onboarding)
         bindViewModel()
     }
