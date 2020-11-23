@@ -41,11 +41,11 @@ class OnboardingViewModel @ViewModelInject constructor(
             .flatMap(refreshTokenIfNeededSingleUseCase::execute)
             .flatMapCompletable(updateLocalUserTokenCompletableUseCase::execute)
             .subscribeBy(
+                onComplete = { _navigator.onNext(NavigationEvent.Onboarding.Main) },
                 onError = {
                     _error.onNext(it)
                     RxBus.publish(PostSessionCheckEvent)
-                },
-                onComplete = { _navigator.onNext(NavigationEvent.Onboarding.Main) }
+                }
             ).bindForDisposable()
     }
 }
