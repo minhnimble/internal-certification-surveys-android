@@ -8,12 +8,9 @@ import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.extension.isValidIndex
 import co.nimblehq.ui.base.BaseViewModel
-import co.nimblehq.usecase.session.ClearLocalTokenCompletableUseCase
-import co.nimblehq.usecase.session.GetLocalUserTokenSingleUseCase
-import co.nimblehq.usecase.session.LogoutCompletableUseCase
+import co.nimblehq.usecase.session.FullLogoutCompletableUseCase
 import co.nimblehq.usecase.survey.*
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -45,14 +42,12 @@ interface Output {
 }
 
 class SurveysViewModel @ViewModelInject constructor(
-    private val clearLocalTokenCompletableUseCase: ClearLocalTokenCompletableUseCase,
     private val deleteLocalSurveysExcludeIdsCompletableUseCase: DeleteLocalSurveysExcludeIdsCompletableUseCase,
+    private val fullLogoutCompletableUseCase: FullLogoutCompletableUseCase,
     private val getLocalSurveysSingleUseCase: GetLocalSurveysSingleUseCase,
-    private val getLocalTokenSingleUseCase: GetLocalUserTokenSingleUseCase,
     private val getSurveysCurrentPageSingleUseCase: GetSurveysCurrentPageSingleUseCase,
     private val getSurveysTotalPagesSingleUseCase: GetSurveysTotalPagesSingleUseCase,
-    private val loadSurveysSingleUseCase: LoadSurveysSingleUseCase,
-    private val logoutCompletableUseCase: LogoutCompletableUseCase
+    private val loadSurveysSingleUseCase: LoadSurveysSingleUseCase
 ) : BaseViewModel(), Input, Output {
 
     val input = this
@@ -111,33 +106,22 @@ class SurveysViewModel @ViewModelInject constructor(
         updateSurveyIndex(selectedSurveyIndexValue - 1)
     }
 
-    fun checkAndRefreshInitialSurveys() {
+    fun getLocalCachedSurveys() {
         getLocalSurveysSingleUseCase
             .execute(Unit)
             .map { it.toSurveyItemUiModels() }
-            .doOnSuccess { bindOnSuccessLoadSurveys(it) }
-            .flatMap { getLocalPagingAttributes() }
-            .flatMap { loadSurveysSingleUseCase.execute(LoadSurveysSingleUseCase.Input(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, currentSurveysPageSize)) }
-            .map { it.toSurveyItemUiModels() }
-            .doOnSuccess { bindOnSuccessLoadSurveys(it, shouldMerge = false) }
-            .flatMap { getLocalPagingAttributes() }
-            .flatMapCompletable {
-                deleteLocalSurveysExcludeIdsCompletableUseCase
-                    .execute(DeleteLocalSurveysExcludeIdsCompletableUseCase.Input(currentSurveyItemUiModels.map { model -> model.id }))
-            }
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
+                onSuccess = { bindOnSuccessGetLocalCachedSurveys(it) },
                 onError = { _error.onNext(it) }
             )
             .bindForDisposable()
     }
 
     fun logout() {
-        getLocalTokenSingleUseCase
+        fullLogoutCompletableUseCase
             .execute(Unit)
             .doOnSubscribe { _showLoading.onNext(true) }
-            .flatMapCompletable { logoutCompletableUseCase.execute(it.accessToken) }
-            .andThen(clearLocalTokenCompletableUseCase.execute(Unit))
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
                 onComplete = { _navigator.onNext(NavigationEvent.Surveys.Onboarding) },
@@ -146,25 +130,28 @@ class SurveysViewModel @ViewModelInject constructor(
             .bindForDisposable()
     }
 
-    fun refreshSurveysList() {
-        loadSurveysSingleUseCase
-            .execute(LoadSurveysSingleUseCase.Input(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, currentSurveysPageSize))
-            .doOnSubscribe { _showRefreshing.onNext(true) }
-            .map { it.toSurveyItemUiModels() }
-            .doOnSuccess { bindOnSuccessLoadSurveys(it, shouldMerge = false) }
-            .flatMap { getLocalPagingAttributes() }
-            .flatMapCompletable {
-                deleteLocalSurveysExcludeIdsCompletableUseCase
-                    .execute(DeleteLocalSurveysExcludeIdsCompletableUseCase.Input(currentSurveyItemUiModels.map { model -> model.id }))
-            }
-            .doFinally { _showRefreshing.onNext(false) }
-            .subscribeBy(
-                onError = { _error.onNext(it) }
-            )
-            .bindForDisposable()
+    fun refreshSurveys() {
+        loadInitialSurveys(isRefreshing = true)
     }
 
-    private fun bindOnSuccessLoadSurveys(
+    private fun bindOnSuccessGetLocalCachedSurveys(surveys: List<SurveyItemUiModel>) {
+        bindSurveysItemUiModels(surveys)
+        getLocalPagingAttributes()
+        loadInitialSurveys()
+    }
+
+    private fun bindOnSuccessLoadInitialSurveys(surveys: List<SurveyItemUiModel>) {
+        bindSurveysItemUiModels(surveys, shouldMerge = false)
+        getLocalPagingAttributes()
+        deleteLocalCachedSurveys()
+    }
+
+    private fun bindOnSuccessLoadMoreSurveys(surveys: List<SurveyItemUiModel>) {
+        bindSurveysItemUiModels(surveys, shouldResetToFirstIndex = false)
+        getLocalPagingAttributes()
+    }
+
+    private fun bindSurveysItemUiModels(
         surveys: List<SurveyItemUiModel>,
         shouldMerge: Boolean = true,
         shouldResetToFirstIndex: Boolean = true
@@ -179,11 +166,40 @@ class SurveysViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun getLocalPagingAttributes(): Single<Int> {
-        return getSurveysCurrentPageSingleUseCase.execute(Unit)
-            .doOnSuccess { currentSurveysPageNumber = it.coerceAtLeast(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER) }
-            .flatMap { getSurveysTotalPagesSingleUseCase.execute(Unit) }
-            .doOnSuccess { reachedLastSurveysPage = it == currentSurveysPageNumber }
+    private fun deleteLocalCachedSurveys() {
+        deleteLocalSurveysExcludeIdsCompletableUseCase
+            .execute(DeleteLocalSurveysExcludeIdsCompletableUseCase.Input(currentSurveyItemUiModels.map { model -> model.id }))
+            .subscribeBy(
+                onError = { _error.onNext(it) }
+            )
+            .bindForDisposable()
+    }
+
+    private fun getLocalPagingAttributes() {
+        getSurveysCurrentPageSingleUseCase
+            .execute(Unit)
+            .flatMap { page ->
+                currentSurveysPageNumber = page.coerceAtLeast(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER)
+                getSurveysTotalPagesSingleUseCase.execute(Unit)
+            }
+            .subscribeBy(
+                onSuccess = { reachedLastSurveysPage = it == currentSurveysPageNumber },
+                onError = { _error.onNext(it) }
+            )
+            .bindForDisposable()
+    }
+
+    private fun loadInitialSurveys(isRefreshing: Boolean = false) {
+        loadSurveysSingleUseCase
+            .execute(LoadSurveysSingleUseCase.Input(DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER, currentSurveysPageSize))
+            .map { it.toSurveyItemUiModels() }
+            .doOnSubscribe { (if (isRefreshing) _showRefreshing else _showLoading).onNext(true) }
+            .doFinally { (if (isRefreshing) _showRefreshing else _showLoading).onNext(false) }
+            .subscribeBy(
+                onSuccess = { bindOnSuccessLoadInitialSurveys(it) },
+                onError = { _error.onNext(it) }
+            )
+            .bindForDisposable()
     }
 
     private fun loadMoreSurveys() {
@@ -191,10 +207,9 @@ class SurveysViewModel @ViewModelInject constructor(
             .execute(LoadSurveysSingleUseCase.Input(currentSurveysPageNumber + 1, currentSurveysPageSize)) // Load the next page by adding 1 to the current page
             .doOnSubscribe { _showLoading.onNext(true) }
             .map { it.toSurveyItemUiModels() }
-            .doOnSuccess { bindOnSuccessLoadSurveys(it, shouldResetToFirstIndex = false) }
-            .flatMap { getLocalPagingAttributes() }
             .doFinally { _showLoading.onNext(false) }
             .subscribeBy(
+                onSuccess = { bindOnSuccessLoadMoreSurveys(it) },
                 onError = { _error.onNext(it) }
             )
             .bindForDisposable()
@@ -203,23 +218,24 @@ class SurveysViewModel @ViewModelInject constructor(
     private fun mergeSurveys(newSurveys: List<SurveyItemUiModel>): List<SurveyItemUiModel> =
         currentSurveyItemUiModels.plus(newSurveys).distinctBy { it.id }
 
-    private fun updateSurveyIndex(newIndex: Int) {
-        if (currentSurveyItemUiModels.isValidIndex(newIndex)) {
-            _selectedSurveyIndex.onNext(newIndex)
+    private fun shouldLoadMoreSurveys(newIndex: Int): Boolean {
+        val lastIndex =  currentSurveyItemUiModels.lastIndex
+        return if (lastIndex == DEFAULT_UNSELECTED_INDEX) {
+            false
+        } else {
+            val extendedLastIndex = lastIndex + 1
+
+            // Notify user when there is nothing more to load
+            if (newIndex == extendedLastIndex && reachedLastSurveysPage) {
+                _error.onNext(SurveyError.NoMoreSurveysError(null))
+            }
+            newIndex in (lastIndex..extendedLastIndex) && !reachedLastSurveysPage
         }
     }
 
-    private fun shouldLoadMoreSurveys(newIndex: Int): Boolean {
-        val lastIndex =  currentSurveyItemUiModels.lastIndex
-        return if (lastIndex == -1) {
-            false
-        }
-        else {
-            // Notify user when there is nothing more to load
-            if (newIndex == lastIndex + 1 && reachedLastSurveysPage) {
-                _error.onNext(SurveyError.NoMoreSurveysError(null))
-            }
-            newIndex in (lastIndex..lastIndex + 1) && !reachedLastSurveysPage
+    private fun updateSurveyIndex(newIndex: Int) {
+        if (currentSurveyItemUiModels.isValidIndex(newIndex)) {
+            _selectedSurveyIndex.onNext(newIndex)
         }
     }
 }

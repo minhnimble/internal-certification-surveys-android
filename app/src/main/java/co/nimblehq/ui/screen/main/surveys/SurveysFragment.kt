@@ -47,13 +47,13 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     override val layoutRes = R.layout.fragment_surveys
 
     override fun initViewModel() {
-        surveysViewModel.checkAndRefreshInitialSurveys()
+        surveysViewModel.getLocalCachedSurveys()
     }
 
     override fun setupView() {
         tvSurveysDate.text = Date().toDisplayFormat(DATE_FORMAT_SHORT_DISPLAY).toUpperCase(Locale.ROOT)
 
-        srlSurveys.setOnRefreshListener { surveysViewModel.refreshSurveysList() }
+        srlSurveys.setOnRefreshListener { surveysViewModel.refreshSurveys() }
     }
 
     override fun bindViewEvents() {
