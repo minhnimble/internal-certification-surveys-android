@@ -22,7 +22,7 @@ enum class QuestionDisplayType {
         fun from(value: String?): QuestionDisplayType {
             value ?: return DEFAULT
             return try {
-                valueOf(value.toUpperCase(Locale.ROOT))
+                valueOf(value.toUpperCase(Locale.getDefault()))
             } catch (ex: Exception) {
                 DEFAULT
             }
@@ -39,7 +39,7 @@ enum class QuestionPickValue {
         fun from(value: String?): QuestionPickValue {
             value ?: return NONE
             return try {
-                valueOf(value.toUpperCase(Locale.ROOT))
+                valueOf(value.toUpperCase(Locale.getDefault()))
             } catch (ex: Exception) {
                 NONE
             }
