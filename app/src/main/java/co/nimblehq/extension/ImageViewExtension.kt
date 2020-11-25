@@ -1,5 +1,6 @@
 package co.nimblehq.extension
 
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
@@ -16,7 +17,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 fun ImageView.loadImage(url: String, placeHolderDrawable: Drawable? = null) {
     GlideApp.with(context)
         .load(url)
-        .placeholder(placeHolderDrawable ?: ColorDrawable(ContextCompat.getColor(context, R.color.black_20a)))
+        .placeholder(placeHolderDrawable ?: ColorDrawableCreator.default(context))
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .centerCrop()
         .into(this)
@@ -25,10 +26,14 @@ fun ImageView.loadImage(url: String, placeHolderDrawable: Drawable? = null) {
 fun ImageView.loadImageWithFadeAnimation(url: String, placeHolderDrawable: Drawable? = null) {
     GlideApp.with(context)
         .load(url)
-        .placeholder(placeHolderDrawable ?: ColorDrawable(ContextCompat.getColor(context, R.color.black_20a)))
+        .placeholder(placeHolderDrawable ?: ColorDrawableCreator.default(context))
         .transition(DrawableTransitionOptions.withCrossFade(1000))
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .centerCrop()
         .into(this)
+}
 
+object ColorDrawableCreator {
+    fun default(context: Context): ColorDrawable =
+        ColorDrawable(ContextCompat.getColor(context, R.color.black_20a))
 }

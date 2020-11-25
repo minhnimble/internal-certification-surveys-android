@@ -1,13 +1,14 @@
 package co.nimblehq.ui.screen.main.surveys
 
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import co.nimblehq.R
 import co.nimblehq.data.error.Ignored
 import co.nimblehq.data.lib.common.DATE_FORMAT_SHORT_DISPLAY
 import co.nimblehq.data.lib.extension.subscribeOnClick
-import co.nimblehq.data.lib.rxjava.RxBus
 import co.nimblehq.data.model.User
 import co.nimblehq.extension.loadImage
 import co.nimblehq.extension.loadImageWithFadeAnimation
@@ -16,6 +17,7 @@ import co.nimblehq.extension.toDisplayFormat
 import co.nimblehq.ui.base.BaseFragment
 import co.nimblehq.ui.base.BaseFragmentCallbacks
 import co.nimblehq.ui.common.listener.OnSwipeTouchListener
+import co.nimblehq.ui.screen.common.UserViewModel
 import co.nimblehq.ui.screen.main.LoaderAnimatable
 import co.nimblehq.ui.screen.main.MainNavigator
 import com.google.android.material.navigation.NavigationView
@@ -32,7 +34,9 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     @Inject
     lateinit var navigator: MainNavigator
 
-    private val viewModel by viewModels<SurveysViewModel>()
+    private val surveysViewModel by viewModels<SurveysViewModel>()
+
+    private val userViewModel by activityViewModels<UserViewModel>()
 
     private val loaderAnimator: LoaderAnimatable? by lazy {
         requireActivity() as? LoaderAnimatable
@@ -41,36 +45,32 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     override val layoutRes = R.layout.fragment_surveys
 
     override fun initViewModel() {
-        viewModel.checkAndRefreshInitialSurveys()
+        surveysViewModel.checkAndRefreshInitialSurveys()
     }
 
     override fun setupView() {
         tvSurveysDate.text = Date().toDisplayFormat(DATE_FORMAT_SHORT_DISPLAY).toUpperCase(Locale.ROOT)
 
-        srlSurveys.setOnRefreshListener { viewModel.refreshSurveysList() }
+        srlSurveys.setOnRefreshListener { surveysViewModel.refreshSurveysList() }
     }
 
     override fun bindViewEvents() {
         btSurveysItemNext.subscribeOnClick {
-            viewModel.output.selectedSurveyUiModel?.let {
+            surveysViewModel.output.selectedSurveyUiModel?.let {
                 navigator.navigateToSurveyDetails(it)
             }
         }.bindForDisposable()
-
-        RxBus.listen(User::class.java)
-            .subscribe { bindCurrentUserInfo(it) }
-            .bindForDisposable()
 
         clSurveys.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
 
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                viewModel.input.nextIndex()
+                surveysViewModel.input.nextIndex()
             }
 
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                viewModel.input.previousIndex()
+                surveysViewModel.input.previousIndex()
             }
         })
 
@@ -82,24 +82,28 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     }
 
     override fun bindViewModel() {
-        viewModel.output.error
+        surveysViewModel.output.error
             .subscribe(::bindError)
             .bindForDisposable()
 
-        viewModel.output.showLoading
+        surveysViewModel.output.showLoading
             .subscribe(::bindLoading)
             .bindForDisposable()
 
-        viewModel.output.showRefreshing
+        surveysViewModel.output.showRefreshing
             .subscribe(::bindRefreshing)
             .bindForDisposable()
 
-        viewModel.output.selectedSurveyIndex
+        surveysViewModel.output.selectedSurveyIndex
             .subscribe(::bindSelectedSurveyIndex)
             .bindForDisposable()
 
-        viewModel.output.surveyItemUiModels
+        surveysViewModel.output.surveyItemUiModels
             .subscribe(::bindSurveyItemUiModels)
+            .bindForDisposable()
+
+        userViewModel.output.user
+            .subscribe { bindCurrentUserInfo(it) }
             .bindForDisposable()
     }
 
@@ -117,7 +121,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
 
     private fun bindCurrentUserInfo(user: User) {
         tvMenuDrawerUserName.text = user.email
-        val defaultAvatar = requireContext().resources.getDrawable(R.drawable.ic_general_default_user_avatar, requireContext().theme)
+        val defaultAvatar = ContextCompat.getDrawable(requireContext(), R.drawable.ic_general_default_user_avatar)
         ivMenuDrawerUserAvatar.loadImage(user.avatarUrl, defaultAvatar)
         ivSurveysUserAvatar.loadImage(user.avatarUrl, defaultAvatar)
     }
@@ -136,7 +140,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     }
 
     private fun bindSelectedSurveyIndex(index: Int) {
-        viewModel.output.selectedSurveyUiModel?.let {
+        surveysViewModel.output.selectedSurveyUiModel?.let {
             ciSurveysIndicator.animatePageSelected(index)
             tvSurveysItemHeader.switchTextWithFadeAnimation(it.header)
             tvSurveysItemDescription.switchTextWithFadeAnimation(it.description)
@@ -146,7 +150,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
 
     private fun bindSurveyItemUiModels(uiModels: List<SurveyItemUiModel>) {
         if (uiModels.isEmpty()) return
-        ciSurveysIndicator.createIndicators(uiModels.size, viewModel.output.selectedSurveyIndexValue)
+        ciSurveysIndicator.createIndicators(uiModels.size, surveysViewModel.output.selectedSurveyIndexValue)
     }
 
     private fun toggleDrawer(shouldShow: Boolean) {

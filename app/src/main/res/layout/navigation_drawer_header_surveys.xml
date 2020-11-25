@@ -33,15 +33,12 @@
         app:srcCompat="@drawable/ic_general_default_user_avatar"
         android:scaleType="centerCrop" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clMenuDrawerSeparatorLine"
-        android:layout_width="match_parent"
+    <View
+        android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:background="@color/white_18a"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
