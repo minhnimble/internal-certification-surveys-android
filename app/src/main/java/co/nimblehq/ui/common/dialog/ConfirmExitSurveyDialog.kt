@@ -14,20 +14,20 @@ class ConfirmExitSurveyDialog(private val confirmCallback: EmptyCallback): Dialo
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = Dialog(requireContext(), R.style.FullScreenDialogStyle)
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_exit_survey, null)
-        view.clConfirmExitSurveyDialog.setOnClickListener {
-            dismiss()
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_exit_survey, null).apply {
+            clConfirmExitSurveyDialog.setOnClickListener {
+                dismiss()
+            }
+            tvConfirmExitSurveyCancel.setOnClickListener {
+                dismiss()
+            }
+            tvConfirmExitSurveyYes.setOnClickListener {
+                dismiss()
+                confirmCallback()
+            }
         }
-        view.tvConfirmExitSurveyCancel.setOnClickListener {
-            dismiss()
+        return Dialog(requireContext(), R.style.FullScreenDialogStyle).apply {
+            setContentView(view)
         }
-        view.tvConfirmExitSurveyYes.setOnClickListener {
-            dismiss()
-            confirmCallback()
-        }
-        dialog.setContentView(view)
-        return dialog
     }
-
 }

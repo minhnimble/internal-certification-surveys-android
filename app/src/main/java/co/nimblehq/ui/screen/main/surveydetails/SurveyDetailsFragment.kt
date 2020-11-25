@@ -58,7 +58,7 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
         btSurveyQuestionsClose.subscribeOnClick {
             ConfirmExitSurveyDialog {
                 navigator.navigateBack()
-            }.show(childFragmentManager, "confirm_exit_survey")
+            }.show(childFragmentManager, null)
         }.bindForDisposable()
 
         btSurveyQuestionsItemNext.subscribeOnClick {
@@ -124,7 +124,7 @@ class SurveyDetailsFragment : BaseFragment(), BaseFragmentCallbacks {
         if (shouldShow) {
             SubmitSurveyResponsesSuccessDialog {
                 navigator.navigateBack()
-            }.show(childFragmentManager, "success_animation")
+            }.show(childFragmentManager, null)
         }
     }
 
