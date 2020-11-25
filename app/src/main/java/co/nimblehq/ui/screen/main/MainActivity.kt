@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import co.nimblehq.R
+import co.nimblehq.data.api.common.listener.AppRefreshTokenFailedListener
+import co.nimblehq.data.api.common.listener.AppTokenExpiredNotifier
 import co.nimblehq.ui.base.BaseActivity
-import co.nimblehq.ui.screen.common.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.shimmer_loading_indicator_main.*
 import javax.inject.Inject
@@ -15,21 +16,28 @@ interface LoaderAnimatable {
 }
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), LoaderAnimatable {
+class MainActivity : BaseActivity(), LoaderAnimatable, AppRefreshTokenFailedListener {
 
     @Inject
     lateinit var navigator: MainNavigator
 
     private val mainViewModel by viewModels<MainViewModel>()
 
-    private val userViewModel by viewModels<UserViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
         toggleShimmerLoader(true)
-        bindViewModel()
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        AppTokenExpiredNotifier.bindAppTokenExpiredListener(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AppTokenExpiredNotifier.unbindAppTokenExpiredListener(this)
     }
 
     override fun toggleShimmerLoader(shouldShow: Boolean) {
@@ -37,9 +45,7 @@ class MainActivity : BaseActivity(), LoaderAnimatable {
         if (shouldShow) sflMainContainer.startShimmer() else sflMainContainer.stopShimmer()
     }
 
-    private fun bindViewModel() {
-        userViewModel.output.error
-            .subscribe(::displayError)
-            .bindForDisposable()
+    override fun onRefreshTokenFailed(error: Throwable?) {
+        navigator.navigateToOnboardingActivity()
     }
 }

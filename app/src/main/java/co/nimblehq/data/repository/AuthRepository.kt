@@ -29,7 +29,6 @@ class AuthRepositoryImpl @Inject constructor(
     ): Single<AuthData> {
         return authService
             .loginByPasswordWithEmail(RequestHelper.loginWithEmail(email, password))
-            .firstOrError()
             .map { it.toAuthData() }
     }
 
@@ -41,7 +40,6 @@ class AuthRepositoryImpl @Inject constructor(
     override fun refreshToken(token: String): Single<AuthData> {
         return authService
             .refreshToken(RequestHelper.refreshToken(token))
-            .firstOrError()
             .map { it.toAuthData() }
     }
 }

@@ -1,5 +1,6 @@
 package co.nimblehq.di.modules
 
+import co.nimblehq.data.api.authenticator.AppRequestAuthenticator
 import co.nimblehq.data.api.interceptor.AppRequestInterceptor
 import co.nimblehq.data.api.interceptor.AuthRequestInterceptor
 import co.nimblehq.data.api.providers.OkHttpClientProvider
@@ -11,6 +12,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
@@ -24,9 +26,10 @@ class OkHttpClientModule {
     @AppOkHttpClient
     fun provideAppOkHttpClient(
         apiRequestInterceptor: AppRequestInterceptor,
-        httpLoggingInterceptor: HttpLoggingInterceptor
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        apiRequestAuthenticator: Authenticator
     ): OkHttpClient {
-        return OkHttpClientProvider.getOkHttpClient(apiRequestInterceptor, httpLoggingInterceptor)
+        return OkHttpClientProvider.getOkHttpClient(apiRequestInterceptor, httpLoggingInterceptor, apiRequestAuthenticator)
     }
 
     @Provides
@@ -42,10 +45,9 @@ class OkHttpClientModule {
     @Provides
     @Singleton
     fun provideAppRequestInterceptor(
-        securedStorage: SecureStorage,
-        authService: AuthService
+        securedStorage: SecureStorage
     ): AppRequestInterceptor {
-        return AppRequestInterceptor(securedStorage, authService)
+        return AppRequestInterceptor(securedStorage)
     }
 
     @Provides
@@ -59,5 +61,14 @@ class OkHttpClientModule {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         return logging
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppRequestAuthenticator(
+        securedStorage: SecureStorage,
+        authService: AuthService
+    ): Authenticator {
+        return AppRequestAuthenticator(securedStorage, authService)
     }
 }
