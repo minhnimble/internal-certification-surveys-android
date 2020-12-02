@@ -26,7 +26,7 @@ class LogoutCompletableUseCaseTest {
     }
 
     @Test
-    fun `When logging out succeeds, it returns Complete`() {
+    fun `When logging out successfully, it returns Complete`() {
         // Arrange
         whenever(
             mockRepository.logout(any())
@@ -44,7 +44,7 @@ class LogoutCompletableUseCaseTest {
     }
 
     @Test
-    fun `When logging in fails, it returns a LogoutError`() {
+    fun `When logging out failed, it returns a LogoutError`() {
         // Arrange
         whenever(
             mockRepository.logout(any())
