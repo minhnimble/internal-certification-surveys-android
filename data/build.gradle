@@ -99,6 +99,8 @@ dependencies {
 
     testImplementation(
         "junit:junit:$test_junit_version",
+        "androidx.test:core:$test_core_version",
+        "com.squareup.okhttp3:mockwebserver:$test_mockwebserver_version",
         "com.nhaarman.mockitokotlin2:mockito-kotlin:$test_mockito_kotlin_version"
     )
 }

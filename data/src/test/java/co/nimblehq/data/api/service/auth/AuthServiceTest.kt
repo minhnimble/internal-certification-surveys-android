@@ -1,13 +1,9 @@
-package co.nimblehq.data.service
+package co.nimblehq.data.api.service.auth
 
-import com.google.gson.Gson
-import co.nimblehq.data.lib.schedulers.RxSchedulerProvider
-import co.nimblehq.data.lib.schedulers.RxSchedulerProviderImpl
 import co.nimblehq.data.api.providers.ApiServiceProvider
 import co.nimblehq.data.api.providers.ConverterFactoryProvider
 import co.nimblehq.data.api.providers.MoshiBuilderProvider
 import co.nimblehq.data.api.providers.RetrofitProvider
-import co.nimblehq.data.api.service.auth.AuthService
 import okhttp3.OkHttpClient
 import org.junit.Assert
 import org.junit.Test
@@ -21,10 +17,9 @@ class AuthServiceTest {
         val httpClient = OkHttpClient.Builder().build()
         val moshi = MoshiBuilderProvider.moshiBuilder.build()
         val converterFactory = ConverterFactoryProvider.getMoshiConverterFactory(moshi)
-        val retrofitBuilder = RetrofitProvider.getRetrofitBuilder(converterFactory, httpClient)
-        val appRetrofit: Retrofit = retrofitBuilder.build()
+        val retrofitBuilder = RetrofitProvider.getRetrofitBuilder(listOf(converterFactory), httpClient)
 
-        val schedulers: RxSchedulerProvider = RxSchedulerProviderImpl()
+        val appRetrofit: Retrofit = retrofitBuilder.build()
         Assert.assertNotNull("should provide Retrofit", appRetrofit)
 
         val authService: AuthService = ApiServiceProvider.getAuthService(appRetrofit)
