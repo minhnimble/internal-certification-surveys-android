@@ -6,6 +6,7 @@ import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.usecase.user.LoadCurrentUserInfoSingleUseCase
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 interface Output {
@@ -24,7 +25,7 @@ class UserViewModel @ViewModelInject constructor(
     override val error: Observable<Throwable>
         get() = _error
 
-    private val _user = PublishSubject.create<User>()
+    private val _user = BehaviorSubject.create<User>()
     override val user: Observable<User>
         get() = _user
 
@@ -32,7 +33,7 @@ class UserViewModel @ViewModelInject constructor(
         loadCurrentUserInfo()
     }
 
-    fun loadCurrentUserInfo() {
+    private fun loadCurrentUserInfo() {
         loadCurrentUserInfoSingleUseCase
             .execute(Unit)
             .subscribeBy(
