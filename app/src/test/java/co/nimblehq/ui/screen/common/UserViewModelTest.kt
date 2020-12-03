@@ -10,6 +10,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
+import org.robolectric.util.ReflectionHelpers
 
 class UserViewModelTest {
 
@@ -35,7 +36,7 @@ class UserViewModelTest {
             .output
             .error
             .test()
-        userViewModel.loadCurrentUserInfo()
+        ReflectionHelpers.callInstanceMethod<UserViewModel>(userViewModel, "loadCurrentUserInfo")
 
         // Assert
         errorObserver
@@ -58,7 +59,6 @@ class UserViewModelTest {
             .output
             .user
             .test()
-        userViewModel.loadCurrentUserInfo()
 
         // Assert
         userObserver

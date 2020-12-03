@@ -16,8 +16,8 @@ private const val DISMISS_SUCCESS_DIALOG_TIMER_NAME = "DismissSuccessDialog"
 class SubmitSurveyResponsesSuccessDialog(private val callback: EmptyCallback? = null) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = LayoutInflater.from(context).inflate(R.layout.dialog_submit_survey_responses_success, null)
-        return Dialog(context, R.style.CenterFadeInOutDialogStyle).apply {
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_submit_survey_responses_success, null)
+        return Dialog(requireContext(), R.style.CenterFadeInOutDialogStyle).apply {
             window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
             setContentView(view)
         }
