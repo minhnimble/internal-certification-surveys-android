@@ -39,11 +39,30 @@ class AppRequestAuthenticatorTest {
     private val httpUrl = mockWebServer.url(baseUrl)
     private val testData = TestData("Test Name")
     private val testDataJson = "{\"name\":\"${testData.name}\"}"
+    private val authResponse = OAuthResponse(
+        data = OAuthDataResponse(
+            id = "id",
+            type = "type",
+            attributes = OAuthAttributesResponse(
+                accessToken = "accessToken",
+                refreshToken = "refreshToken",
+                createdAt = 32503597200000, // (GMT): Tuesday, December 31, 2999 1:00:00 AM
+                expiresIn = 7200,
+                tokenType = "tokenType"
+            )
+        )
+    )
 
     @Before
     fun setUp() {
         mockAuthService = mock()
-        mockSecureStorage = mock()
+        mockSecureStorage = object: SecureStorage {
+            override var userAccessToken: String? = authResponse.data.attributes.accessToken
+            override var userAccessTokenCreatedAt: Long? = authResponse.data.attributes.createdAt
+            override var userAccessTokenExpiresIn: Long? = authResponse.data.attributes.expiresIn
+            override var userRefreshToken: String? = authResponse.data.attributes.refreshToken
+            override var userTokenType: String? = authResponse.data.attributes.tokenType
+        }
         authenticator = AppRequestAuthenticator(
             mockSecureStorage,
             mockAuthService
@@ -68,25 +87,6 @@ class AppRequestAuthenticatorTest {
     @Test
     fun `When a call executes, the auth header is added in advanced by the interceptor`() {
         // Arrange
-        val authResponse = OAuthResponse(
-            data = OAuthDataResponse(
-                id = "id",
-                type = "type",
-                attributes = OAuthAttributesResponse(
-                    accessToken = "accessToken",
-                    refreshToken = "refreshToken",
-                    createdAt = 32503597200000, // (GMT): Tuesday, December 31, 2999 1:00:00 AM
-                    expiresIn = 7200,
-                    tokenType = "tokenType"
-                )
-            )
-        )
-        whenever(
-            mockSecureStorage.userAccessToken
-        ) doReturn authResponse.data.attributes.accessToken
-        whenever(
-            mockSecureStorage.userTokenType
-        ) doReturn authResponse.data.attributes.tokenType
         val successResponse = MockResponse().setBody(testDataJson)
         mockWebServer.enqueue(successResponse)
 
@@ -105,34 +105,6 @@ class AppRequestAuthenticatorTest {
         val invalidTokenResponse = MockResponse().setResponseCode(401) // Setup invalidTokenResponse
         val successResponse = MockResponse().setBody(testDataJson) // Setup successResponse
 
-        val authResponse = OAuthResponse(
-            data = OAuthDataResponse(
-                id = "id",
-                type = "type",
-                attributes = OAuthAttributesResponse(
-                    accessToken = "accessToken",
-                    refreshToken = "refreshToken",
-                    createdAt = 32503597200000, // (GMT): Tuesday, December 31, 2999 1:00:00 AM
-                    expiresIn = 7200,
-                    tokenType = "tokenType"
-                )
-            )
-        )
-        whenever(
-            mockSecureStorage.userAccessToken
-        ) doReturn authResponse.data.attributes.accessToken
-        whenever(
-            mockSecureStorage.userTokenType
-        ) doReturn authResponse.data.attributes.tokenType
-        whenever(
-            mockSecureStorage.userRefreshToken
-        ) doReturn authResponse.data.attributes.refreshToken
-        whenever(
-            mockSecureStorage.userAccessTokenCreatedAt
-        ) doReturn authResponse.data.attributes.createdAt
-        whenever(
-            mockSecureStorage.userAccessTokenExpiresIn
-        ) doReturn authResponse.data.attributes.expiresIn
         whenever(
             mockAuthService.refreshToken(
                 RequestHelper.refreshToken(mockSecureStorage.userRefreshToken ?: "")
