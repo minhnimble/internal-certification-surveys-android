@@ -94,4 +94,5 @@ To release Staging and Production builds to **Firebase Distribution**, we create
 4. Review and merge `release_[env_lowercase]_firebase/[version_number]` to `master` PR
 
 ## Final Note
-If you still have issues setting up your environment, contact me for help over Slack. My name is Mikey on Slack ^^
+* As of now, the requirements don't have signup feature so there is no way for a new user to signup within the application. Therefore, please use the following testing account for logging in the application and testing purposes: minh@nimblehq.co/1234568 
+* If you still have issues setting up your environment or testing the application, contact me for help over Slack. My name is Mikey on Slack ^^
