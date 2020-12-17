@@ -109,7 +109,7 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
             .bindForDisposable()
 
         userViewModel.output.user
-            .subscribe { bindCurrentUserInfo(it) }
+            .subscribe(::bindCurrentUserInfo)
             .bindForDisposable()
     }
 
@@ -125,9 +125,11 @@ class SurveysFragment: BaseFragment(), BaseFragmentCallbacks, NavigationView.OnN
     }
 
     private fun bindCurrentUserInfo(user: User) {
-        tvMenuDrawerUserName.text = user.email
         val defaultAvatar = ContextCompat.getDrawable(requireContext(), R.drawable.ic_general_default_user_avatar)
-        ivMenuDrawerUserAvatar.loadImage(user.avatarUrl, defaultAvatar)
+        this.view?.post {
+            tvMenuDrawerUserName.text = user.email
+            ivMenuDrawerUserAvatar.loadImage(user.avatarUrl, defaultAvatar)
+        }
         ivSurveysUserAvatar.loadImage(user.avatarUrl, defaultAvatar)
     }
 
