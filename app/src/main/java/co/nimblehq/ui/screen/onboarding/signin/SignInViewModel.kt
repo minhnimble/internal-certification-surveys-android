@@ -1,16 +1,17 @@
 package co.nimblehq.ui.screen.onboarding.signin
 
-import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.extension.isEmail
 import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.usecase.session.LoginByPasswordSingleUseCase
 import co.nimblehq.usecase.session.UpdateLocalUserTokenCompletableUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
 interface Input {
 
@@ -34,7 +35,8 @@ interface Output {
     val enableLoginButton: Observable<Boolean>
 }
 
-class SignInViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SignInViewModel @Inject constructor(
     private val loginByPasswordSingleUseCase: LoginByPasswordSingleUseCase,
     private val updateLocalUserTokenCompletableUseCase: UpdateLocalUserTokenCompletableUseCase
 ) : BaseViewModel(), Input, Output {

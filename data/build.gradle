@@ -9,8 +9,6 @@ android {
     defaultConfig {
         minSdkVersion globalConfig.getAt("android_min_sdk_version")
         targetSdkVersion globalConfig.getAt("android_target_sdk_version")
-        versionCode globalConfig.getAt("android_version_code")
-        versionName globalConfig.getAt("android_version_name")
     }
 
     flavorDimensions "stage"
@@ -55,6 +53,7 @@ android {
     androidExtensions {
         experimental = true
     }
+    namespace 'co.nimblehq.data'
 }
 
 dependencies {

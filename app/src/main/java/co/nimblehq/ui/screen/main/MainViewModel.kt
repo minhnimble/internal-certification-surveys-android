@@ -1,9 +1,11 @@
 package co.nimblehq.ui.screen.main
 
-import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     // TODO: Add use cases here when needed
 ) : BaseViewModel() {
 

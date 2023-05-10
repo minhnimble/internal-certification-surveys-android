@@ -1,6 +1,5 @@
 package co.nimblehq.ui.screen.onboarding
 
-import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.data.lib.rxjava.RxBus
 import co.nimblehq.event.NavigationEvent
 import co.nimblehq.event.PostSessionCheckEvent
@@ -8,9 +7,11 @@ import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.usecase.session.GetLocalUserTokenSingleUseCase
 import co.nimblehq.usecase.session.RefreshTokenIfNeededSingleUseCase
 import co.nimblehq.usecase.session.UpdateLocalUserTokenCompletableUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
 interface Output {
 
@@ -19,7 +20,8 @@ interface Output {
     val navigator: Observable<NavigationEvent>
 }
 
-class OnboardingViewModel @ViewModelInject constructor(
+@HiltViewModel
+class OnboardingViewModel @Inject constructor(
     private val getLocalTokenSingleUseCase: GetLocalUserTokenSingleUseCase,
     private val refreshTokenIfNeededSingleUseCase: RefreshTokenIfNeededSingleUseCase,
     private val updateLocalUserTokenCompletableUseCase: UpdateLocalUserTokenCompletableUseCase

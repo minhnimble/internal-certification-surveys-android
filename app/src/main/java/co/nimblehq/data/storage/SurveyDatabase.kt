@@ -8,7 +8,9 @@ import co.nimblehq.data.storage.dao.SurveyDao
 @Database(
     entities = [
         Survey::class
-    ], version = 1
+    ],
+    version = 1,
+    exportSchema = false
 )
 abstract class SurveyDatabase : RoomDatabase() {
     abstract fun surveyDao(): SurveyDao

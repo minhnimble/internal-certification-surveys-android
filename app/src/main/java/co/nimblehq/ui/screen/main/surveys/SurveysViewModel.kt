@@ -1,6 +1,5 @@
 package co.nimblehq.ui.screen.main.surveys
 
-import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.data.error.SurveyError
 import co.nimblehq.data.lib.common.DEFAULT_INITIAL_SURVEYS_PAGE_NUMBER
 import co.nimblehq.data.lib.common.DEFAULT_SURVEYS_PAGE_SIZE
@@ -10,10 +9,12 @@ import co.nimblehq.extension.isValidIndex
 import co.nimblehq.ui.base.BaseViewModel
 import co.nimblehq.usecase.session.FullLogoutCompletableUseCase
 import co.nimblehq.usecase.survey.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
 interface Input {
 
@@ -41,7 +42,8 @@ interface Output {
     val selectedSurveyUiModel: SurveyItemUiModel?
 }
 
-class SurveysViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SurveysViewModel @Inject constructor(
     private val deleteLocalSurveysExcludeIdsCompletableUseCase: DeleteLocalSurveysExcludeIdsCompletableUseCase,
     private val fullLogoutCompletableUseCase: FullLogoutCompletableUseCase,
     private val getLocalSurveysSingleUseCase: GetLocalSurveysSingleUseCase,
@@ -239,4 +241,3 @@ class SurveysViewModel @ViewModelInject constructor(
         }
     }
 }
-

@@ -1,6 +1,5 @@
 package co.nimblehq.ui.screen.main.surveydetails
 
-import androidx.hilt.lifecycle.ViewModelInject
 import co.nimblehq.data.lib.common.DEFAULT_UNSELECTED_INDEX
 import co.nimblehq.data.model.QuestionResponsesEntity
 import co.nimblehq.extension.isValidIndex
@@ -9,11 +8,13 @@ import co.nimblehq.ui.screen.main.surveydetails.uimodel.QuestionItemPagerUiModel
 import co.nimblehq.ui.screen.main.surveydetails.uimodel.toQuestionItemPagerUiModels
 import co.nimblehq.usecase.survey.LoadSurveyDetailsSingleUseCase
 import co.nimblehq.usecase.survey.SubmitSurveyResponsesCompletableUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
 interface Input {
 
@@ -39,7 +40,8 @@ interface Output {
     val questionIndicator: Observable<String>
 }
 
-class SurveyDetailsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SurveyDetailsViewModel @Inject constructor(
     private val loadSurveyDetailsSingleUseCase: LoadSurveyDetailsSingleUseCase,
     private val submitSurveyResponsesCompletableUseCase: SubmitSurveyResponsesCompletableUseCase
 ) : BaseViewModel(), Input, Output {
@@ -125,4 +127,3 @@ class SurveyDetailsViewModel @ViewModelInject constructor(
             .bindForDisposable()
     }
 }
-
