@@ -95,4 +95,4 @@ To release Staging and Production builds to **Firebase Distribution**, we create
 
 ## Final Note
 * As of now, the requirements don't have signup feature so there is no way for a new user to signup within the application. Therefore, please use the following testing account for logging in the application and testing purposes: minh@nimblehq.co/1234568 
-* If you still have issues setting up your environment or testing the application, contact me for help over Slack. My name is Mikey on Slack ^^
+* If you still have issues setting up your environment or testing the application, contact me for help over Slack. My name is Mike on Slack ^^
